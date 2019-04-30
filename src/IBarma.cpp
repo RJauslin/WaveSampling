@@ -1,5 +1,3 @@
-
-
 #include <RcppArmadillo.h>
 #include "rowcolSumsiter.h"
 
@@ -24,6 +22,7 @@ double IBarma(const arma::sp_mat& W,const arma::vec& s){
   double tot =0.0;
   for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it) {
     tot = tot + *it;
+
   }
   sb.fill(arma::sum(wi%s)/tot);
 
