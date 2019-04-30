@@ -1,0 +1,20 @@
+Package: wave
+Type: Package
+Title: Weakly Associated Vectors sampling
+Version: 0.1.0
+Authors@R: c(person("Raphaël","Jauslin",email = "raphael.jauslin@unine.ch"))
+Description: Implementation of the spread spatial 
+  sampling using weakly associated vectors to contiguity table.
+License: What license is it under?
+URL: https://github.com/RJauslin/wave
+Encoding: UTF-8
+LinkingTo:
+  Rcpp,
+  RcppArmadillo
+Imports: 
+  Rcpp,
+  Matrix 
+Depends: 
+  R
+LazyData: true
+RoxygenNote: 6.1.1
