@@ -1,2 +1,2 @@
-# wave
+# WAVE
 Weakly Associated Vectors sampling
