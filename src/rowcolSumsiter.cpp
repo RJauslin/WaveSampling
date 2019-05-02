@@ -1,19 +1,32 @@
-
 #include <RcppArmadillo.h>
+
 // [[Rcpp::depends(RcppArmadillo)]]
-
-
-//' @title column sum on sparse matrix
+//' @title Column sums on sparse matrix.
 //'
 //' @description
-//' column sum that iterate only on the non-zero entries of the matrix.
+//' Same usage of the function \code{\link[Matrix]{colSums}}.
 //'
-//' @param x A sparse matrix
+//' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
 //'
-//' @return column sum of the sparse matrix
+//' @details
+//' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
+//' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{colSums}} should be prefer because is 
+//' a little bit faster.
 //'
+//' @return A numeric vector that represent the sums of the column of x. 
+//' 
+//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+//' 
+//' @seealso
+//' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
+//' 
+//' @examples
+//' \dontrun{
+//' sp <- rsparsematrix(5000,5000,density = 0.4)
+//' system.time(test1 <- Matrix::colSums(sp))
+//' system.time(test2 <- colSumsiter(sp))
+//' }
 //' @export
-//'
 // [[Rcpp::export]]
 arma::vec colSumsiter(const arma::sp_mat& x) {
 
@@ -23,24 +36,43 @@ arma::vec colSumsiter(const arma::sp_mat& x) {
   arma::vec result(N);
   result.fill(0.0);
 
+  arma::sp_mat::const_iterator end = x.end();
   //loop only on non-zero entry to sum up the row
-  for(arma::sp_mat::const_iterator it = x.begin(); it != x.end(); ++it) {
+  for(arma::sp_mat::const_iterator it = x.begin(); it != end; ++it){
     result[it.col()] = result[it.col()] + *it;
   }
   return result;
 }
 
-//' @title row sum on sparse matrix
+// [[Rcpp::depends(RcppArmadillo)]]
+//' @title Row sums on sparse matrix.
 //'
 //' @description
-//' row sum that iterate only on the non-zero entries of the matrix.
+//' Same usage of the function \code{\link[Matrix]{rowSums}}.
 //'
-//' @param x A sparse matrix
+//' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
 //'
-//' @return row sum of the sparse matrix
+//' @details
+//' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
+//' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{rowSums}} should be prefer because is 
+//' a little bit faster.
 //'
+//' @return A numeric vector that represent the sums of the rows of x. 
+//' 
+//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+//' 
+//' @seealso
+//' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
+//' 
+//' 
+//' @examples
+//' \dontrun{
+//' sp <- rsparsematrix(5000,5000,density = 0.4)
+//' system.time(test1 <- Matrix::colSums(sp))
+//' system.time(test2 <- colSumsiter(sp))
+//' }
+//' 
 //' @export
-//'
 // [[Rcpp::export]]
 arma::vec rowSumsiter(const arma::sp_mat& x) {
   return colSumsiter(x.t());
@@ -65,8 +97,8 @@ rowSums(A)
 
 
 ## A tiny bit slower but we could use this in a c++ code
-sp <- rsparsematrix(3000,3000,density = 0.1)
-system.time(test1 <- colSums(sp))
+sp <- rsparsematrix(5000,500,density = 0.4)
+system.time(test1 <- Matrix::colSums(sp))
 system.time(test2 <- colSumsiter(sp))
 
 system.time(svd(sp))

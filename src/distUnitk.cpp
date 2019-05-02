@@ -38,7 +38,6 @@ arma::vec distUnitk(arma::mat X,
   unitkX.fill(X((k-1),0));
   unitkY.fill(X((k-1),1));
 
-
   if(tore == true){
 
     arma::vec toreBound_vec(N);
@@ -79,7 +78,14 @@ arma::vec distUnitk(arma::mat X,
 x <- seq(1,2,1)
 y <- seq(1,2,1)
 X <- as.matrix(expand.grid(x,y))
-distUnitk(X,1,tore = TRUE,r = 2)
+distUnitk(X,1,tore = TRUE,toreBound = NA)
+
+
+
+N <- 5
+x <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,x))
+distUnitk(X,2,tore = TRUE,toreBound = 7)
 
 
 */

@@ -2,16 +2,35 @@
 % Please edit documentation in R/RcppExports.R
 \name{rowSumsiter}
 \alias{rowSumsiter}
-\title{row sum on sparse matrix}
+\title{Row sums on sparse matrix.}
 \usage{
 rowSumsiter(x)
 }
 \arguments{
-\item{x}{A sparse matrix}
+\item{x}{A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.}
 }
 \value{
-row sum of the sparse matrix
+A numeric vector that represent the sums of the rows of x.
 }
 \description{
-row sum that iterate only on the non-zero entries of the matrix.
+Same usage of the function \code{\link[Matrix]{rowSums}}.
+}
+\details{
+This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
+It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{rowSums}} should be prefer because is 
+a little bit faster.
+}
+\examples{
+\dontrun{
+sp <- rsparsematrix(5000,5000,density = 0.4)
+system.time(test1 <- Matrix::colSums(sp))
+system.time(test2 <- colSumsiter(sp))
+}
+
+}
+\seealso{
+\code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
+}
+\author{
+Raphaël Jauslin \email{raphael.jauslin@unine.ch}
 }

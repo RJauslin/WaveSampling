@@ -8,6 +8,8 @@ projOp(v, u)
 }
 \arguments{
 \item{v}{vector that is projected.}
+
+\item{u}{vector on which we project.}
 }
 \value{
 The projection of the vector v onto the line spanned by the vector u.

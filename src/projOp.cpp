@@ -10,7 +10,7 @@
 //'
 //'
 //' @param v vector that is projected.
-//' @parma u vector on which we project.
+//' @param u vector on which we project.
 //'
 //' @return The projection of the vector v onto the line spanned by the vector u.
 //' @export

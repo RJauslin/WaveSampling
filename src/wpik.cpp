@@ -1,6 +1,5 @@
 
 #include <RcppArmadillo.h>
-
 #include "distUnitk.h"
 
 using namespace Rcpp;
@@ -28,10 +27,10 @@ using namespace std;
 // [[Rcpp::export]]
 arma::sp_mat wpik(arma::mat X,
                   arma::vec pik,
-                  double bound,
-                  bool tore,
-                  bool jitter,
-                  double toreBound){
+                  double bound = 1.0,
+                  bool tore = false,
+                  bool jitter = false,
+                  double toreBound = -1.0){
 
   /*
   * Initializing variable
@@ -52,6 +51,13 @@ arma::sp_mat wpik(arma::mat X,
     tb1 = R::rnorm(0.0, 0.01);
     tb2 = R::rnorm(0.0, 0.01);
   }
+  if(tore == true && toreBound == -1.0){
+    Rcpp::stop("You have set tore == true but you not gave a toreBound" );
+  }
+  if(tore == false && jitter == true){
+    warning("You have set tore == false but you set jitter = TRUE. That might be an error or you know what you are doing :-)." );
+  }
+  
   /*
   * Main loop on the row of the Matrix X
   */
@@ -73,7 +79,7 @@ arma::sp_mat wpik(arma::mat X,
       if(tore == true){
         d = distUnitk(X,k,true,toreBound);
       }else{
-        d = distUnitk(X,k,false,toreBound);
+        d = distUnitk(X,k,false,0.0); //toreBound not used in distUnitk
       }
       // std::cout << d << std::endl;
 
@@ -83,7 +89,7 @@ arma::sp_mat wpik(arma::mat X,
       if(tore == true){
         d = distUnitk(X,k,true,toreBound);
       }else{
-        d = distUnitk(X,k,false,toreBound);
+        d = distUnitk(X,k,false,0.0); //toreBound not used in distUnitk
       }
     }
 
@@ -233,9 +239,12 @@ arma::sp_mat wpik(arma::mat X,
 /*** R
 N <- 5
 x <- seq(1,N,1)
-X <- expand.grid(x,x)
-pik <- inclusionprobabilities(runif(25),0.9)
-W <- wpik(as.matrix(X),pik,bound = sum(pik),tore = TRUE,jitter = F,toreBound = N)
-svd(W)
+X <- as.matrix(expand.grid(x,x))
+pik <- inclusionprobabilities(runif(25),5)
+wpik(X,pik) # tore == FALSE so it works
+wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+wpik(X,pik, tore = TRUE,toreBound = 5) # works
+wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
+
 */
 

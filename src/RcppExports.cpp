@@ -6,15 +6,47 @@
 
 using namespace Rcpp;
 
-// IBarma
-double IBarma(const arma::sp_mat& W, const arma::vec& s);
-RcppExport SEXP _wave_IBarma(SEXP WSEXP, SEXP sSEXP) {
+// IB
+double IB(const arma::sp_mat& W, const arma::vec& s);
+RcppExport SEXP _wave_IB(SEXP WSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type W(WSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type s(sSEXP);
-    rcpp_result_gen = Rcpp::wrap(IBarma(W, s));
+    rcpp_result_gen = Rcpp::wrap(IB(W, s));
+    return rcpp_result_gen;
+END_RCPP
+}
+// IPFP
+arma::sp_mat IPFP(arma::sp_mat& A, arma::vec bh, arma::vec bi, int maxiter, double tol, bool comment);
+RcppExport SEXP _wave_IPFP(SEXP ASEXP, SEXP bhSEXP, SEXP biSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP commentSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bh(bhSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bi(biSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
+    rcpp_result_gen = Rcpp::wrap(IPFP(A, bh, bi, maxiter, tol, comment));
+    return rcpp_result_gen;
+END_RCPP
+}
+// IPFPsym
+arma::sp_mat IPFPsym(arma::sp_mat& A, arma::vec bh, arma::vec bi, int maxiter, double tol, bool comment);
+RcppExport SEXP _wave_IPFPsym(SEXP ASEXP, SEXP bhSEXP, SEXP biSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP commentSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat& >::type A(ASEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bh(bhSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type bi(biSEXP);
+    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
+    rcpp_result_gen = Rcpp::wrap(IPFPsym(A, bh, bi, maxiter, tol, comment));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -67,18 +99,19 @@ BEGIN_RCPP
 END_RCPP
 }
 // wave
-arma::vec wave(const arma::mat& X, const arma::vec& pik, bool tore, bool jitter, bool oneD, bool comment);
-RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
+arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool jitter, bool oneD, bool comment);
+RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type pik(pikSEXP);
+    Rcpp::traits::input_parameter< double >::type bound(boundSEXP);
     Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
     Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
     Rcpp::traits::input_parameter< bool >::type oneD(oneDSEXP);
     Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(wave(X, pik, tore, jitter, oneD, comment));
+    rcpp_result_gen = Rcpp::wrap(wave(X, pik, bound, tore, jitter, oneD, comment));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -98,15 +131,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wpik2
+arma::sp_mat wpik2(arma::mat X, arma::vec pik, bool tore, bool jitter, double toreBound);
+RcppExport SEXP _wave_wpik2(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
+    Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
+    Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
+    Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
+    rcpp_result_gen = Rcpp::wrap(wpik2(X, pik, tore, jitter, toreBound));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_wave_IBarma", (DL_FUNC) &_wave_IBarma, 2},
+    {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
+    {"_wave_IPFP", (DL_FUNC) &_wave_IPFP, 6},
+    {"_wave_IPFPsym", (DL_FUNC) &_wave_IPFPsym, 6},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
     {"_wave_projOp", (DL_FUNC) &_wave_projOp, 2},
     {"_wave_colSumsiter", (DL_FUNC) &_wave_colSumsiter, 1},
     {"_wave_rowSumsiter", (DL_FUNC) &_wave_rowSumsiter, 1},
-    {"_wave_wave", (DL_FUNC) &_wave_wave, 6},
+    {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
+    {"_wave_wpik2", (DL_FUNC) &_wave_wpik2, 5},
     {NULL, NULL, 0}
 };
 

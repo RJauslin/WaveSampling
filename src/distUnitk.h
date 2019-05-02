@@ -4,6 +4,9 @@
 #include <RcppArmadillo.h>
 
 
-arma::vec distUnitk(arma::mat X,int k,bool tore,double r);
+arma::vec distUnitk(arma::mat X,
+                    int k,
+                    bool tore,
+                    double toreBound);
 
 #endif
