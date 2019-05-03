@@ -2,17 +2,39 @@
 #include <RcppArmadillo.h>
 
 // [[Rcpp::depends(RcppArmadillo)]]
+//' @encoding UTF-8
 //' @title Projection operator
 //'
 //' @description
 //'
 //' This operator projects the vector v orthogonally onto the line spanned by vector u.
 //'
-//'
-//' @param v vector that is projected.
-//' @param u vector on which we project.
-//'
+//' @param v vector projected.
+//' @param u vector that define the line on which we project.
+//' 
+//' @details
+//' 
+//' The projection operator is defined by :
+//' 
+//' \deqn{proj_u(v) = \frac{\langle u , v \rangle}{\langle u, u \rangle} u}
+//'  where \eqn{\langle . , . \rangle} is the inner product also written \eqn{u^\top v}.
+//' 
 //' @return The projection of the vector v onto the line spanned by the vector u.
+//' 
+//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+//' 
+//' @references 
+//' \url{https://en.wikipedia.org/wiki/Projection_(linear_algebra)}s
+//' 
+//' 
+//' @examples
+//' \dontrun{
+//' u = c(0,1)
+//' v = c(1,1)
+//' projOp(v,u)
+//' v - projOp(v,u)
+//' }
+//' 
 //' @export
 // [[Rcpp::export]]
 arma::vec projOp(arma::vec v,arma::vec u) {
@@ -27,7 +49,6 @@ arma::vec projOp(arma::vec v,arma::vec u) {
 
 u = c(0,1)
 v = c(1,1)
-v- projOp(v,u)
-
-v - proj_v_on_u(v,u)
+projOp(v,u)
+v - projOp(v,u)
 */

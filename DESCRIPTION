@@ -13,3 +13,7 @@ LinkingTo: RcppArmadillo, Rcpp
 Imports: RcppArmadillo, Rcpp
 Suggest: sampling, BalancedSampling
 Depends: Matrix
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

@@ -172,17 +172,39 @@ distUnitk <- function(X, k, tore, toreBound) {
     .Call(`_wave_distUnitk`, X, k, tore, toreBound)
 }
 
+#' @encoding UTF-8
 #' @title Projection operator
 #'
 #' @description
 #'
 #' This operator projects the vector v orthogonally onto the line spanned by vector u.
 #'
-#'
-#' @param v vector that is projected.
-#' @param u vector on which we project.
-#'
+#' @param v vector projected.
+#' @param u vector that define the line on which we project.
+#' 
+#' @details
+#' 
+#' The projection operator is defined by :
+#' 
+#' \deqn{proj_u(v) = \frac{\langle u , v \rangle}{\langle u, u \rangle} u}
+#'  where \eqn{\langle . , . \rangle} is the inner product also written \eqn{u^\top v}.
+#' 
 #' @return The projection of the vector v onto the line spanned by the vector u.
+#' 
+#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+#' 
+#' @references 
+#' \url{https://en.wikipedia.org/wiki/Projection_(linear_algebra)}s
+#' 
+#' 
+#' @examples
+#' \dontrun{
+#' u = c(0,1)
+#' v = c(1,1)
+#' projOp(v,u)
+#' v - projOp(v,u)
+#' }
+#' 
 #' @export
 projOp <- function(v, u) {
     .Call(`_wave_projOp`, v, u)
@@ -303,21 +325,49 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
     .Call(`_wave_wave`, X, pik, bound, tore, jitter, oneD, comment)
 }
 
-#' @title Weights calculated from pik
+#' @encoding UTF-8
+#' @title Spatial weights from pik
 #'
 #' @description
 #'
-#' The weights are calculated in a way that a unit represents its neighbor till their inclusion probabilities sum to 1.
-#' Hence each line represent a strata centered around the unit i and that sum up to 1.
+#' Spatial weights calculated from inclusion probabilies taking distance between units into account.
+#'  
 #'
-#' @param X A matrix of size N x 2, it should represent the 2D position of the units.
-#' @param pik vector of inclusion probabilites.
-#' @param bound bound to reached before a new strata is considered. Default is 1.
-#' @param tore logical, if we are considering the distance on a tore. Default is TRUE.
-#' @param jitter logical, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
+#' @param X matrix of size N x 2 representing the spatial position. 
+#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param bound A scalar representing the bound to reach before a new strata is considered. See \code{\link{wpik}}. Default is 1.
+#' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
+#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
 #' @param toreBound A numeric value that specify the size of the grid.
+#' 
+#' @details
+#' 
+#' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit i 
+#' is close to the unit j. This function consider that a unit represents its neighbor till their inclusion probabilities
+#' sum to 1.
+#' 
+#' We define \eqn{H_i} the set of the nearest neighbor of the unit i including i such that the sum of their inclusion
+#' probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
+#' The matrix \eqn{W} is then defined as follows,
+#' 
+#' \deqn{ w_{ij} = \pi_j  h_i - 1 nearest neighbor of }
+#' 
 #'
-#' @return A sparse matrix.
+#' Hence, the ith row of the matrix represents neighborhood or stratum of the unit such that the inclusion probabilities sum up
+#' to 1 and the ith column the weights that unit i takes for each stratum. 
+#' 
+#' 
+#' @return A sparse matrix representing the spatial weights.
+#' 
+#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+#' 
+#' @references 
+#' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
+#' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
+#' 
+#' @seealso
+#' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+#' 
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = -1.0) {
     .Call(`_wave_wpik`, X, pik, bound, tore, jitter, toreBound)
