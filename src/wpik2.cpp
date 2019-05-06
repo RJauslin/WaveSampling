@@ -1,5 +1,6 @@
-#include "distUnitk.h"
+
 #include <RcppArmadillo.h>
+#include "distUnitk.h"
 
 using namespace Rcpp;
 using namespace arma;
@@ -7,21 +8,48 @@ using namespace std;
 
 
 // [[Rcpp::depends(RcppArmadillo)]]
-//' @title Weights calculated from pik
+//' @encoding UTF-8
+//' @title Spatial weights from pik
 //'
 //' @description
 //'
-//' The weights are calculated in a way that a unit represents its neighbor till their inclusion probabilities sum to 1.
-//' Hence each line represent a strata centered around the unit i and that sum up to 1.
+//' Spatial weights calculated from inclusion probabilies taking distance between units into account. It is a direct
+//' implementation of the spatial weights specified in [Tillé et al., 2018].
 //'
-//' @param X A matrix of size N x 2, it should represent the 2D position of the units.
-//' @param pik vector of inclusion probabilites.
-//' @param bound bound to reached before a new strata is considered. Default is 1.
-//' @param tore logical, if we are considering the distance on a tore. Default is TRUE.
-//' @param jitter logical, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
+//' @param X matrix of size N x 2 representing the spatial coordinates. 
+//' @param pik vector of the inclusion probabilites. The length should be equal to N.
+//' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
+//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
 //' @param toreBound A numeric value that specify the size of the grid.
-//'
-//' @return A sparse matrix.
+//' 
+//' @details
+//' 
+//' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
+//' is close to the unit \eqn{j}. This function consider that if \eqn{i} were selected in the sample drawn from the population then
+//' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would onl be natural to consider
+//' that \eqn{i} has \eqn{k_i = (1/\pi_i -1 )} neighbours in the population. The \eqn{k_i} neighbours can be the nearest 
+//' neighbours of \eqn{i} according to the distance. The weights are so calculated as follows,
+//' 
+//' \deqn{ w_{ij} = 1}
+//'  if unit \eqn{j \in N_{\lfloor k_i \rfloor}}.
+//' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor}
+//'  if unit j is the \eqn{\lceil k_i \rceil} the nearest neighbour of i.
+//' \deqn{w_{ij} = 0}
+//'  otherwise.
+//' 
+//' where \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} bet he inferior and the superior integers of \eqn{k_i}.
+//' 
+//' @return A sparse matrix representing the spatial weights.
+//' 
+//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+//' 
+//' @references 
+//' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
+//' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
+//' 
+//' @seealso
+//' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+//' 
 //' @export
 // [[Rcpp::export]]
 arma::sp_mat wpik2(arma::mat X,
@@ -34,7 +62,6 @@ arma::sp_mat wpik2(arma::mat X,
   * Initializing variable
   */
   int N = X.n_rows;
-  double eps(0.0000001); // for zero comparison
   arma::sp_mat W = arma::sp_mat(N,N);
 
   /*
@@ -83,6 +110,7 @@ arma::sp_mat wpik2(arma::mat X,
       }
     }
 
+    
     /*
     * idx is the stable sort index of the distance.
     * such that d(idx) = 0 1 1 4 4 5 5 ....

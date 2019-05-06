@@ -5,19 +5,44 @@ using namespace arma;
 using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
-//' @title Euclidean distance with tore option
+//' @title Square of the euclidean distance of the unit k.
 //'
 //' @description
-//' Calculate the distance from the unit k to the other units.
+//' Calculate the squared distance from the unit k to all other units.
+//' 
+//'
+//' @param X matrix of size N x 2 representing the spatial coordinates. 
+//' @param k the unit index to be used.
+//' @param tore an optional logical value, if we are considering the distance on a tore. Default is TRUE.
+//' @param toreBound an optional numeric value that specify the size of the grid.
 //'
 //'
-//' @param X A matrix of size N x 2, it should represent the 2D position of the units.
-//' @param k An integer value, the index of the unit.
-//' @param tore logical, if we are considering the distance on a tore. Default is TRUE.
-//' @param toreBound A numeric value that specify the size of the grid.
+//' @details
+//' 
+//' Let \eqn{x_k} be the spatial coordinates. The classical euclidean distance is given by
+//' 
+//' \deqn{d^2(k,l) = (x_k - x_l)^\top (x_k - x_l). }
+//' 
+//' When the points are distributed on a \eqn{r_1 \times r_2} regular grid of \eqn{R^2}.
+//' It is possible to consider the units like they were placed on a tore. Specifically,
+//' we could consider two units on the same column (resp. row) that are on the opposite have a small distance.
+//' 
+//' \deqn{ d(k,l) = min( (x_{k_1} - x_{l_1})^2,
+//'                       (r_1 + x_{k_1} - x_{l_1})^2,
+//'                       (r_1 - x_{k_1} + x_{l_1}))^2}
+//' \deqn{+}
+//' \deqn{ min( (x_{k_2} - x_{l_2})^2,
+//'                       (r_2 + x_{k_2} - x_{l_2})^2,
+//'                       (r_2 - x_{k_2} + x_{l_2}))^2}
 //'
-//' @return A vector that represent the distance values.
+//' @return the distance values of the unit k.
 //'
+//'
+//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+//' 
+//' 
+//' @seealso
+//' \code{\link{wpik}}, \code{\link{wave}}.
 //'
 //' @export
 // [[Rcpp::export]]

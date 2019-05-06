@@ -1,14 +1,41 @@
-#' Spatial balance for one dimension sample on a tore
+#' Spatial balance for one dimension sample.
 #'
-#' @param pik vector of inclusion probabilites.
-#' @param s vector (with elements 0 and 1) that represent the sample.
-#' @param all logical, change the return value. Only useful to have all the interval Voronoï.
-#' @param toreBound integer value that represent the modulo grid.
+#' @description 
+#' 
+#' This function implements the one dimension spatial balance suggested by Stevens and Olsen (2004) and implemented by Grafström et al. (2012).
+#' We simply replace the Voronoï polygons by intervals.
+#' 
+#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param s vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-selected unit.
+#' @param all an optional logical value, it changes the return value type. Useful to have all the interval Voronoï and for check purpose.
+#' @param toreBound An optional numeric value that specify the size of the grid. Default is -1.
+#' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}} for more details. Default is FALSE.
 #'
-#' @details The toreBound used is equal to N = lenght(pik).
+#' @details
+#' Implement the one dimension spatial balance \code{\link[BalancedSampling]{sb}}. For each intervals of the sampling units,
+#' it calculates the variance between the sum of the inclusion probabilities and 1.
+#' Mathematically this gives,
+#' 
+#' \deqn{B(s) = \frac{1}{n}\sum_{i \in s}(v_i - 1)^2}
+#' where \eqn{v_i} is equal to the sum of the inclusion probabilities of all units in the \eqn{i}th intervals If there is a unit that is exactly a the same distance of two units, the inclusion probabilities is divided
+#' by 2.
+#' 
+#' With the options \code{tore} and \code{toreBound} it is possible to specifiies if the line shoudl be seen as a circle
+#'  and so the last unit is close to the first one.
 #'
-#' @return The spatial balance.
-#' @export
+#' @return The one dimension spatial balance of the sample, or a list of interval with the specified inclusion probabilities depending on the option \code{all}.
+#' 
+#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
+#' 
+#' @references 
+#' Grafström, A., Lundström, N.L.P. and Schelin, L. (2012). Spatially balanced sampling through the Pivotal method. 
+#' \emph{Biometrics}, 68(2), 514-520
+#' 
+#' 
+#' Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natural resources.
+#' \emph{Journal of the American Statistical Association 99, 262-278}
+#' 
+#' @seealso \code{\link[BalancedSampling]{sb}}
 #'
 #' @examples
 #'
@@ -69,7 +96,9 @@
 #'
 #'
 #' }
-sb1D <- function(pik,s,all = FALSE,tore = TRUE,toreBound){
+#' @encoding UTF-8
+#' @export
+sb1D <- function(pik,s,all = FALSE,tore = FALSE,toreBound = -1){
 
 
   s_index <- which(s == 1)

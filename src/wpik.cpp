@@ -16,7 +16,7 @@ using namespace std;
 //' Spatial weights calculated from inclusion probabilies taking distance between units into account.
 //'  
 //'
-//' @param X matrix of size N x 2 representing the spatial position. 
+//' @param X matrix of size N x 2 representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
 //' @param bound A scalar representing the bound to reach before a new strata is considered. See \code{\link{wpik}}. Default is 1.
 //' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
@@ -33,11 +33,16 @@ using namespace std;
 //' probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
 //' The matrix \eqn{W} is then defined as follows,
 //' 
-//' \deqn{ w_{ij} = \pi_j  h_i - 1 nearest neighbor of }
+//' \deqn{ w_{ij} = \pi_j}
+//'  if unit j is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
+//' \deqn{ w_{ij} = g_j}
+//'  if unit j is the \eqn{h_i} nearest neighbour of \eqn{i}.
+//' \deqn{w_{ij} = 0}
+//'  otherwise.
 //' 
-//'
-//' Hence, the ith row of the matrix represents neighborhood or stratum of the unit such that the inclusion probabilities sum up
-//' to 1 and the ith column the weights that unit i takes for each stratum. 
+//' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the ith row of the matrix represents
+//' neighborhood or stratum of the unit such that the inclusion probabilities sum up to 1 and
+//' the ith column the weights that unit i takes for each stratum. 
 //' 
 //' 
 //' @return A sparse matrix representing the spatial weights.

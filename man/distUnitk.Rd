@@ -2,22 +2,45 @@
 % Please edit documentation in R/RcppExports.R
 \name{distUnitk}
 \alias{distUnitk}
-\title{Euclidean distance with tore option}
+\title{Square of the euclidean distance of the unit k.}
 \usage{
 distUnitk(X, k, tore, toreBound)
 }
 \arguments{
-\item{X}{A matrix of size N x 2, it should represent the 2D position of the units.}
+\item{X}{matrix of size N x 2 representing the spatial coordinates.}
 
-\item{k}{An integer value, the index of the unit.}
+\item{k}{the unit index to be used.}
 
-\item{tore}{logical, if we are considering the distance on a tore. Default is TRUE.}
+\item{tore}{an optional logical value, if we are considering the distance on a tore. Default is TRUE.}
 
-\item{toreBound}{A numeric value that specify the size of the grid.}
+\item{toreBound}{an optional numeric value that specify the size of the grid.}
 }
 \value{
-A vector that represent the distance values.
+the distance values of the unit k.
 }
 \description{
-Calculate the distance from the unit k to the other units.
+Calculate the squared distance from the unit k to all other units.
+}
+\details{
+Let \eqn{x_k} be the spatial coordinates. The classical euclidean distance is given by
+
+\deqn{d^2(k,l) = (x_k - x_l)^\top (x_k - x_l). }
+
+When the points are distributed on a \eqn{r_1 \times r_2} regular grid of \eqn{R^2}.
+It is possible to consider the units like they were placed on a tore. Specifically,
+we could consider two units on the same column (resp. row) that are on the opposite have a small distance.
+
+\deqn{ d(k,l) = min( (x_{k_1} - x_{l_1})^2,
+                      (r_1 + x_{k_1} - x_{l_1})^2,
+                      (r_1 - x_{k_1} + x_{l_1}))^2}
+\deqn{+}
+\deqn{ min( (x_{k_2} - x_{l_2})^2,
+                      (r_2 + x_{k_2} - x_{l_2})^2,
+                      (r_2 - x_{k_2} + x_{l_2}))^2}
+}
+\seealso{
+\code{\link{wpik}}, \code{\link{wave}}.
+}
+\author{
+Raphaël Jauslin \email{raphael.jauslin@unine.ch}
 }

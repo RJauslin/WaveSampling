@@ -6,7 +6,6 @@
 #include "rowcolSumsiter.h"
 #include "projOp.h"
 
-using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
@@ -85,11 +84,9 @@ arma::vec wave(const arma::mat& X,
   
   unsigned int i_size = i.size();
   while(i_size > 1){
-    
-    
-    if( comment  == true){
+    if(comment  == true){
       if(i_size % 10 == 0){
-        std::cout << i_size << std::endl;
+        Rcpp::Rcout << i_size << std::endl;
       }
     }
     
@@ -150,12 +147,12 @@ arma::vec wave(const arma::mat& X,
     
     for(unsigned int k = 0; k < i.size(); k++){
       if(u[k]> 0){
-        la1 = min(la1,(1.0-re[i[k]])/u[k]);
-        la2 = min(la2,re[i[k]]/u[k]);
+        la1 = std::min(la1,(1.0-re[i[k]])/u[k]);
+        la2 = std::min(la2,re[i[k]]/u[k]);
       }
       if(u[k]< 0){
-        la1 = min(la1,-re[i[k]]/u[k]);
-        la2 = min(la2,(re[i[k]]-1.0)/u[k]);
+        la1 = std::min(la1,-re[i[k]]/u[k]);
+        la2 = std::min(la2,(re[i[k]]-1.0)/u[k]);
       }
     }
     if(Rcpp::runif(1)[0]<la2/(la1+la2)){
