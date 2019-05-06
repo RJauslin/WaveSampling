@@ -96,6 +96,7 @@ rowSums(A)
 
 
 
+
 ## A tiny bit slower but we could use this in a c++ code
 sp <- rsparsematrix(5000,500,density = 0.4)
 system.time(test1 <- Matrix::colSums(sp))

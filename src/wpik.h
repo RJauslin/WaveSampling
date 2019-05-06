@@ -13,4 +13,5 @@ arma::sp_mat wpik(arma::mat X,
                   double toreBound);
 
 
+
 #endif

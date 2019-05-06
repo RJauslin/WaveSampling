@@ -76,7 +76,6 @@ arma::sp_mat IPFP(arma::sp_mat& A,
   
   while(EE > tol && z < maxiter){
     z = z+1;
-    // std::cout << z << std::endl;
     for(arma::sp_mat::iterator it = B.begin(); it != B.end(); ++it) {
       *it = (*it)*(bh[it.row()]/bht[it.row()]);
     }
@@ -86,7 +85,6 @@ arma::sp_mat IPFP(arma::sp_mat& A,
     }
     bht = rowSumsiter(B);
     EE = sum(abs(bh - bht));
-    // std::cout << EE << std::endl;
     
   }
   if(comment == true){
@@ -190,11 +188,10 @@ arma::sp_mat IPFPsym(arma::sp_mat& A,
     bit = colSumsiter(B);
     
     EE = sum(abs(bh - bht));
-    // std::cout << EE << std::endl;
     
   }
   if(comment == true){
-    Rcpp::Rcout << "number of iterations :" << z << std::endl;
+    // Rcpp::Rcout << "number of iterations :" << z << std::endl;
   }
   
   return(B);

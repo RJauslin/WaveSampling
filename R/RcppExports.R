@@ -200,6 +200,7 @@ distUnitk <- function(X, k, tore, toreBound) {
 #' @encoding UTF-8
 #' @title Projection operator
 #'
+#'
 #' @description
 #'
 #' This operator projects the vector v orthogonally onto the line spanned by vector u.

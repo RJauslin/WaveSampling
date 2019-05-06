@@ -118,7 +118,6 @@ arma::vec wave(const arma::mat& X,
     unsigned int rang = r.size();
     
     if(rang < Wsp_tmp.n_cols){
-      // std::cout << "low rank" << std::endl;
       u =  Q.col(Q.n_cols-1);
     }else{
       arma::mat U;
@@ -172,7 +171,7 @@ arma::vec wave(const arma::mat& X,
     i = arma::find(re > eps && re < (1-eps));
     i_size = i.size();
   }
-  return(re);
+  return(arma::round(re));
   
 }
 
@@ -265,8 +264,8 @@ x <- seq(1,N,1)
       
 ###################################################################
       
-      N <- 6
-      n <- 12
+      N <- 12
+      n <- 48
       x <- seq(1,N,1)
         y <- seq(1,N,1)
         X <- as.matrix(expand.grid(x,y))
@@ -275,7 +274,7 @@ x <- seq(1,N,1)
         
         W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
         image(W)
-        s <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter =F )
+        s <- wave(as.matrix(X),pik, tore = TRUE,jitter =T )
         plot(X)
         points(X[s ==1,],pch = 16)
         

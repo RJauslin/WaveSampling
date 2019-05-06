@@ -98,7 +98,6 @@ arma::sp_mat wpik2(arma::mat X,
       }else{
         d = distUnitk(X,k,false,toreBound);
       }
-      // std::cout << d << std::endl;
 
       X(k-1,0) = tmp1;
       X(k-1,1) = tmp2;
@@ -126,10 +125,6 @@ arma::sp_mat wpik2(arma::mat X,
     int k_i_floor = floor(1/pik[k-1]);
     // int k_i_ceil = ceil(1/pik[k-1]);
 
-    // std::cout << k_i << std::endl;
-    // std::cout << k_i_ceil << std::endl;
-    // std::cout << k_i_floor << std::endl;
-
     arma::uvec modif;
     arma::vec w_tmp(N);
     int tt = 0;
@@ -149,9 +144,6 @@ arma::sp_mat wpik2(arma::mat X,
     w.elem(modif) -= 1.0;
     w.elem(modif) += modif_value;
     w[k-1] = 0.0;
-    // std::cout << modif << std::endl;
-    // std::cout << modif_value << std::endl;
-    // std::cout << w << std::endl;
 
     /*
     * column major implementation seems to be faster to do like that instead of adding rows.
