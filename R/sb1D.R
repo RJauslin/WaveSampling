@@ -97,6 +97,7 @@
 #'
 #' }
 #' @encoding UTF-8
+#' @import Matrix
 #' @export
 sb1D <- function(pik,s,all = FALSE,tore = FALSE,toreBound = -1){
 

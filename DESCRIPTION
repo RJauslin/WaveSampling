@@ -11,10 +11,14 @@ LazyData: true
 RoxygenNote: 6.1.1
 LinkingTo: RcppArmadillo, Rcpp
 Imports: Rcpp
+Depends: Matrix
 Suggests: 
     knitr,
     rmarkdown,
     ggplot2,
+    ggvoronoi,
+    kableExtra,
+    magrittr,
     sampling,
     BalancedSampling
 VignetteBuilder: knitr
