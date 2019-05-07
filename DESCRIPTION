@@ -14,6 +14,8 @@ Description: Spatial data are generally autocorrelated, meaning that if two
   This method is called wave (weakly associated vectors). It uses the 
   less correlated vector to a spatial weights matrix W to
   update the inclusion probabilities vector into a sample s.
+URL: https://github.com/RJauslin/wave
+BugReports: https://github.com/RJauslin/wave/issues
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
