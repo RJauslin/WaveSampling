@@ -5,6 +5,11 @@ Weakly associated vectors (wave)
 
 Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix **W** to update the inclusion probabilities vector into a sample **s**.
 
+Build
+-----
+
+[![Build Status](https://travis-ci.org/RJauslin/wave.svg?branch=master)](https://travis-ci.org/RJauslin/wave)
+
 Installation
 ------------
 
@@ -26,17 +31,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]       [,2]
-#>  [1,] 0.68227912 0.66125337
-#>  [2,] 0.60308064 0.26901224
-#>  [3,] 0.46978951 0.58119987
-#>  [4,] 0.01020176 0.37636440
-#>  [5,] 0.63209839 0.46655411
-#>  [6,] 0.42448259 0.54083879
-#>  [7,] 0.05397579 0.03870642
-#>  [8,] 0.06605696 0.22945684
-#>  [9,] 0.33477765 0.35603929
-#> [10,] 0.86097571 0.24232593
+#>             [,1]      [,2]
+#>  [1,] 0.77272718 0.1272305
+#>  [2,] 0.36064364 0.2240377
+#>  [3,] 0.04141306 0.7722833
+#>  [4,] 0.45914822 0.3973640
+#>  [5,] 0.01196169 0.3691914
+#>  [6,] 0.12213017 0.3031989
+#>  [7,] 0.47400538 0.7654296
+#>  [8,] 0.33051677 0.3954500
+#>  [9,] 0.82434073 0.1149623
+#> [10,] 0.74333753 0.8552845
 ```
 
 Now we need the inclusion probabilities `pik`. Hence, we generate a vector `pik_equal` that have all the same values with the function `rep()`.
