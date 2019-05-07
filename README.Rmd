@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 # Weakly associated vectors (wave)
-Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix $\bf W$ to update the inclusion probabilities vector into a sample $\bf s$.
+Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix **W** to update the inclusion probabilities vector into a sample **s**.
   
 ## Installation
 

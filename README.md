@@ -3,7 +3,7 @@
 Weakly associated vectors (wave)
 ================================
 
-Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix $\\bf W$ to update the inclusion probabilities vector into a sample $\\bf s$.
+Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix **W** to update the inclusion probabilities vector into a sample **s**.
 
 Installation
 ------------
@@ -26,17 +26,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>              [,1]       [,2]
-#>  [1,] 0.918316262 0.35220904
-#>  [2,] 0.648651278 0.02433183
-#>  [3,] 0.923072131 0.17219378
-#>  [4,] 0.770891727 0.18041972
-#>  [5,] 0.203727183 0.40839004
-#>  [6,] 0.003555913 0.53164541
-#>  [7,] 0.813228683 0.22692462
-#>  [8,] 0.694263023 0.04241214
-#>  [9,] 0.720265772 0.74067823
-#> [10,] 0.462223125 0.34234113
+#>             [,1]       [,2]
+#>  [1,] 0.68227912 0.66125337
+#>  [2,] 0.60308064 0.26901224
+#>  [3,] 0.46978951 0.58119987
+#>  [4,] 0.01020176 0.37636440
+#>  [5,] 0.63209839 0.46655411
+#>  [6,] 0.42448259 0.54083879
+#>  [7,] 0.05397579 0.03870642
+#>  [8,] 0.06605696 0.22945684
+#>  [9,] 0.33477765 0.35603929
+#> [10,] 0.86097571 0.24232593
 ```
 
 Now we need the inclusion probabilities `pik`. Hence, we generate a vector `pik_equal` that have all the same values with the function `rep()`.
