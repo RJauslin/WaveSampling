@@ -9,7 +9,7 @@ using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
-//' @title Spatial weights from pik
+//' @title Spatial weights from inclusion probabilities
 //'
 //' @description
 //'
@@ -18,32 +18,39 @@ using namespace std;
 //'
 //' @param X matrix of size N x 2 representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
-//' @param bound A scalar representing the bound to reach before a new strata is considered. See \code{\link{wpik}}. Default is 1.
-//' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
-//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
-//' @param toreBound A numeric value that specify the size of the grid.
+//' @param bound a scalar representing the bound to reach. Default is 1.
+//' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
+//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+//' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' 
 //' @details
 //' 
-//' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit i 
-//' is close to the unit j. This function consider that a unit represents its neighbor till their inclusion probabilities
-//' sum to 1.
+//' Spatial weights indicates how the units are close from each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
+//' is close to the unit \eqn{j}. This function consider that a unit represents its neighbor till their inclusion probabilities
+//' sum up to 1.
 //' 
-//' We define \eqn{H_i} the set of the nearest neighbor of the unit i including i such that the sum of their inclusion
+//' We define \eqn{H_i} the set of the nearest neighbor of the unit \eqn{i} including \eqn{i} such that the sum of their inclusion
 //' probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
-//' The matrix \eqn{W} is then defined as follows,
+//' The matrix \eqn{\bf W} is then defined as follows,
 //' 
 //' \deqn{ w_{ij} = \pi_j}
-//'  if unit j is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
+//'  if unit \eqn{j} is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
 //' \deqn{ w_{ij} = g_j}
-//'  if unit j is the \eqn{h_i} nearest neighbour of \eqn{i}.
+//'  if unit \eqn{j} is the \eqn{h_i} nearest neighbour of \eqn{i}.
 //' \deqn{w_{ij} = 0}
 //'  otherwise.
 //' 
-//' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the ith row of the matrix represents
+//' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the \eqn{i}th row of the matrix represents
 //' neighborhood or stratum of the unit such that the inclusion probabilities sum up to 1 and
-//' the ith column the weights that unit i takes for each stratum. 
+//' the \eqn{i}th column the weights that unit \eqn{i} takes for each stratum. 
 //' 
+//' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+//' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
+//' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
+//' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+//' weight is update such that the bound is reached. 
+//' 
+//' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 //' 
 //' @return A sparse matrix representing the spatial weights.
 //' 
@@ -55,6 +62,19 @@ using namespace std;
 //' 
 //' @seealso
 //' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+//' 
+//' @examples
+//' \dontrun{
+//' N <- 5
+//' x <- seq(1,N,1)
+//' X <- as.matrix(expand.grid(x,x))
+//' pik <- sampling::inclusionprobabilities(runif(25),5)
+//' W <- wpik(X,pik) # tore == FALSE so it works
+//' W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+//' W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
+//' W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
+//' }
+//' 
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -273,11 +293,11 @@ arma::sp_mat wpik(arma::mat X,
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
-pik <- inclusionprobabilities(runif(25),5)
-wpik(X,pik) # tore == FALSE so it works
-wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-wpik(X,pik, tore = TRUE,toreBound = 5) # works
-wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
+pik <- sampling::inclusionprobabilities(runif(25),5)
+W <- wpik(X,pik) # tore == FALSE so it works
+W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
+W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
 
 */
 

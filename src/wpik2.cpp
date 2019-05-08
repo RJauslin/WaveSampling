@@ -9,35 +9,41 @@ using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
-//' @title Spatial weights from pik
+//' @title Spatial weights from inclusion probabilities
 //'
 //' @description
 //'
 //' Spatial weights calculated from inclusion probabilies taking distance between units into account. It is a direct
-//' implementation of the spatial weights specified in [Tillé et al., 2018].
+//' implementation of the spatial weights specified in Tillé et al., (2018).
 //'
 //' @param X matrix of size N x 2 representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
-//' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
-//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
-//' @param toreBound A numeric value that specify the size of the grid.
+//' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
+//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+//' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' 
 //' @details
 //' 
 //' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
 //' is close to the unit \eqn{j}. This function consider that if \eqn{i} were selected in the sample drawn from the population then
-//' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would onl be natural to consider
+//' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would be natural to consider
 //' that \eqn{i} has \eqn{k_i = (1/\pi_i -1 )} neighbours in the population. The \eqn{k_i} neighbours can be the nearest 
 //' neighbours of \eqn{i} according to the distance. The weights are so calculated as follows,
 //' 
-//' \deqn{ w_{ij} = 1}
+//' \deqn{ w_{ij} = 1,}
 //'  if unit \eqn{j \in N_{\lfloor k_i \rfloor}}.
-//' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor}
-//'  if unit j is the \eqn{\lceil k_i \rceil} the nearest neighbour of i.
-//' \deqn{w_{ij} = 0}
-//'  otherwise.
+//' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor,}
+//'  if unit \eqn{j} is the \eqn{\lceil k_i \rceil} the nearest neighbour of \eqn{i}.
+//' \deqn{w_{ij} = 0,}
+//'  otherwise. \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} be the inferior and the superior integers of \eqn{k_i}.
 //' 
-//' where \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} bet he inferior and the superior integers of \eqn{k_i}.
+//' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+//' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
+//' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
+//' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+//' weight is update such that the bound is reached. 
+//' 
+//' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 //' 
 //' @return A sparse matrix representing the spatial weights.
 //' 
@@ -49,6 +55,16 @@ using namespace std;
 //' 
 //' @seealso
 //' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+//' @examples
+//' \dontrun{
+//' X <- cbind(runif(1000),runif(1000))
+//' pik <- sampling::inclusionprobabilities(runif(1000),100)
+//' d <- array(rep(0,1000*1000),c(1000,1000))
+//' for(i in 1:1000){
+//'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
+//' }
+//' system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+//' }
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -155,6 +171,17 @@ arma::sp_mat wpik2(arma::mat X,
 
 /*** R
 
+
+
+X <- cbind(runif(1000),runif(1000))
+pik <- sampling::inclusionprobabilities(runif(1000),100)
+d <- array(rep(0,1000*1000),c(1000,1000))
+for(i in 1:1000){
+  d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
+}
+system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+
+
 rm(list = ls())
 
 wpik2R <- function(d,pik)
@@ -186,7 +213,7 @@ as(wpik2R(d,pik),"sparseMatrix") == wpik2(X,pik = pik,tore = TRUE,jitter = FALSE
 
 
 X <- cbind(runif(25),runif(25))
-pik <- inclusionprobabilities(runif(25),5)
+pik <- sampling::inclusionprobabilities(runif(25),5)
 pik[1] <- 0.015345
 d <- array(rep(0,5*5),c(25,25))
 for(i in 1:25){
@@ -202,14 +229,14 @@ image(wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound = 0))
 ### time
 
 X <- cbind(runif(1000),runif(1000))
-pik <- inclusionprobabilities(runif(1000),100)
+pik <- sampling::inclusionprobabilities(runif(1000),100)
 d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
 system.time(as(wpik2R(d,pik), "sparseMatrix"))
 system.time(wpik2R(d,pik))
-system.time(wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
 
 
 

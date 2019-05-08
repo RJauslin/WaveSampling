@@ -6,12 +6,35 @@
 #'
 #' @description
 #'
-#' This function implements the spatial balanced based on Moran's I index.
+#' This function implements the spatial balance based on Moran's I index.
 #'
-#' @param W A \code{\link[Matrix]{sparseMatrix}} representing the spatial weights. See \code{\link{wpik}}.
-#' @param s A numeric vector of 0 and 1 that represent the sample.
+#' @param W a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}, representing the spatial weights. See \code{\link{wpik}}.
+#' @param s a vector of size N with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.
 #'
-#' @return A numeric value that represent the spatial spreading measure. It could be any real value between -1 (spread) and 1 (clustered). 
+#'
+#' @details
+#' 
+#' This measure of the spatial balance is developped by Tillé et al. (2018).
+#' It uses a corrected version of the traditional Moran's I index.
+#' This estimator use spatial weights \eqn{w_{ij}} that indicates how a unit
+#' \eqn{i} is far from the unit \eqn{j}.
+#'  Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix
+#' \eqn{\bf W} is generally not symmetric. The spatial balance measure is equal to
+#' 
+#' 
+#' \deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}}}
+#' 
+#' where \eqn{\bf D} is the diagonal matrix containing the \eqn{w_i}, 
+#' 
+#' \deqn{ \bf \bar{s}_w =  1 \frac{ s^\top  W  1}{ 1^\top  W  1}}
+#' 
+#' and 
+#' 
+#' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}}.
+#' 
+#' To specifiy the spatial weights uses the argument \code{W}. See \code{\link{wpik}}.
+#'
+#' @return A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -31,8 +54,8 @@
 #'   pik <- rep(n/N,N)
 #'   W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = sqrt(N))
 #'   W <- W - diag(diag(W))
-#'   s <- round(wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE))
-#'   system.time(I1 <- IB(W,s))
+#'   s <- wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE)
+#'   I1 <- IB(W,s)
 #' 
 #'   plot(X)
 #'   points(X[s == 1,],pch = 16)
@@ -47,16 +70,16 @@ IB <- function(W, s) {
 #' @title Iterative proportional fitting procedure (IPFP) or raking ratio.
 #' 
 #' @description
-#' Iterative proportional fitting procedure (IPFP) implemented for \code{\link[Matrix]{sparseMatrix}}.
+#' Iterative proportional fitting procedure (IPFP) implemented for sparse Matrix.
 #'
-#' @param A A \code{\link[Matrix]{sparseMatrix}}.
-#' @param bh A vector representing the row margin.
-#' @param bi A vector representing the columm margin.
-#' @param maxiter An integer indicating the maximum iterations allowed.
-#' @param tol A real value that the error should reach before stoped.
-#' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
+#' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
+#' @param bh a vector representing the row margin.
+#' @param bi a vector representing the columm margin.
+#' @param maxiter an integer indicating the maximum iterations allowed.
+#' @param tol a real value that the error should reach before stopped.
+#' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 #' 
-#' @return the sparse matrix A adjusted.
+#' @return sparse matrix \code{A} adjusted.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -102,16 +125,16 @@ IPFP <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
 #' @title Iterative proportional fitting procedure (IPFP) or raking ratio for symmetric sparse matrix.
 #' 
 #' @description
-#' Iterative proportional fitting procedure (IPFP) implemented for \code{\link[Matrix]{sparseMatrix}}.
+#' Iterative proportional fitting procedure (IPFP) implemented for sparse matrix.
 #'
-#' @param A A \code{\link[Matrix]{sparseMatrix}}.
-#' @param bh A vector representing the row margin.
-#' @param bi A vector representing the columm margin.
-#' @param maxiter An integer indicating the maximum iterations allowed.
-#' @param tol A real value that the error should reach before stoped.
+#' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
+#' @param bh a vector representing the row margin.
+#' @param bi a vector representing the columm margin.
+#' @param maxiter an integer indicating the maximum iterations allowed.
+#' @param tol a real value that the error should reach before stoped.
 #' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
 #' 
-#' @return the sparse matrix A adjusted.
+#' @return sparse matrix \code{A} adjusted.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -156,42 +179,52 @@ IPFPsym <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
 #' @title Square of the euclidean distance of the unit k.
 #'
 #' @description
-#' Calculate the squared distance from the unit k to all other units.
+#' Calculate the squared euclidean distance from the unit k to the other units.
 #' 
 #'
 #' @param X matrix of size N x 2 representing the spatial coordinates. 
 #' @param k the unit index to be used.
-#' @param tore an optional logical value, if we are considering the distance on a tore. Default is TRUE.
+#' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
 #' @param toreBound an optional numeric value that specify the size of the grid.
 #'
 #'
 #' @details
 #' 
-#' Let \eqn{x_k} be the spatial coordinates. The classical euclidean distance is given by
+#' Let \eqn{x_k = (x_{k_1},x_{k_2})} be the spatial coordinates of the unit \eqn{k}. The classical euclidean distance is given by
 #' 
 #' \deqn{d^2(k,l) = (x_k - x_l)^\top (x_k - x_l). }
 #' 
 #' When the points are distributed on a \eqn{r_1 \times r_2} regular grid of \eqn{R^2}.
 #' It is possible to consider the units like they were placed on a tore. Specifically,
-#' we could consider two units on the same column (resp. row) that are on the opposite have a small distance.
+#' we could consider two units on the same column (resp. row) that are on the opposite have a small distance,
 #' 
 #' \deqn{ d(k,l) = min( (x_{k_1} - x_{l_1})^2,
 #'                       (r_1 + x_{k_1} - x_{l_1})^2,
-#'                       (r_1 - x_{k_1} + x_{l_1}))^2}
-#' \deqn{+}
+#'                       (r_1 - x_{k_1} + x_{l_1})^2) +}
 #' \deqn{ min( (x_{k_2} - x_{l_2})^2,
 #'                       (r_2 + x_{k_2} - x_{l_2})^2,
-#'                       (r_2 - x_{k_2} + x_{l_2}))^2}
+#'                       (r_2 - x_{k_2} + x_{l_2})^2)}.
 #'
-#' @return the distance values of the unit k.
+#' The option \code{toreBound} specify the size of the grid in the case of \eqn{r_1 = r_2 = r}. 
+#' It is omitted if the tore option is equal to FALSE.
+#'
+#' @return distance values of the unit k.
 #'
 #'
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' 
 #' @seealso
-#' \code{\link{wpik}}, \code{\link{wave}}.
+#' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
 #'
+#' @examples
+#' \dontrun{
+#'   N <- 5
+#'   x <- seq(1,N,1)
+#'   X <- as.matrix(expand.grid(x,x))
+#'   distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+#'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+#' }
 #' @export
 distUnitk <- function(X, k, tore, toreBound) {
     .Call(`_wave_distUnitk`, X, k, tore, toreBound)
@@ -236,19 +269,19 @@ projOp <- function(v, u) {
     .Call(`_wave_projOp`, v, u)
 }
 
-#' @title Column sums on sparse matrix.
+#' @title Column sums for sparseMatrix
 #'
 #' @description
-#' Same usage of the function \code{\link[Matrix]{colSums}}.
+#' Form column sums for sparseMatrix.
 #'
-#' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
+#' @param x A sparse matrix, i.e., inheriting from \code{\link[Matrix]{sparseMatrix}}.
 #'
 #' @details
-#' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
-#' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{colSums}} should be prefer because is 
-#' a little bit faster.
+#' This function is designed to be used for internal \code{RcppArmadillo} functions. Nevertheless it could be applied in R.
+#' It loops on the non-zero entries of the \code{\link[Matrix]{sparseMatrix}}. For general uses, the function
+#' \code{\link[Matrix]{colSums}} should be prefered.
 #'
-#' @return A numeric vector that represent the sums of the column of x. 
+#' @return column sums of x.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -269,16 +302,16 @@ colSumsiter <- function(x) {
 #' @title Row sums on sparse matrix.
 #'
 #' @description
-#' Same usage of the function \code{\link[Matrix]{rowSums}}.
+#' Form row sums for sparseMatrix.
 #'
-#' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
+#' @param x A sparse matrix, i.e., inheriting from \code{\link[Matrix]{sparseMatrix}}.
 #'
 #' @details
-#' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
-#' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{rowSums}} should be prefer because is 
-#' a little bit faster.
+#' This function is designed to be used for internal \code{RcppArmadillo} functions. Nevertheless it could be applied in R.
+#' It loops on the non-zero entries of the \code{\link[Matrix]{sparseMatrix}}. For general uses, the function \code{\link[Matrix]{rowSums}} should
+#' be prefered.
 #'
-#' @return A numeric vector that represent the sums of the rows of x. 
+#' @return row sums of x. 
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -303,30 +336,41 @@ rowSumsiter <- function(x) {
 #'
 #' @description
 #'
-#' Select spread spatial samples with inclusion probabilities using the weakly associated vectors sampling method.  
+#' Select a spread spatial samples from inclusion probabilities using the weakly associated vectors sampling method.  
 #'
-#' @param X matrix of size N x 2 representing the spatial position. 
+#' @param X matrix of size N x 2 representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param bound A scalar representing the bound to reach before a new strata is considered. See \code{\link{wpik}}. Default is 1.
-#' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
-#' @param oneD an optional logical value, specifying if we are in one dimension. Default is FALSE.
-#' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
+#' @param bound a scalar representing the bound to reach. See Details. Default is 1.
+#' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
+#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details. Default is \code{FALSE}.
+#' @param oneD an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.
+#' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 #'
 #' @details
+#' Weakly associated vectors sampling find the vector \eqn{\bf u} that is
+#' the weakest associated vector of the linear transformations generated by a contiguity table \eqn{ \bf W}.
+#' The matrix \eqn{\bf W} is calculated from the matrix of coordinates \eqn{\bf X} by the function \code{\link{wpik}}.
+#' The vector \eqn{\bf u} is calculated from a singular value decompositon or a QR decomposition depending on the rank of the matrix 
+#' \eqn{\bf W}.
 #' 
-#' A contiguity table \eqn{W} is calculated from the matrix \eqn{X}.
-#' \code{wave} sampling estimate a vector \eqn{u} that is
-#' the weakest associated vector of the linear transformations generated by \eqn{W}.
-#' The vector \eqn{u} is then used to update the inclusion probabilities vector \eqn{\pi_k}.
+#' The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and the matrix \eqn{\bf W} following the cube 
+#' method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
+#' used in spatial sampling by Grafström and Tillé (2013).
 #' 
+#' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
+#' 
+#' For more informations on the option \code{jitter}, see \code{\link{wpik}}.
 #'
-#' @return A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-selected unit.
+#' @return A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
-#' \url{https://en.wikipedia.org/wiki/Singular_value_decomposition}
+#' Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube method. Biometrika, 91(4), 893-912
+#' 
+#' Chauvet, G. and Tillé, Y. (2006). A fast algorithm for balanced sampling. Computational Statistics, 21(1), 53-62
+#' 
+#' Grafström, A. and Tillé, Y. (2013). Doubly balanced spatial sampling with spreading and restitution of auxiliary totals. Environmetrics, 24(2), 120-131
 #' 
 #' @seealso
 #' \code{\link{wpik}}, \code{\link{distUnitk}}.
@@ -352,7 +396,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 }
 
 #' @encoding UTF-8
-#' @title Spatial weights from pik
+#' @title Spatial weights from inclusion probabilities
 #'
 #' @description
 #'
@@ -361,32 +405,39 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 #'
 #' @param X matrix of size N x 2 representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param bound A scalar representing the bound to reach before a new strata is considered. See \code{\link{wpik}}. Default is 1.
-#' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
-#' @param toreBound A numeric value that specify the size of the grid.
+#' @param bound a scalar representing the bound to reach. Default is 1.
+#' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
+#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+#' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' 
 #' @details
 #' 
-#' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit i 
-#' is close to the unit j. This function consider that a unit represents its neighbor till their inclusion probabilities
-#' sum to 1.
+#' Spatial weights indicates how the units are close from each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
+#' is close to the unit \eqn{j}. This function consider that a unit represents its neighbor till their inclusion probabilities
+#' sum up to 1.
 #' 
-#' We define \eqn{H_i} the set of the nearest neighbor of the unit i including i such that the sum of their inclusion
+#' We define \eqn{H_i} the set of the nearest neighbor of the unit \eqn{i} including \eqn{i} such that the sum of their inclusion
 #' probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
-#' The matrix \eqn{W} is then defined as follows,
+#' The matrix \eqn{\bf W} is then defined as follows,
 #' 
 #' \deqn{ w_{ij} = \pi_j}
-#'  if unit j is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
+#'  if unit \eqn{j} is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
 #' \deqn{ w_{ij} = g_j}
-#'  if unit j is the \eqn{h_i} nearest neighbour of \eqn{i}.
+#'  if unit \eqn{j} is the \eqn{h_i} nearest neighbour of \eqn{i}.
 #' \deqn{w_{ij} = 0}
 #'  otherwise.
 #' 
-#' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the ith row of the matrix represents
+#' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the \eqn{i}th row of the matrix represents
 #' neighborhood or stratum of the unit such that the inclusion probabilities sum up to 1 and
-#' the ith column the weights that unit i takes for each stratum. 
+#' the \eqn{i}th column the weights that unit \eqn{i} takes for each stratum. 
 #' 
+#' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+#' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
+#' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
+#' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+#' weight is update such that the bound is reached. 
+#' 
+#' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
@@ -398,6 +449,19 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 #' 
 #' @seealso
 #' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+#' 
+#' @examples
+#' \dontrun{
+#' N <- 5
+#' x <- seq(1,N,1)
+#' X <- as.matrix(expand.grid(x,x))
+#' pik <- sampling::inclusionprobabilities(runif(25),5)
+#' W <- wpik(X,pik) # tore == FALSE so it works
+#' W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+#' W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
+#' W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
+#' }
+#' 
 #' 
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = -1.0) {
@@ -405,35 +469,41 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 }
 
 #' @encoding UTF-8
-#' @title Spatial weights from pik
+#' @title Spatial weights from inclusion probabilities
 #'
 #' @description
 #'
 #' Spatial weights calculated from inclusion probabilies taking distance between units into account. It is a direct
-#' implementation of the spatial weights specified in [Tillé et al., 2018].
+#' implementation of the spatial weights specified in Tillé et al., (2018).
 #'
 #' @param X matrix of size N x 2 representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param tore an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}}. Default is TRUE.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is FALSE.
-#' @param toreBound A numeric value that specify the size of the grid.
+#' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
+#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+#' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' 
 #' @details
 #' 
 #' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
 #' is close to the unit \eqn{j}. This function consider that if \eqn{i} were selected in the sample drawn from the population then
-#' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would onl be natural to consider
+#' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would be natural to consider
 #' that \eqn{i} has \eqn{k_i = (1/\pi_i -1 )} neighbours in the population. The \eqn{k_i} neighbours can be the nearest 
 #' neighbours of \eqn{i} according to the distance. The weights are so calculated as follows,
 #' 
-#' \deqn{ w_{ij} = 1}
+#' \deqn{ w_{ij} = 1,}
 #'  if unit \eqn{j \in N_{\lfloor k_i \rfloor}}.
-#' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor}
-#'  if unit j is the \eqn{\lceil k_i \rceil} the nearest neighbour of i.
-#' \deqn{w_{ij} = 0}
-#'  otherwise.
+#' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor,}
+#'  if unit \eqn{j} is the \eqn{\lceil k_i \rceil} the nearest neighbour of \eqn{i}.
+#' \deqn{w_{ij} = 0,}
+#'  otherwise. \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} be the inferior and the superior integers of \eqn{k_i}.
 #' 
-#' where \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} bet he inferior and the superior integers of \eqn{k_i}.
+#' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+#' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
+#' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
+#' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+#' weight is update such that the bound is reached. 
+#' 
+#' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
@@ -445,6 +515,16 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 #' 
 #' @seealso
 #' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+#' @examples
+#' \dontrun{
+#' X <- cbind(runif(1000),runif(1000))
+#' pik <- sampling::inclusionprobabilities(runif(1000),100)
+#' d <- array(rep(0,1000*1000),c(1000,1000))
+#' for(i in 1:1000){
+#'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
+#' }
+#' system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+#' }
 #' 
 #' @export
 wpik2 <- function(X, pik, tore, jitter, toreBound) {

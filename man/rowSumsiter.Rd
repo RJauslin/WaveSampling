@@ -7,18 +7,18 @@
 rowSumsiter(x)
 }
 \arguments{
-\item{x}{A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.}
+\item{x}{A sparse matrix, i.e., inheriting from \code{\link[Matrix]{sparseMatrix}}.}
 }
 \value{
-A numeric vector that represent the sums of the rows of x.
+row sums of x.
 }
 \description{
-Same usage of the function \code{\link[Matrix]{rowSums}}.
+Form row sums for sparseMatrix.
 }
 \details{
-This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
-It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{rowSums}} should be prefer because is 
-a little bit faster.
+This function is designed to be used for internal \code{RcppArmadillo} functions. Nevertheless it could be applied in R.
+It loops on the non-zero entries of the \code{\link[Matrix]{sparseMatrix}}. For general uses, the function \code{\link[Matrix]{rowSums}} should
+be prefered.
 }
 \examples{
 \dontrun{

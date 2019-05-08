@@ -7,12 +7,35 @@
 //'
 //' @description
 //'
-//' This function implements the spatial balanced based on Moran's I index.
+//' This function implements the spatial balance based on Moran's I index.
 //'
-//' @param W A \code{\link[Matrix]{sparseMatrix}} representing the spatial weights. See \code{\link{wpik}}.
-//' @param s A numeric vector of 0 and 1 that represent the sample.
+//' @param W a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}, representing the spatial weights. See \code{\link{wpik}}.
+//' @param s a vector of size N with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.
 //'
-//' @return A numeric value that represent the spatial spreading measure. It could be any real value between -1 (spread) and 1 (clustered). 
+//'
+//' @details
+//' 
+//' This measure of the spatial balance is developped by Tillé et al. (2018).
+//' It uses a corrected version of the traditional Moran's I index.
+//' This estimator use spatial weights \eqn{w_{ij}} that indicates how a unit
+//' \eqn{i} is far from the unit \eqn{j}.
+//'  Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix
+//' \eqn{\bf W} is generally not symmetric. The spatial balance measure is equal to
+//' 
+//' 
+//' \deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}}}
+//' 
+//' where \eqn{\bf D} is the diagonal matrix containing the \eqn{w_i}, 
+//' 
+//' \deqn{ \bf \bar{s}_w =  1 \frac{ s^\top  W  1}{ 1^\top  W  1}}
+//' 
+//' and 
+//' 
+//' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}}.
+//' 
+//' To specifiy the spatial weights uses the argument \code{W}. See \code{\link{wpik}}.
+//'
+//' @return A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
@@ -32,8 +55,8 @@
 //'   pik <- rep(n/N,N)
 //'   W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = sqrt(N))
 //'   W <- W - diag(diag(W))
-//'   s <- round(wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE))
-//'   system.time(I1 <- IB(W,s))
+//'   s <- wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE)
+//'   I1 <- IB(W,s)
 //' 
 //'   plot(X)
 //'   points(X[s == 1,],pch = 16)

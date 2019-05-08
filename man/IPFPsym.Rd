@@ -8,23 +8,23 @@
 IPFPsym(A, bh, bi, maxiter = 300L, tol = 1e-09, comment = FALSE)
 }
 \arguments{
-\item{A}{A \code{\link[Matrix]{sparseMatrix}}.}
+\item{A}{a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.}
 
-\item{bh}{A vector representing the row margin.}
+\item{bh}{a vector representing the row margin.}
 
-\item{bi}{A vector representing the columm margin.}
+\item{bi}{a vector representing the columm margin.}
 
-\item{maxiter}{An integer indicating the maximum iterations allowed.}
+\item{maxiter}{an integer indicating the maximum iterations allowed.}
 
-\item{tol}{A real value that the error should reach before stoped.}
+\item{tol}{a real value that the error should reach before stoped.}
 
 \item{comment}{an optional logical value, indicating some informations during the execution. Default is FALSE.}
 }
 \value{
-the sparse matrix A adjusted.
+sparse matrix \code{A} adjusted.
 }
 \description{
-Iterative proportional fitting procedure (IPFP) implemented for \code{\link[Matrix]{sparseMatrix}}.
+Iterative proportional fitting procedure (IPFP) implemented for sparse matrix.
 }
 \examples{
 \dontrun{

@@ -7,16 +7,16 @@
 //' @title Iterative proportional fitting procedure (IPFP) or raking ratio.
 //' 
 //' @description
-//' Iterative proportional fitting procedure (IPFP) implemented for \code{\link[Matrix]{sparseMatrix}}.
+//' Iterative proportional fitting procedure (IPFP) implemented for sparse Matrix.
 //'
-//' @param A A \code{\link[Matrix]{sparseMatrix}}.
-//' @param bh A vector representing the row margin.
-//' @param bi A vector representing the columm margin.
-//' @param maxiter An integer indicating the maximum iterations allowed.
-//' @param tol A real value that the error should reach before stoped.
-//' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
+//' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
+//' @param bh a vector representing the row margin.
+//' @param bi a vector representing the columm margin.
+//' @param maxiter an integer indicating the maximum iterations allowed.
+//' @param tol a real value that the error should reach before stopped.
+//' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 //' 
-//' @return the sparse matrix A adjusted.
+//' @return sparse matrix \code{A} adjusted.
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
@@ -101,16 +101,16 @@ arma::sp_mat IPFP(arma::sp_mat& A,
 //' @title Iterative proportional fitting procedure (IPFP) or raking ratio for symmetric sparse matrix.
 //' 
 //' @description
-//' Iterative proportional fitting procedure (IPFP) implemented for \code{\link[Matrix]{sparseMatrix}}.
+//' Iterative proportional fitting procedure (IPFP) implemented for sparse matrix.
 //'
-//' @param A A \code{\link[Matrix]{sparseMatrix}}.
-//' @param bh A vector representing the row margin.
-//' @param bi A vector representing the columm margin.
-//' @param maxiter An integer indicating the maximum iterations allowed.
-//' @param tol A real value that the error should reach before stoped.
+//' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
+//' @param bh a vector representing the row margin.
+//' @param bi a vector representing the columm margin.
+//' @param maxiter an integer indicating the maximum iterations allowed.
+//' @param tol a real value that the error should reach before stoped.
 //' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
 //' 
-//' @return the sparse matrix A adjusted.
+//' @return sparse matrix \code{A} adjusted.
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 

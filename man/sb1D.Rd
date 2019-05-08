@@ -10,32 +10,33 @@ sb1D(pik, s, all = FALSE, tore = FALSE, toreBound = -1)
 \arguments{
 \item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
 
-\item{s}{vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-selected unit.}
+\item{s}{vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.}
 
-\item{all}{an optional logical value, it changes the return value type. Useful to have all the interval Voronoï and for check purpose.}
+\item{all}{an optional logical value, it changes the return value type. Useful to have all intervals Voronoï and for check purpose. Default is FALSE.}
 
-\item{tore}{an optional logical value, if we are considering the distance on a tore. See \code{\link{distUnitk}} for more details. Default is FALSE.}
+\item{tore}{an optional logical value, if we are considering the distance on a tore. See Details. Default is FALSE.}
 
-\item{toreBound}{An optional numeric value that specify the size of the grid. Default is -1.}
+\item{toreBound}{an optional numeric value that specify the size of the grid. See Details. Default is -1.}
 }
 \value{
 The one dimension spatial balance of the sample, or a list of interval with the specified inclusion probabilities depending on the option \code{all}.
 }
 \description{
-This function implements the one dimension spatial balance suggested by Stevens and Olsen (2004) and implemented by Grafström et al. (2012).
-We simply replace the Voronoï polygons by intervals.
+This function implements for one dimension case the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
+It replace the Voronoï polygons by intervals.
 }
 \details{
-Implement the one dimension spatial balance \code{\link[BalancedSampling]{sb}}. For each intervals of the sampling units,
-it calculates the variance between the sum of the inclusion probabilities and 1.
+Implement the one dimension spatial balance \code{\link[BalancedSampling:sb]{BalancedSampling::sb()}}. For each intervals of the sampling units,
+it calculates the subtraction between the sum of the inclusion probabilities and 1.
 Mathematically this gives,
 
-\deqn{B(s) = \frac{1}{n}\sum_{i \in s}(v_i - 1)^2}
-where \eqn{v_i} is equal to the sum of the inclusion probabilities of all units in the \eqn{i}th intervals If there is a unit that is exactly a the same distance of two units, the inclusion probabilities is divided
+\deqn{B(\bf s) = \frac{1}{n}\sum_{i \in s}(v_i - 1)^2}
+where \eqn{v_i} is equal to the sum of the inclusion probabilities of all units in the \eqn{i}th intervals.
+If there is a unit that is exactly a the same distance of two units, its inclusion probabilities is divided
 by 2.
 
-With the options \code{tore} and \code{toreBound} it is possible to specifiies if the line shoudl be seen as a circle
- and so the last unit is close to the first one.
+With the options \code{tore} and \code{toreBound} it is possible to specifiies if the line should be seen as a circle
+such that the last unit is close to the first one. See \code{\link{distUnitk}} for more informations.
 }
 \examples{
 
@@ -44,23 +45,23 @@ With the options \code{tore} and \code{toreBound} it is possible to specifiies i
  s <- UPsystematic(pik)
 
  X <- cbind(seq(1,40,1),rep(0,40))
- s_spread <- round(spreadcube(X,pik,tore = TRUE,jitter = TRUE))
+ s_wave <- wave(X,pik,tore = TRUE,jitter = TRUE)
 
  sb1D(pik,s)
- sb1D(pik,s_spread)
+ sb1D(pik,s_wave)
  # BalancedSampling::sb(pik,X,s) # does not work properly with 1D.
 
  plot(X[,1],rep(0.5,length(s)),ylim = c(-0.7,0.7))
  points(X[s == 1,1],rep(0.5,length(which(s==1))),pch = 16)
  points(X[,1],rep(-0.5,length(s)),ylim = c(-0.7,0.7))
- points(X[s_spread == 1,1],rep(-0.5,length(which(s_spread==1))),pch = 16)
+ points(X[s_wave == 1,1],rep(-0.5,length(which(s_wave==1))),pch = 16)
  t <- 5
  while(t <= 40){
  abline(v = t,col = "grey")
  t = t + 5
  }
  l <- sb1D(pik,s,all = TRUE)
- l_spread <- sb1D(pik,s_spread,all = TRUE)
+ l_spread <- sb1D(pik,s_wave,all = TRUE)
 
  for(i in 1:length(l)){
   points(X[l[[i]][1,],1],rep(0.25,length(l[[i]][1,])) ,col =i)
@@ -70,7 +71,7 @@ With the options \code{tore} and \code{toreBound} it is possible to specifiies i
  }
 
  sb1D(pik,s)
- sb1D(pik,s_spread)
+ sb1D(pik,s_wave)
 
  # Comparison with the IB moran index
 
@@ -79,7 +80,7 @@ With the options \code{tore} and \code{toreBound} it is possible to specifiies i
  W <- as.matrix(W)
  W <- W-diag(diag(W))
  IB(W,s)
- IB(W,s_spread)
+ IB(W,s_wave)
 
 
  #############################################################################
@@ -106,7 +107,7 @@ Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natur
 \emph{Journal of the American Statistical Association 99, 262-278}
 }
 \seealso{
-\code{\link[BalancedSampling]{sb}}
+\code{\link[BalancedSampling:sb]{BalancedSampling::sb}}
 }
 \author{
 Raphaël Jauslin \email{raphael.jauslin@unine.ch}

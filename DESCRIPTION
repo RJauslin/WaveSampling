@@ -7,7 +7,7 @@ Authors@R: c(
   person("Yves", "Tillé",role = c("aut"))
   )
 Description: Spatial data are generally autocorrelated, meaning that if two 
-  units selected are close to each other then it is likely that they share the
+  units selected are close to each other, then it is likely that they share the
   same properties. For this reason, when sampling in the population it is often
   needed that the sample is well spread over space. We propose here a new way
   of estimating a sample from a population with spatial coordinates.
@@ -31,5 +31,6 @@ Suggests:
     kableExtra,
     magrittr,
     sampling,
-    BalancedSampling
+    BalancedSampling,
+    stats
 VignetteBuilder: knitr
