@@ -8,42 +8,52 @@ using namespace std;
 //' @title Square of the euclidean distance of the unit k.
 //'
 //' @description
-//' Calculate the squared distance from the unit k to all other units.
+//' Calculate the squared euclidean distance from the unit k to the other units.
 //' 
 //'
 //' @param X matrix of size N x 2 representing the spatial coordinates. 
 //' @param k the unit index to be used.
-//' @param tore an optional logical value, if we are considering the distance on a tore. Default is TRUE.
+//' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
 //' @param toreBound an optional numeric value that specify the size of the grid.
 //'
 //'
 //' @details
 //' 
-//' Let \eqn{x_k} be the spatial coordinates. The classical euclidean distance is given by
+//' Let \eqn{x_k = (x_{k_1},x_{k_2})} be the spatial coordinates of the unit \eqn{k}. The classical euclidean distance is given by
 //' 
 //' \deqn{d^2(k,l) = (x_k - x_l)^\top (x_k - x_l). }
 //' 
 //' When the points are distributed on a \eqn{r_1 \times r_2} regular grid of \eqn{R^2}.
 //' It is possible to consider the units like they were placed on a tore. Specifically,
-//' we could consider two units on the same column (resp. row) that are on the opposite have a small distance.
+//' we could consider two units on the same column (resp. row) that are on the opposite have a small distance,
 //' 
 //' \deqn{ d(k,l) = min( (x_{k_1} - x_{l_1})^2,
 //'                       (r_1 + x_{k_1} - x_{l_1})^2,
-//'                       (r_1 - x_{k_1} + x_{l_1}))^2}
-//' \deqn{+}
+//'                       (r_1 - x_{k_1} + x_{l_1})^2) +}
 //' \deqn{ min( (x_{k_2} - x_{l_2})^2,
 //'                       (r_2 + x_{k_2} - x_{l_2})^2,
-//'                       (r_2 - x_{k_2} + x_{l_2}))^2}
+//'                       (r_2 - x_{k_2} + x_{l_2})^2)}.
 //'
-//' @return the distance values of the unit k.
+//' The option \code{toreBound} specify the size of the grid in the case of \eqn{r_1 = r_2 = r}. 
+//' It is omitted if the tore option is equal to FALSE.
+//'
+//' @return distance values of the unit k.
 //'
 //'
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' 
 //' @seealso
-//' \code{\link{wpik}}, \code{\link{wave}}.
+//' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
 //'
+//' @examples
+//' \dontrun{
+//'   N <- 5
+//'   x <- seq(1,N,1)
+//'   X <- as.matrix(expand.grid(x,x))
+//'   distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+//'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+//' }
 //' @export
 // [[Rcpp::export]]
 arma::vec distUnitk(arma::mat X,
@@ -110,7 +120,7 @@ distUnitk(X,1,tore = TRUE,toreBound = NA)
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
-distUnitk(X,2,tore = TRUE,toreBound = 7)
-
+distUnitk(X,2,tore = TRUE,toreBound = 5)
+distUnitk(X,2,tore = FALSE,toreBound = 5)
 
 */

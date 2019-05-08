@@ -1,10 +1,21 @@
 Package: wave
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Weakly associated vectors (wave)
 Version: 0.1.0
-Author: Raphaël Jauslin
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: Weakly associated  vectors.
+Authors@R: c(
+  person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre")),
+  person("Yves", "Tillé",role = c("aut"))
+  )
+Description: Spatial data are generally autocorrelated, meaning that if two 
+  units selected are close to each other, then it is likely that they share the
+  same properties. For this reason, when sampling in the population it is often
+  needed that the sample is well spread over space. We propose here a new way
+  of estimating a sample from a population with spatial coordinates.
+  This method is called wave (weakly associated vectors). It uses the 
+  less correlated vector to a spatial weights matrix W to
+  update the inclusion probabilities vector into a sample s.
+URL: https://github.com/RJauslin/wave
+BugReports: https://github.com/RJauslin/wave/issues
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
@@ -20,5 +31,6 @@ Suggests:
     kableExtra,
     magrittr,
     sampling,
-    BalancedSampling
+    BalancedSampling,
+    stats
 VignetteBuilder: knitr

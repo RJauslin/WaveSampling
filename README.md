@@ -8,7 +8,7 @@ Spatial data are generally autocorrelated, meaning that if two units selected ar
 Build
 -----
 
-[![Build Status](https://travis-ci.org/RJauslin/wave.svg?branch=master)](https://travis-ci.org/RJauslin/wave)
+[![Build Status](https://travis-ci.org/RJauslin/wave.svg?branch=dev)](https://travis-ci.org/RJauslin/wave)
 
 Installation
 ------------
@@ -31,17 +31,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]      [,2]
-#>  [1,] 0.77272718 0.1272305
-#>  [2,] 0.36064364 0.2240377
-#>  [3,] 0.04141306 0.7722833
-#>  [4,] 0.45914822 0.3973640
-#>  [5,] 0.01196169 0.3691914
-#>  [6,] 0.12213017 0.3031989
-#>  [7,] 0.47400538 0.7654296
-#>  [8,] 0.33051677 0.3954500
-#>  [9,] 0.82434073 0.1149623
-#> [10,] 0.74333753 0.8552845
+#>              [,1]       [,2]
+#>  [1,] 0.370233736 0.49139415
+#>  [2,] 0.462476614 0.02589734
+#>  [3,] 0.500601418 0.78638755
+#>  [4,] 0.593611745 0.50969394
+#>  [5,] 0.318807278 0.55225442
+#>  [6,] 0.657361499 0.83947899
+#>  [7,] 0.765701270 0.86200979
+#>  [8,] 0.649310778 0.85699039
+#>  [9,] 0.282119721 0.61187761
+#> [10,] 0.001607468 0.28954726
 ```
 
 Now we need the inclusion probabilities `pik`. Hence, we generate a vector `pik_equal` that have all the same values with the function `rep()`.

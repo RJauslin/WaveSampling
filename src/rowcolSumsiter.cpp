@@ -1,19 +1,19 @@
 #include <RcppArmadillo.h>
 
 // [[Rcpp::depends(RcppArmadillo)]]
-//' @title Column sums on sparse matrix.
+//' @title Column sums for sparseMatrix
 //'
 //' @description
-//' Same usage of the function \code{\link[Matrix]{colSums}}.
+//' Form column sums for sparseMatrix.
 //'
-//' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
+//' @param x A sparse matrix, i.e., inheriting from \code{\link[Matrix]{sparseMatrix}}.
 //'
 //' @details
-//' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
-//' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{colSums}} should be prefer because is 
-//' a little bit faster.
+//' This function is designed to be used for internal \code{RcppArmadillo} functions. Nevertheless it could be applied in R.
+//' It loops on the non-zero entries of the \code{\link[Matrix]{sparseMatrix}}. For general uses, the function
+//' \code{\link[Matrix]{colSums}} should be prefered.
 //'
-//' @return A numeric vector that represent the sums of the column of x. 
+//' @return column sums of x.
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
@@ -48,16 +48,16 @@ arma::vec colSumsiter(const arma::sp_mat& x) {
 //' @title Row sums on sparse matrix.
 //'
 //' @description
-//' Same usage of the function \code{\link[Matrix]{rowSums}}.
+//' Form row sums for sparseMatrix.
 //'
-//' @param x A sparse matrix of class \code{\link[Matrix]{sparseMatrix}}.
+//' @param x A sparse matrix, i.e., inheriting from \code{\link[Matrix]{sparseMatrix}}.
 //'
 //' @details
-//' This function is designed to be used for other \code{RcppArmadillo} function inside of the package. Nevertheless it could be used in R.
-//' It only loops on the non-zero entries of the sparseMatrix. The function \code{\link[Matrix]{rowSums}} should be prefer because is 
-//' a little bit faster.
+//' This function is designed to be used for internal \code{RcppArmadillo} functions. Nevertheless it could be applied in R.
+//' It loops on the non-zero entries of the \code{\link[Matrix]{sparseMatrix}}. For general uses, the function \code{\link[Matrix]{rowSums}} should
+//' be prefered.
 //'
-//' @return A numeric vector that represent the sums of the rows of x. 
+//' @return row sums of x. 
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
