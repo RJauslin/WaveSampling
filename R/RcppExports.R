@@ -84,7 +84,7 @@ IB <- function(W, s) {
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references
-#' Tillé, Y. (2019). \emph{Théorie des sondages}. Dunod, 2nd édition
+#' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 #' 
 #' @seealso
 #'  \code{\link{IPFPsym}}, \code{\link{wpik}}
@@ -139,7 +139,7 @@ IPFP <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references
-#' Tillé, Y. (2019). \emph{Théorie des sondages}. Dunod, 2nd édition
+#' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 #' 
 #' @seealso
 #' \code{\link{IPFP}}, \code{\link{wpik}}
