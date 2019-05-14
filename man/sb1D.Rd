@@ -45,11 +45,11 @@ such that the last unit is close to the first one. See \code{\link{distUnitk}} f
  s <- UPsystematic(pik)
 
  X <- cbind(seq(1,40,1),rep(0,40))
- s_wave <- wave(X,pik,tore = TRUE,jitter = TRUE)
+ s_wave <- wave(X,pik,tore = TRUE,jitter = TRUE,oneD = TRUE)
 
  sb1D(pik,s)
  sb1D(pik,s_wave)
- # BalancedSampling::sb(pik,X,s) # does not work properly with 1D.
+ BalancedSampling::sb(pik,as.matrix(X[,1]),s) # does not work properly with 1D.
 
  plot(X[,1],rep(0.5,length(s)),ylim = c(-0.7,0.7))
  points(X[s == 1,1],rep(0.5,length(which(s==1))),pch = 16)

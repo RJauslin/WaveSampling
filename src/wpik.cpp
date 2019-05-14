@@ -299,5 +299,15 @@ W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
 W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
 W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
 
+
+
+N <- 5
+x <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,x))
+pik <- seq(from = 0.1,0.9,length.out = 25)
+pik <- rep(0.2,25)
+W <- wpik(X,pik, tore = TRUE,toreBound = 5) 
+
+rankMatrix(W)
 */
 
