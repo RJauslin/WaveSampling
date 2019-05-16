@@ -119,7 +119,7 @@ waveR <- function(X, pik, tore = TRUE,jitter = FALSE){
         }
       }
       # random choice of p+lambda1*u and p-lambda2*u
-      if(runif(1) <la2/(la1+la2)){
+      if(stats::runif(1) <la2/(la1+la2)){
         la = la1;
       }else{
         la = -la2;
