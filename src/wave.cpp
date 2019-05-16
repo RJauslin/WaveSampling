@@ -93,7 +93,17 @@ arma::vec wave(const arma::mat& X,
   arma::vec re(pik);
   arma::uvec i = arma::find(re > eps && re < (1-eps));
   
+  
   unsigned int i_size = i.size();
+  
+  
+  //INITIALIZING VARIABLE 
+  arma::mat Q;
+  arma::mat R;
+  arma::mat U;
+  arma::vec s;
+  arma::mat V;
+  
   while(i_size > 1){
     if(comment  == true){
       if(i_size % 10 == 0){
@@ -119,8 +129,7 @@ arma::vec wave(const arma::mat& X,
     arma::vec u(i_size);
     
     //QR DECOMPOSTION AND SVD
-    arma::mat Q;
-    arma::mat R;
+   
     arma::qr(Q,R,Wsp_tmp);
     
     arma::vec di = abs(diagvec(R));
@@ -128,27 +137,19 @@ arma::vec wave(const arma::mat& X,
     arma::uvec r = find(di >= eps*max_di);
     unsigned int rang = r.size();
     
-    if(rang < Wsp_tmp.n_cols){
+    std::cout << Wsp_tmp.n_cols << std::endl;
+    
+    
+    if(rang < i_size){
       u =  Q.col(Q.n_cols-1);
     }else{
-      arma::mat U;
-      arma::vec s;
-      arma::mat V;
-      arma::svd(U, s, V,Wsp_tmp,"dc");
-      // U = Q*U;
+     
+      // arma::svd(U, s, V,Wsp_tmp,"dc");
+      arma::svd_econ(U, s, V , R,"left","dc");
+      U = Q*U;
       u = U.col(U.n_cols - 1);
       u = u - projOp(u,one);
     }
-    
-    
-    //SIMPLE SVD ON Wsp_tmp matrix
-    // arma::mat U;
-    // arma::vec s
-    // arma::mat V;
-    //
-    // arma::svd(U, s, V, Wsp_tmp,"dc");
-    // u = U.col(U.n_cols - 1);
-    // u = u - projOp(u,one);
     
     
     la1 = 1e+200;
@@ -201,6 +202,16 @@ s <- wave(X,pik,tore = TRUE,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
  
+
+N <- 25
+n <- 5
+x <- seq(1,sqrt(N),1)
+X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+pik <- rep(n/N,N)
+s <- wave(X,pik,tore = TRUE,comment = TRUE)
+plot(X)
+points(X[s == 1,],pch = 16)
+  
 
 
 

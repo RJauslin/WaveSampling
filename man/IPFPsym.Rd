@@ -55,7 +55,7 @@ Iterative proportional fitting procedure (IPFP) implemented for sparse matrix.
 
 }
 \references{
-Tillé, Y. (2019). \emph{Théorie des sondages}. Dunod, 2nd édition
+Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 }
 \seealso{
 \code{\link{IPFP}}, \code{\link{wpik}}

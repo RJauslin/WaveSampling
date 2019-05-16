@@ -121,6 +121,6 @@ N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
 distUnitk(X,2,tore = TRUE,toreBound = 5)
-distUnitk(X,2,tore = FALSE,toreBound = 5)
+distUnitk(X,1,tore = FALSE,toreBound = 5)
 
 */
