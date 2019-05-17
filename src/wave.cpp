@@ -106,7 +106,7 @@ arma::vec wave(const arma::mat& X,
   
   while(i_size > 1){
     if(comment  == true){
-      if(i_size % 10 == 0){
+      if(i_size % 1 == 0){
         Rcpp::Rcout << i_size << std::endl;
       }
     }
@@ -137,7 +137,7 @@ arma::vec wave(const arma::mat& X,
     arma::uvec r = find(di >= eps*max_di);
     unsigned int rang = r.size();
     
-    std::cout << Wsp_tmp.n_cols << std::endl;
+    
     
     
     if(rang < i_size){
