@@ -118,12 +118,23 @@ arma::vec wave(const arma::mat& X,
       break;
     }else{
       one = arma::ones<arma::mat>(i_size,1);
-      Wsp_tmp = Wsp.submat(i,i);
-      arma::mat tmp1 = diagmat(re.elem(i)/pik.elem(i));
-      Wsp_tmp = tmp1*Wsp_tmp;
-      arma::mat tmp2 = diagmat(1/re.elem(i));
-      Wsp_tmp = tmp2*Wsp_tmp;
-      Wsp_tmp.insert_cols(0,one);
+      // Wsp_tmp = Wsp.submat(i,i);
+      // arma::mat tmp1 = diagmat(re.elem(i)/pik.elem(i));
+      // Wsp_tmp = tmp1*Wsp_tmp;
+      // arma::mat tmp2 = diagmat(1/re.elem(i));
+      // Wsp_tmp = tmp2*Wsp_tmp;
+      
+      
+      // Wsp_tmp = Wsp.submat(i,i);
+      // arma::mat tmp2 = diagmat(1/pik.elem(i));
+      // Wsp_tmp = tmp2*Wsp_tmp;
+      
+      arma::uvec index(2);
+      index(0) = 0;
+      index(1) = 1;
+      Wsp_tmp = wpik(X.submat(i,index),re.elem(i),1.0,tore,jitter,tb).t();
+      
+      // Wsp_tmp.insert_cols(0,one);
     }
     
     arma::vec u(i_size);
@@ -141,16 +152,20 @@ arma::vec wave(const arma::mat& X,
     
     
     if(rang < i_size){
+      // std::cout << "null space" << std::endl;
       u =  Q.col(Q.n_cols-1);
     }else{
-     
-      // arma::svd(U, s, V,Wsp_tmp,"dc");
+      // std::cout << "weakest vector" << std::endl;
+      
+      
+      // arma::svd_econ(U, s, V,Wsp_tmp,"left","dc");
+      
       arma::svd_econ(U, s, V , R,"left","dc");
       U = Q*U;
       u = U.col(U.n_cols - 1);
-      u = u - projOp(u,one);
+      // u = u - projOp(u,one);
     }
-    
+    u = u - projOp(u,one);
     
     la1 = 1e+200;
     la2 = 1e+200;
@@ -198,10 +213,15 @@ n <- 12
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
-s <- wave(X,pik,tore = TRUE,comment = TRUE)
+s <- wave(X,pik,tore = T,jitter =T,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
  
+X <- as.matrix(cbind(runif(N),runif(N)))
+s <- wave(X,pik,tore = F,jitter =F,comment = TRUE)
+plot(X)
+points(X[s == 1,],pch = 16)
+
 
 N <- 25
 n <- 5

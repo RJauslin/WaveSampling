@@ -269,6 +269,24 @@ projOp <- function(v, u) {
     .Call(`_wave_projOp`, v, u)
 }
 
+#' @encoding UTF-8
+#' @title QR arma used in wave
+#' @param A matrix
+#' @return A list
+#' @export
+QRarma <- function(A) {
+    .Call(`_wave_QRarma`, A)
+}
+
+#' @encoding UTF-8
+#' @title SVD arma used in wave
+#' @param A matrix
+#' @return A list
+#' @export
+SVDarma <- function(A) {
+    .Call(`_wave_SVDarma`, A)
+}
+
 #' @title Column sums for sparseMatrix
 #'
 #' @description

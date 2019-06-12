@@ -309,5 +309,14 @@ pik <- rep(0.2,25)
 W <- wpik(X,pik, tore = TRUE,toreBound = 5) 
 
 rankMatrix(W)
+
+
+
+N <- 2048
+X <- as.matrix(cbind(runif(N),runif(N)))
+pik <- inclusionprobabilities(runif(N),100)
+system.time(W <- wpik(X,pik, tore = FALSE))
+
+
 */
 

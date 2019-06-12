@@ -76,6 +76,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// QRarma
+Rcpp::List QRarma(arma::mat A);
+RcppExport SEXP _wave_QRarma(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(QRarma(A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// SVDarma
+Rcpp::List SVDarma(arma::mat A);
+RcppExport SEXP _wave_SVDarma(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(SVDarma(A));
+    return rcpp_result_gen;
+END_RCPP
+}
 // colSumsiter
 arma::vec colSumsiter(const arma::sp_mat& x);
 RcppExport SEXP _wave_colSumsiter(SEXP xSEXP) {
@@ -153,6 +175,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wave_IPFPsym", (DL_FUNC) &_wave_IPFPsym, 6},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
     {"_wave_projOp", (DL_FUNC) &_wave_projOp, 2},
+    {"_wave_QRarma", (DL_FUNC) &_wave_QRarma, 1},
+    {"_wave_SVDarma", (DL_FUNC) &_wave_SVDarma, 1},
     {"_wave_colSumsiter", (DL_FUNC) &_wave_colSumsiter, 1},
     {"_wave_rowSumsiter", (DL_FUNC) &_wave_rowSumsiter, 1},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},

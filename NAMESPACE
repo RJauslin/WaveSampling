@@ -3,6 +3,8 @@
 export(IB)
 export(IPFP)
 export(IPFPsym)
+export(QRarma)
+export(SVDarma)
 export(colSumsiter)
 export(distUnitk)
 export(projOp)
