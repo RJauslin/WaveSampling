@@ -137,6 +137,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// wave2
+arma::vec wave2(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool jitter, bool oneD, bool comment);
+RcppExport SEXP _wave_wave2(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type pik(pikSEXP);
+    Rcpp::traits::input_parameter< double >::type bound(boundSEXP);
+    Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
+    Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
+    Rcpp::traits::input_parameter< bool >::type oneD(oneDSEXP);
+    Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
+    rcpp_result_gen = Rcpp::wrap(wave2(X, pik, bound, tore, jitter, oneD, comment));
+    return rcpp_result_gen;
+END_RCPP
+}
 // wpik
 arma::sp_mat wpik(arma::mat X, arma::vec pik, double bound, bool tore, bool jitter, double toreBound);
 RcppExport SEXP _wave_wpik(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
@@ -180,6 +197,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wave_colSumsiter", (DL_FUNC) &_wave_colSumsiter, 1},
     {"_wave_rowSumsiter", (DL_FUNC) &_wave_rowSumsiter, 1},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
+    {"_wave_wave2", (DL_FUNC) &_wave_wave2, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
     {"_wave_wpik2", (DL_FUNC) &_wave_wpik2, 5},
     {NULL, NULL, 0}
