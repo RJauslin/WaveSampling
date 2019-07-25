@@ -349,6 +349,11 @@ rowSumsiter <- function(x) {
     .Call(`_wave_rowSumsiter`, x)
 }
 
+#' @export
+spsolve_arma <- function(A, b) {
+    .Call(`_wave_spsolve_arma`, A, b)
+}
+
 #' @encoding UTF-8
 #' @title Weakly associated vectors sampling
 #'
