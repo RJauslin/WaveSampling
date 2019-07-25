@@ -69,7 +69,7 @@
 //' 
 //' @export
 // [[Rcpp::export]]
-arma::vec wave(const arma::mat& X,
+arma::vec wave2(const arma::mat& X,
                const arma::vec& pik,
                double bound = 1.0,
                bool tore = false,
@@ -88,18 +88,13 @@ arma::vec wave(const arma::mat& X,
   }
   
   arma::mat one = arma::ones<arma::mat>(N,1);
-  arma::mat Wsp(wpik(X,pik,1.0,tore,jitter,tb).t());
-  
   arma::vec re(pik);
   arma::uvec i = arma::find(re > eps && re < (1-eps));
-  
   
   unsigned int i_size = i.size();
   
   
   //INITIALIZING VARIABLE 
-  arma::mat Q;
-  arma::mat R;
   arma::mat U;
   arma::vec s;
   arma::mat V;
@@ -111,7 +106,7 @@ arma::vec wave(const arma::mat& X,
       }
     }
     
-    arma::mat Wsp_tmp(i_size,i_size);
+    arma::mat A(i_size,i_size);
     
     if(sum(re.elem(i)) < 1){
       //It remains only one element and the there is only one stratum
@@ -128,36 +123,64 @@ arma::vec wave(const arma::mat& X,
       // Wsp_tmp = Wsp.submat(i,i);
       // arma::mat tmp2 = diagmat(1/pik.elem(i));
       // Wsp_tmp = tmp2*Wsp_tmp;
+      // Wsp_tmp.insert_cols(0,one);
       
       arma::uvec index(2);
       index(0) = 0;
       index(1) = 1;
-      Wsp_tmp = wpik(X.submat(i,index),re.elem(i),1.0,tore,jitter,tb);
+      A = wpik(X.submat(i,index),re.elem(i),1.0,tore,jitter,tb);
       arma::mat D = diagmat(1/re.elem(i));
-      Wsp_tmp = Wsp_tmp*D;
+      A = A*D;
       
-      // Wsp_tmp.insert_cols(0,one);
+      
+     
     }
+    
     
     arma::vec u(i_size);
     
     //QR DECOMPOSTION AND SVD
-   
-    arma::qr(Q,R,Wsp_tmp);
     
-    arma::vec di = abs(diagvec(R));
-    double max_di = max(di);
-    arma::uvec r = find(di >= eps*max_di);
+    // arma::qr(Q,R,Wsp_tmp);
+    
+    
+    // arma::vec di = abs(diagvec(R));
+    // double max_di = max(di);
+    // arma::uvec r = find(di >= eps*max_di);
+    // unsigned int rang = r.size();
+    
+    // arma::svd_econ(U,s,V,Wsp_tmp,"right","dc");
+    arma::svd(U,s,V,A,"dc");
+    arma::uvec r = find(s >= eps);
     unsigned int rang = r.size();
-    
-    
     if(rang < i_size){
-      u =  Q.col(Q.n_cols-1);
+      // if(comment  == true){
+        // std::cout << "low"<< std::endl;
+      // }
+        u = V.col(V.n_cols - 1);
     }else{
-      arma::svd_econ(U, s, V , R,"left","dc");
-      U = Q*U;
-      u = U.col(U.n_cols - 1);
+      // if(comment  == true){
+      // std::cout << "high"<< std::endl;
+      // }
+        u = V.col(V.n_cols - 1);
     }
+    // if(comment  == true){
+      // std::cout << A*u << std::endl;
+    // }
+    // 
+    // if(rang < i_size){
+    //   // std::cout << "null space" << std::endl;
+    //   u =  Q.col(Q.n_cols-1);
+    // }else{
+    //   // std::cout << "weakest vector" << std::endl;
+    //   
+    //   
+    //   arma::svd_econ(U, s, V,Wsp_tmp,"left","dc");
+    //   // arma::svd_econ(U, s, V , R,"left","dc");
+    //   // U = Q*U;
+    //   u = U.col(U.n_cols - 1);
+    //   // u = u - projOp(u,one);
+    // }
     u = u - projOp(u,one);
     
     la1 = 1e+200;
@@ -202,18 +225,48 @@ arma::vec wave(const arma::mat& X,
 ############# EXAMPLE 1
 
 N <- 36
-n <- 12
+n <- 18
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
-s <- wave(X,pik,tore = T,jitter =T,comment = TRUE)
+s <- wave(X,pik,tore = T,jitter =F,comment = TRUE)
+s <- wave2(X,pik,tore = T,jitter =F,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
- 
+
 X <- as.matrix(cbind(runif(N),runif(N)))
-s <- wave(X,pik,tore = F,jitter =F,comment = TRUE)
+s <- wave2(X,pik,tore = F,jitter =F,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
+
+
+N <- 225
+n <- 75
+x <- seq(1,sqrt(N),1)
+X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+pik <- rep(n/N,N)
+
+# W <- wpik(X,pik,bound = 1,tore = TRUE,jitter = TRUE,toreBound = 15 )
+s <- wave(X,pik,tore = T,jitter =T,comment = TRUE)
+s <- wave2(X,pik,tore = T,jitter =T,comment = TRUE)
+plot(X)
+points(X[s == 1,],pch = 16)
+
+
+N <- 225
+n <- 75
+x <- seq(1,sqrt(N),1)
+X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+X <- as.matrix(cbind(runif(225),runif(225)))
+pik <- rep(n/N,N)
+# W <- wpik(X,pik,bound = 1,tore = TRUE,jitter = TRUE,toreBound = 15 )
+s <- wave(X,pik,tore = T,jitter =T,comment = TRUE)
+s <- wave2(X,pik,tore = T,jitter =T,comment = TRUE)
+plot(X)
+points(X[s == 1,],pch = 16)
+
+  
+
 
 
 N <- 25
@@ -222,96 +275,97 @@ x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
 s <- wave(X,pik,tore = TRUE,comment = TRUE)
+s <- wave2(X,pik,tore = TRUE,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
-  
+
 
 
 
 rm(list = ls())
-  N <- 30
-n <- 250
+N <- 30
+n <- 300
 x <- seq(1,N,1)
-  y <- seq(1,N,1)
-  X <- as.matrix(expand.grid(x,y))
-  
-  pik <- rep(n/(N*N),N*N)
-  
-  W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
-  image(W)
-  system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter = T))
+y <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,y))
+
+pik <- rep(n/(N*N),N*N)
+
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
+image(W)
+system.time(test <- wave(as.matrix(X),pik, tore = TRUE,jitter = T))
 # utilisateur     système      écoulé
 # 54.22        5.75       15.25
-  system.time(test2 <- spreadcube(as.matrix(X),pik, tore = TRUE,jitter = T))
-# utilisateur     système      écoulé
+system.time(test2 <- wave2(as.matrix(X),pik, tore = TRUE,jitter = T))
+  # utilisateur     système      écoulé
 # 165.92       16.83       49.95
-  
-  plot(X)
-  points(X[test ==1,],pch = 16)
-  
+
+plot(X)
+points(X[test ==1,],pch = 16)
+
 ##################################################################
-  
-  N <- 35
-  n <- 300
-  x <- seq(1,N,1)
-    y <- seq(1,N,1)
-    X <- as.matrix(expand.grid(x,y))
-    
-    pik <- rep(n/(N*N),N*N)
-    
-    W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
-    image(W)
-    system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter = T))
-    
-    
+
+N <- 35
+n <- 300
+x <- seq(1,N,1)
+y <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,y))
+
+pik <- rep(n/(N*N),N*N)
+
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
+image(W)
+system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter = T))
+
+
 ###################################################################
-    
-    N <- 6
-    n <- 13
-    x <- seq(1,N,1)
-      y <- seq(1,N,1)
-      X <- as.matrix(expand.grid(x,y))
-      
-      pik <- rep(n/(N*N),N*N)
-      
-      W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
-      image(W)
-      system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter = F))
-      sum(test)
+
+N <- 6
+n <- 13
+x <- seq(1,N,1)
+y <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,y))
+
+pik <- rep(n/(N*N),N*N)
+
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
+image(W)
+system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,jitter = F))
+sum(test)
 # utilisateur     système      écoulé
 # 8.28        0.79        2.56
-      system.time(test2 <- spreadcube(as.matrix(X),pik, tore = TRUE,jitter = F))
-      sum(test2)
+system.time(test2 <- spreadcube(as.matrix(X),pik, tore = TRUE,jitter = F))
+sum(test2)
 # utilisateur     système      écoulé
 # 4.22        0.07        4.29
-      
-      
-      plot(X)
-      points(X[test==1,],pch = 16)
-      
-      
-      W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
-      image(W)
-      W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
-      image(W)
-      
-      
-      
+
+
+plot(X)
+points(X[test==1,],pch = 16)
+
+
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
+image(W)
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
+image(W)
+
+
+
 ###################################################################
-      
-      N <- 12
-      n <- 48
-      x <- seq(1,N,1)
-        y <- seq(1,N,1)
-        X <- as.matrix(expand.grid(x,y))
-        
-        pik <- rep(n/(N*N),N*N)
-        
-        W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
-        image(W)
-        s <- wave(as.matrix(X),pik, tore = TRUE,jitter =T )
-        plot(X)
-        points(X[s ==1,],pch = 16)
-        
-        
-        */
+
+N <- 12
+n <- 48
+x <- seq(1,N,1)
+y <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,y))
+
+pik <- rep(n/(N*N),N*N)
+
+W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = F,toreBound = N))
+image(W)
+s <- wave(as.matrix(X),pik, tore = TRUE,jitter =T )
+plot(X)
+points(X[s ==1,],pch = 16)
+
+
+*/

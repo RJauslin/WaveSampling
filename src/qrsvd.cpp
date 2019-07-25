@@ -30,14 +30,15 @@ Rcpp::List QRarma(arma::mat A) {
 //' @export
 // [[Rcpp::export]]
 Rcpp::List SVDarma(arma::mat A) {
-  arma::mat one = arma::ones<arma::mat>(A.n_cols,1);
   
   arma::mat U;
   arma::vec s;
   arma::mat V;
-  arma::svd_econ(U, s, V,A,"left","dc");
+  arma::svd_econ(U, s, V,A,"both","dc");
   
-  return Rcpp::List::create(Rcpp::Named("U") = U);
+  return Rcpp::List::create(Rcpp::Named("U") = U,
+                            Rcpp::Named("V") = V,
+                            Rcpp::Named("s") = s);
                            
 }
 
