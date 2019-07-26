@@ -154,9 +154,10 @@ arma::vec wave(const arma::mat& X,
     if(rang < i_size){
       u =  Q.col(Q.n_cols-1);
     }else{
-      arma::svd_econ(U, s, V , R,"left","dc");
-      U = Q*U;
-      u = U.col(U.n_cols - 1);
+      arma::svd_econ(U, s, V , R,"right","dc");
+      // U = Q*U;
+      // u = U.col(U.n_cols - 1);
+      u = V.col(V.n_cols - 1);
     }
     u = u - projOp(u,one);
     

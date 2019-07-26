@@ -131,26 +131,12 @@ arma::vec wave2(const arma::mat& X,
       A = wpik(X.submat(i,index),re.elem(i),1.0,tore,jitter,tb);
       arma::mat D = diagmat(1/re.elem(i));
       A = A*D;
-      
-      
-     
     }
     
     
     arma::vec u(i_size);
-    
-    //QR DECOMPOSTION AND SVD
-    
-    // arma::qr(Q,R,Wsp_tmp);
-    
-    
-    // arma::vec di = abs(diagvec(R));
-    // double max_di = max(di);
-    // arma::uvec r = find(di >= eps*max_di);
-    // unsigned int rang = r.size();
-    
-    // arma::svd_econ(U,s,V,Wsp_tmp,"right","dc");
-    arma::svd(U,s,V,A,"dc");
+    arma::svd_econ(U,s,V,A,"right","dc");
+    // arma::svd(U,s,V,A,"dc");
     arma::uvec r = find(s >= eps);
     unsigned int rang = r.size();
     if(rang < i_size){
@@ -164,23 +150,7 @@ arma::vec wave2(const arma::mat& X,
       // }
         u = V.col(V.n_cols - 1);
     }
-    // if(comment  == true){
-      // std::cout << A*u << std::endl;
-    // }
-    // 
-    // if(rang < i_size){
-    //   // std::cout << "null space" << std::endl;
-    //   u =  Q.col(Q.n_cols-1);
-    // }else{
-    //   // std::cout << "weakest vector" << std::endl;
-    //   
-    //   
-    //   arma::svd_econ(U, s, V,Wsp_tmp,"left","dc");
-    //   // arma::svd_econ(U, s, V , R,"left","dc");
-    //   // U = Q*U;
-    //   u = U.col(U.n_cols - 1);
-    //   // u = u - projOp(u,one);
-    // }
+    
     u = u - projOp(u,one);
     
     la1 = 1e+200;
@@ -284,7 +254,7 @@ points(X[s == 1,],pch = 16)
 
 rm(list = ls())
 N <- 30
-n <- 300
+n <- 100
 x <- seq(1,N,1)
 y <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,y))
@@ -294,6 +264,7 @@ pik <- rep(n/(N*N),N*N)
 W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,jitter = T,toreBound = N))
 image(W)
 system.time(test <- wave(as.matrix(X),pik, tore = TRUE,jitter = T))
+
 # utilisateur     système      écoulé
 # 54.22        5.75       15.25
 system.time(test2 <- wave2(as.matrix(X),pik, tore = TRUE,jitter = T))

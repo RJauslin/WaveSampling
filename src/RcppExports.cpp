@@ -18,38 +18,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// IPFP
-arma::sp_mat IPFP(arma::sp_mat& A, arma::vec bh, arma::vec bi, int maxiter, double tol, bool comment);
-RcppExport SEXP _wave_IPFP(SEXP ASEXP, SEXP bhSEXP, SEXP biSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP commentSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type bh(bhSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type bi(biSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(IPFP(A, bh, bi, maxiter, tol, comment));
-    return rcpp_result_gen;
-END_RCPP
-}
-// IPFPsym
-arma::sp_mat IPFPsym(arma::sp_mat& A, arma::vec bh, arma::vec bi, int maxiter, double tol, bool comment);
-RcppExport SEXP _wave_IPFPsym(SEXP ASEXP, SEXP bhSEXP, SEXP biSEXP, SEXP maxiterSEXP, SEXP tolSEXP, SEXP commentSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat& >::type A(ASEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type bh(bhSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type bi(biSEXP);
-    Rcpp::traits::input_parameter< int >::type maxiter(maxiterSEXP);
-    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(IPFPsym(A, bh, bi, maxiter, tol, comment));
-    return rcpp_result_gen;
-END_RCPP
-}
 // distUnitk
 arma::vec distUnitk(arma::mat X, int k, bool tore, double toreBound);
 RcppExport SEXP _wave_distUnitk(SEXP XSEXP, SEXP kSEXP, SEXP toreSEXP, SEXP toreBoundSEXP) {
@@ -95,28 +63,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
     rcpp_result_gen = Rcpp::wrap(SVDarma(A));
-    return rcpp_result_gen;
-END_RCPP
-}
-// colSumsiter
-arma::vec colSumsiter(const arma::sp_mat& x);
-RcppExport SEXP _wave_colSumsiter(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(colSumsiter(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rowSumsiter
-arma::vec rowSumsiter(const arma::sp_mat& x);
-RcppExport SEXP _wave_rowSumsiter(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::sp_mat& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rowSumsiter(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -188,14 +134,10 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
-    {"_wave_IPFP", (DL_FUNC) &_wave_IPFP, 6},
-    {"_wave_IPFPsym", (DL_FUNC) &_wave_IPFPsym, 6},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
     {"_wave_projOp", (DL_FUNC) &_wave_projOp, 2},
     {"_wave_QRarma", (DL_FUNC) &_wave_QRarma, 1},
     {"_wave_SVDarma", (DL_FUNC) &_wave_SVDarma, 1},
-    {"_wave_colSumsiter", (DL_FUNC) &_wave_colSumsiter, 1},
-    {"_wave_rowSumsiter", (DL_FUNC) &_wave_rowSumsiter, 1},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
     {"_wave_wave2", (DL_FUNC) &_wave_wave2, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},

@@ -26,8 +26,6 @@
 //' system.time(test1 <- Matrix::colSums(sp))
 //' system.time(test2 <- colSumsiter(sp))
 //' }
-//' @export
-// [[Rcpp::export]]
 arma::vec colSumsiter(const arma::sp_mat& x) {
 
   int N = x.n_cols;
@@ -72,8 +70,6 @@ arma::vec colSumsiter(const arma::sp_mat& x) {
 //' system.time(test2 <- colSumsiter(sp))
 //' }
 //' 
-//' @export
-// [[Rcpp::export]]
 arma::vec rowSumsiter(const arma::sp_mat& x) {
   return colSumsiter(x.t());
 }

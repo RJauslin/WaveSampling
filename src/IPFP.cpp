@@ -23,8 +23,6 @@
 //' @references
 //' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 //' 
-//' @seealso
-//'  \code{\link{IPFPsym}}, \code{\link{wpik}}
 //' 
 //' @examples
 //' \dontrun{
@@ -53,8 +51,6 @@
 //'   isSymmetric(A2) # symmetric
 //' }
 //' 
-//' @export
-// [[Rcpp::export]]
 arma::sp_mat IPFP(arma::sp_mat& A,
                   arma::vec bh,
                   arma::vec bi,
@@ -117,8 +113,6 @@ arma::sp_mat IPFP(arma::sp_mat& A,
 //' @references
 //' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 //' 
-//' @seealso
-//' \code{\link{IPFP}}, \code{\link{wpik}}
 //' 
 //' @examples
 //' \dontrun{
@@ -146,9 +140,7 @@ arma::sp_mat IPFP(arma::sp_mat& A,
 //'   isSymmetric(A1) # not symmetric
 //'   isSymmetric(A2) # symmetric
 //' }
-//' 
-//' @export
-// [[Rcpp::export]]
+//'
 arma::sp_mat IPFPsym(arma::sp_mat& A,
                      arma::vec bh,
                      arma::vec bi,

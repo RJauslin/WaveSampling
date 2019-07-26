@@ -86,8 +86,6 @@ IB <- function(W, s) {
 #' @references
 #' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 #' 
-#' @seealso
-#'  \code{\link{IPFPsym}}, \code{\link{wpik}}
 #' 
 #' @examples
 #' \dontrun{
@@ -116,10 +114,7 @@ IB <- function(W, s) {
 #'   isSymmetric(A2) # symmetric
 #' }
 #' 
-#' @export
-IPFP <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
-    .Call(`_wave_IPFP`, A, bh, bi, maxiter, tol, comment)
-}
+NULL
 
 #' @encoding UTF-8
 #' @title Iterative proportional fitting procedure (IPFP) or raking ratio for symmetric sparse matrix.
@@ -141,8 +136,6 @@ IPFP <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
 #' @references
 #' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
 #' 
-#' @seealso
-#' \code{\link{IPFP}}, \code{\link{wpik}}
 #' 
 #' @examples
 #' \dontrun{
@@ -170,11 +163,8 @@ IPFP <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
 #'   isSymmetric(A1) # not symmetric
 #'   isSymmetric(A2) # symmetric
 #' }
-#' 
-#' @export
-IPFPsym <- function(A, bh, bi, maxiter = 300L, tol = 1e-9, comment = FALSE) {
-    .Call(`_wave_IPFPsym`, A, bh, bi, maxiter, tol, comment)
-}
+#'
+NULL
 
 #' @title Square of the euclidean distance of the unit k.
 #'
@@ -312,10 +302,7 @@ SVDarma <- function(A) {
 #' system.time(test1 <- Matrix::colSums(sp))
 #' system.time(test2 <- colSumsiter(sp))
 #' }
-#' @export
-colSumsiter <- function(x) {
-    .Call(`_wave_colSumsiter`, x)
-}
+NULL
 
 #' @title Row sums on sparse matrix.
 #'
@@ -344,10 +331,7 @@ colSumsiter <- function(x) {
 #' system.time(test2 <- colSumsiter(sp))
 #' }
 #' 
-#' @export
-rowSumsiter <- function(x) {
-    .Call(`_wave_rowSumsiter`, x)
-}
+NULL
 
 #' @encoding UTF-8
 #' @title Weakly associated vectors sampling
