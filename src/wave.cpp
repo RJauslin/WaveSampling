@@ -107,7 +107,7 @@ arma::vec wave(const arma::mat& X,
   while(i_size > 1){
     if(comment  == true){
       if(i_size % 1 == 0){
-        Rcpp::Rcout << i_size << std::endl;
+        // Rcpp::Rcout << i_size << std::endl;
       }
     }
     

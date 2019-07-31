@@ -84,7 +84,7 @@ arma::sp_mat IPFP(arma::sp_mat& A,
     
   }
   if(comment == true){
-    Rcpp::Rcout << "number of iterations :" << z << std::endl;
+    // Rcpp::Rcout << "number  of iterations :" << z << std::endl;
   }
   
   return(B);
