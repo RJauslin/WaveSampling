@@ -67,9 +67,7 @@
 //' 
 //' 
 //' 
-//' @export
-// [[Rcpp::export]]
-arma::vec wave(const arma::mat& X,
+arma::vec waveOld(const arma::mat& X,
                const arma::vec& pik,
                double bound = 1.0,
                bool tore = false,

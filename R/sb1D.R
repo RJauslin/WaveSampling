@@ -99,6 +99,9 @@
 #' }
 #' @encoding UTF-8
 #' @import Matrix
+#' 
+#' @useDynLib wave, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 #' @export
 sb1D <- function(pik,s,all = FALSE,tore = FALSE,toreBound = -1){
 

@@ -6,12 +6,9 @@
 //' @title QR arma used in wave
 //' @param A matrix
 //' @return A list
-//' @export
-// [[Rcpp::export]]
 Rcpp::List QRarma(arma::mat A) {
   arma::mat Q;
   arma::mat R;
-  
   arma::qr(Q,R,A);
   
   arma::vec u;
@@ -19,16 +16,14 @@ Rcpp::List QRarma(arma::mat A) {
   return Rcpp::List::create(Rcpp::Named("u") = u,
                      Rcpp::Named("R") = R,
                      Rcpp::Named("Q") = Q);
+  
                      
 }
-
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
 //' @title SVD arma used in wave
 //' @param A matrix
 //' @return A list
-//' @export
-// [[Rcpp::export]]
 Rcpp::List SVDarma(arma::mat A) {
   
   arma::mat U;

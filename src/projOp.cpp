@@ -35,9 +35,6 @@
 //' projOp(v,u)
 //' v - projOp(v,u)
 //' }
-//' 
-//' @export
-// [[Rcpp::export]]
 arma::vec projOp(arma::vec v,arma::vec u) {
   double num = arma::as_scalar(u.t()*v);
   double den = arma::as_scalar(u.t()*u);

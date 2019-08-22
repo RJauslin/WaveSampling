@@ -253,29 +253,19 @@ distUnitk <- function(X, k, tore, toreBound) {
 #' projOp(v,u)
 #' v - projOp(v,u)
 #' }
-#' 
-#' @export
-projOp <- function(v, u) {
-    .Call(`_wave_projOp`, v, u)
-}
+NULL
 
 #' @encoding UTF-8
 #' @title QR arma used in wave
 #' @param A matrix
 #' @return A list
-#' @export
-QRarma <- function(A) {
-    .Call(`_wave_QRarma`, A)
-}
+NULL
 
 #' @encoding UTF-8
 #' @title SVD arma used in wave
 #' @param A matrix
 #' @return A list
-#' @export
-SVDarma <- function(A) {
-    .Call(`_wave_SVDarma`, A)
-}
+NULL
 
 #' @title Column sums for sparseMatrix
 #'
@@ -392,10 +382,7 @@ NULL
 #' 
 #' 
 #' 
-#' @export
-wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE, comment = FALSE) {
-    .Call(`_wave_wave`, X, pik, bound, tore, jitter, oneD, comment)
-}
+NULL
 
 #' @encoding UTF-8
 #' @title Weakly associated vectors sampling
@@ -457,8 +444,8 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 #' 
 #' 
 #' @export
-wave2 <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE, comment = FALSE) {
-    .Call(`_wave_wave2`, X, pik, bound, tore, jitter, oneD, comment)
+wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE, comment = FALSE) {
+    .Call(`_wave_wave`, X, pik, bound, tore, jitter, oneD, comment)
 }
 
 #' @encoding UTF-8
