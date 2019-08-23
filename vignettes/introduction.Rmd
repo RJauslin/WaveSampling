@@ -37,7 +37,7 @@ data("meuse.riv")
 meuse.riv <- meuse.riv[which(meuse.riv[,2] < 335000 & meuse.riv[,2] > 328750),]
 
 X <- scale(as.matrix(meuse[,1:2]))
-pik <- inclusionprobabilities(meuse$copper,50)
+pik <- inclusionprobabilities(meuse$copper,30)
 ```
 
 ## Sample selection
@@ -53,10 +53,11 @@ sum(s)
 
 ```{r,fig.width=5,fig.height=5}
 library(ggplot2)
-ggplot()+
+p <- ggplot()+
   geom_polygon(data = data.frame(x = meuse.riv[,1],y = meuse.riv[,2]),
                aes(x = x,y = y),
-               fill = "lightskyblue2")+
+               fill = "lightskyblue2",
+               colour= "grey50")+
   geom_point(data = meuse,
              aes(x = x,y = y,size = copper),
              shape = 1,
@@ -76,6 +77,7 @@ ggplot()+
         axis.text.y=element_blank(),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank())
+p
   
 ```
 
@@ -146,35 +148,17 @@ library(sampling)
 library(ggvoronoi)
 data("meuse")
 data("meuse.area")
-X <- scale(as.matrix(meuse[,1:2]))
-pik <- inclusionprobabilities(meuse$copper,50)
-s <- wave(X,pik)
+
 v <- sbAll(pik,as.matrix(meuse[,1:2]),s = which(s == 1))
 meuse$v <- v
-# meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)),"meuse.riv")))
 
-ggplot() +
-  geom_polygon(data = data.frame(x = meuse.riv[,1],y = meuse.riv[,2]),aes(x = x,y = y),fill = "lightskyblue2")+
-  geom_voronoi(data = meuse[which(s == 1),],
+p <- p + geom_voronoi(data = meuse[which(s == 1),],
                aes(x = x,y = y,fill = v),
                outline =as.data.frame(meuse.area),
-               size = 0.1,alpha = 0.8,colour = "black")+
-  geom_point(data = meuse,aes(x = x,y = y,size = copper),shape = 1,stroke = 0.3)+
-  geom_point(data = meuse[which(s == 1),] ,aes(x = x,y = y,size = copper),shape = 16,alpha = 1)+
-  labs(x = NULL,
-       y = NULL,
-       title = "Meuse river with Voronoï polygon",
-       # subtitle = "STATENT 2016",
-       size = "Copper",
-       caption = NULL)+
-  scale_fill_viridis_c()+
-  scale_size(range = c(0.5, 2))+
-  coord_equal()+
-  theme_minimal()+
-  theme(axis.text.x=element_blank(),
-		    axis.text.y=element_blank(),
-        panel.grid.major=element_blank(),
-		    panel.grid.minor=element_blank())
+               size = 0.1,alpha = 0.8,
+               colour = "black")+
+  scale_fill_viridis_c()
+p
 
 ```
 
@@ -197,9 +181,8 @@ The Moran's $I$ index is implemented in the function `IB()`. It is possible to s
 W <- wpik(X,pik)
 image(W)
 
-# W2 <- wpik2(X,pik,tore = FL)
-# image(W2)
-
+W <- W - diag(diag(W))
+IB(W,s)
 
 ```
 
