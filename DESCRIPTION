@@ -32,5 +32,6 @@ Suggests:
     magrittr,
     sampling,
     BalancedSampling,
+    sp,
     stats
 VignetteBuilder: knitr

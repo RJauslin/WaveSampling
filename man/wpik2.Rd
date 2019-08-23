@@ -5,7 +5,7 @@
 \alias{wpik2}
 \title{Spatial weights from inclusion probabilities}
 \usage{
-wpik2(X, pik, tore, jitter, toreBound)
+wpik2(X, pik, tore = FALSE, jitter = FALSE, toreBound = -1)
 }
 \arguments{
 \item{X}{matrix of size N x 2 representing the spatial coordinates.}

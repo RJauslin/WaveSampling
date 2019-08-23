@@ -70,9 +70,9 @@ using namespace std;
 // [[Rcpp::export]]
 arma::sp_mat wpik2(arma::mat X,
                   arma::vec pik,
-                  bool tore,
-                  bool jitter,
-                  double toreBound){
+                  bool tore = false,
+                  bool jitter = false,
+                  double toreBound = -1){
 
   /*
   * Initializing variable

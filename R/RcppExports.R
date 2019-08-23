@@ -580,7 +580,7 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 #' }
 #' 
 #' @export
-wpik2 <- function(X, pik, tore, jitter, toreBound) {
+wpik2 <- function(X, pik, tore = FALSE, jitter = FALSE, toreBound = -1) {
     .Call(`_wave_wpik2`, X, pik, tore, jitter, toreBound)
 }
 

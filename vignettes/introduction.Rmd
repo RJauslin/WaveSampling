@@ -1,5 +1,5 @@
 ---
-title: "Weakly Associated Vectors"
+title: "An introduction to weakly associated vectors sampling"
 author: "Raphaël Jauslin"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -21,171 +21,64 @@ library(wave)
 
 
 ## Introduction
-Spatial data are generally autocorrelated, meaning that if two units selected are close to each other then it is likely that they share the same properties. For this reason, when sampling in the population it is often needed that the sample is well spread over space. We propose here a new way of estimating a sample from a population with spatial coordinates. This method is called `wave` (weakly associated vectors). It uses the less correlated vector to a spatial weights matrix **W** to update the inclusion probabilities vector into a sample **s**.
+Geographical data are generally autocorrelated. This is why it is preferable to avoid the measurement of neighboring units. We propose a new method for selecting spread samples from a finite spatial population with equal or unequal inclusion probabilities. The propsed method is called `wave` and stands for Weakly Associated VEctors. it is based on the definition of the contiguity structure by using a very dense stratification. The method satisfies exactly the inclusion probabilities and provides samples that are very well spread. This document propose an introduction to understand how to use the function `wave()`.
 
 
-## 2-D sampling
-We propose here two examples showing how to use the function `wave()`. The first one is an example where the inclusion probabilities of the units in the population are all equal and the spatial coordinates are on a regular grid. The second one is an example where the spatial coordinates are generated from a random uniform distribution `runif()`. 
+## Data generation
 
-
-### Regular grid
-
-Firstly, we need to generate the spatial coordinates. We here decided to create an 10 x 10 regular grid with the function `rep()`.
+We use the data set `meuse` from the package `sp` describe by the following statement. "This data set gives locations and topsoil heavy metal concentrations, along with a number of soil and landscape variables at the observation locations, collected in a flood plain of the river Meuse, near the village of Stein (NL)". We proposed to generate the inclusion probabilities proportional to the copper concentration. As it is explained by @grafstrom:tille:2013, this data set has a strong spatial correlation.
 
 ```{r}
-N <- 144
-n <- 48
-x <- seq(1,sqrt(N),1)
-X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
-head(X,10)
+# install.packages(sp)
+library(sp)
+library(sampling)
+data("meuse")
+data("meuse.riv")
+meuse.riv <- meuse.riv[which(meuse.riv[,2] < 335000 & meuse.riv[,2] > 328750),]
+
+X <- scale(as.matrix(meuse[,1:2]))
+pik <- inclusionprobabilities(meuse$copper,50)
 ```
 
-Now we need some inclusion probabilities `pik`. Hence, we generate a vector `pik_equal` that have all the same values and `pik_unequal` that have all values different but sum up to `n = 10`. We use the function `inclusionprobabilities()` from the package ``sampling`.
+## Sample selection
+
+The sample selection is easily performed by the function `wave()`.
 
 ```{r}
-pik_equal <- rep(n/N,times = N)
-pik_unequal <- sampling::inclusionprobabilities(runif(N),n) 
-
-head(pik_equal)
-sum(pik_equal)
-
-head(pik_unequal)
-sum(pik_unequal)
+s <- wave(X,pik)
+sum(s)
 ```
 
-All that is left, is to use the function `wave()` with the right arguments. `tore` and `jitter` are optional arguments. See `?wave` or `?wpik` for more informations.
 
-```{r}
-s_equal <- wave(X,pik_equal,tore = TRUE,jitter = TRUE)
-head(s_equal)
-s_unequal <- wave(X,pik_unequal,tore = TRUE,jitter = TRUE)
-head(s_unequal)
 
-```
-
-Graphically, using the `ggplot2` package, this gives,
-
-```{r, fig.show='hold'}
+```{r,fig.width=5,fig.height=5}
 library(ggplot2)
-X <- data.frame(x = X[,1],y = X[,2])
-ggplot() +
-  geom_point(data = X,aes(x = x,y = y),pch = 1,alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s_equal == 1,1],y = X[s_equal == 1,2]),
-             aes(x,y),
-             colour = "black")+
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
-ggplot() +
-  geom_point(data = X,aes(x = x,y = y),pch = 1,alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s_unequal == 1,1],y = X[s_unequal == 1,2]),
-             aes(x,y),
-             colour = "black")+
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
-
-
-```
-
-### Random uniform
-
-
-Here we will change the spatial coordinates. We create random uniform coordinates from the function `runif()`,
-
-```{r}
-N <- 144
-n <- 48
-X <- cbind(runif(N),runif(N))
-head(X,10)
-```
-
-We could use the same inclusion probabilities as the previous example, we just have to re-compute the samples.
-
-```{r}
-s_equal <- wave(X,pik_equal,tore = FALSE,jitter = FALSE)
-head(s_equal)
-s_unequal <- wave(X,pik_unequal,tore = FALSE,jitter = FALSE)
-head(s_unequal)
-
-```
-
-Graphically, this gives,
-
-```{r, fig.show='hold'}
-library(ggplot2)
-X <- data.frame(x = X[,1],y = X[,2])
-ggplot() +
-  geom_point(data = X,aes(x = x,y = y),pch = 1,alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s_equal == 1,1],y = X[s_equal == 1,2]),
-             aes(x,y),
-             colour = "black")+
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
-ggplot() +
-  geom_point(data = X,aes(x = x,y = y),pch = 1,alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s_unequal == 1,1],y = X[s_unequal == 1,2]),
-             aes(x,y),
-             colour = "black")+
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
-
-
-```
-
-
-
-## 1-D sampling
-
-Even if it is not its main purpose, it is interesting to test the function on a one dimension scheme. We simply set up the y-axis all equal to 0.
-
-```{r}
-N <- 144
-n <- 48
-pik <- rep(n/N,N)
-
-X <- cbind(seq(1,N,1),rep(0.0,N),rep(0.5,N),rep(-0.5,N))
-colnames(X) <- c("x","y1","y2","y3")
-
-```
-
-We use three way of selecting a sample, systematic `sampling::sys()`, local pivotal method `BalancedSampling::lpm1()` and weakly associated vectors `wave()`.
-
-```{r}
-s_sys <- sampling::UPsystematic(pik)
-s_wave <- wave(as.matrix(X[,1:2]),
-                 pik,
-                 tore = TRUE,
-                 jitter = TRUE,
-                 oneD = TRUE)
-s_lpm1_tmp <- BalancedSampling::lpm1(pik,X[,1:2])
-s_lpm1 <- rep(0,N)
-s_lpm1[s_lpm1_tmp] <- 1
-```
-
-Graphically we obtain,
-
-```{r, fig.show='hold',fig.align='center',fig.width=7}
-X <- as.data.frame(X)
-X$y1 <- rep("sys",N)
-X$y2 <- rep("wave",N)
-X$y3 <- rep("lpm1",N)
 ggplot()+
-  geom_point(data = X,aes(x,y1),pch = 1,alpha = 0.2)+
-  geom_point(data = X[s_sys == 1,],aes(x,y1),colour = "black")+
-  geom_point(data = X,aes(x,y2),pch = 1,alpha = 0.2)+
-  geom_point(data = X[s_wave == 1,],aes(x,y2),colour = "black")+
-  geom_point(data = X,aes(x,y3),pch = 1,alpha = 0.2)+
-  geom_point(data = X[s_lpm1 == 1,],aes(x,y3),colour = "black")+
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.title.x=element_blank(),
-        axis.title.y=element_blank())
-
+  geom_polygon(data = data.frame(x = meuse.riv[,1],y = meuse.riv[,2]),
+               aes(x = x,y = y),
+               fill = "lightskyblue2")+
+  geom_point(data = meuse,
+             aes(x = x,y = y,size = copper),
+             shape = 1,
+             stroke = 0.3)+
+  geom_point(data = meuse[which(s == 1),],
+             aes(x = x,y = y,size = copper),
+             shape = 16)+
+  labs(x = NULL,
+       y = NULL,
+       title = "Meuse river",
+       size = "Copper",
+       caption = NULL)+
+  scale_size(range = c(0.5, 2))+
+  coord_equal()+
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank())
+  
 ```
+
 
 
 ## Spatial balance
@@ -194,38 +87,97 @@ ggplot()+
 One way of measuring the spread of a sample was developped by @stevens:olsen:2004 and then suggested by @grafstrom:lundstrom:2012. It is based on the Voronoï polygons and is given by,
 
 $$ B(\bf s) = \frac{1}{n}\sum_{i \in s} (v_i - 1)^2 $$
-where $v_i$ is equal to the sum of the inclusion probabilities inside the $i$th polygons and $\bf s$ is the vector of size $N$ with elements equal 0 or 1. This quantity is implemented in the package `BalancedSampling` with the function `sb()`. In order to use this function, we need to give the index of the elements that are equal to 1. This could be done with the function `which()`.
+where $v_i$ is equal to the sum of the inclusion probabilities inside the $i$th polygons and $\bf s$ is the vector of size $N$ with elements equal 0 or 1. This quantity is implemented in the package `BalancedSampling` with the function `sb()`.
 
-```{r, fig.show='hold',fig.align='center',fig.width=7}
-N <- 144
-n <- 48
-X <- cbind(runif(N),runif(N))
-pik <- rep(n/N,N)
-s <- wave(X,pik)
-BalancedSampling::sb(pik,X,which(s==1))
+The most $B(\bf s)$ is close to zero, the better is the spatial balance of the sample. Graphically, we obtain the following plot.
+
+```{r,include=FALSE}
+library(Rcpp)
+Rcpp::cppFunction('
+		NumericVector sbAll(NumericVector p, NumericMatrix x, NumericVector s){
+		int N = x.nrow();
+		int ncol = x.ncol();
+		int n = s.size();
+		NumericVector incl(N);
+		NumericVector nearest(n);
+		int nrNearest = 0;
+		double mindist, d;
+		for(int i=0;i<N;i++){incl[i]=0.0;}
+		for(int i=0;i<N;i++){
+		nrNearest = 0;
+		mindist = 1e+200;
+		for(int j=0;j<n;j++){
+		d = 0.0;
+		for(int k=0;k<ncol;k++){
+		d += pow(x(i,k)-x(s[j]-1,k),2); // distance i to the jth element
+		}
+		if(d==mindist){
+		nearest[nrNearest]=s[j];
+		nrNearest++;
+		}
+		if(d<mindist){
+		mindist = d;
+		nearest[0] = s[j];
+		nrNearest = 1;
+		}
+		}
+		// std::cout << incl << std::endl;
+		for(int k=0;k<nrNearest;k++){
+		// std::cout << nrNearest << std::endl;
+		// std::cout << p[i]/nrNearest << std::endl;
+		incl[nearest[k]-1] = incl[nearest[k]-1] + p[i]/nrNearest;
+		}
+		}
+		return incl;
+		// for(int i=0;i<n;i++){
+		//   res += pow(incl[s[i]-1]-1,2);
+		// }
+		// return res/n;
+		}')
 
 ```
 
-The most $B(\bf s)$ is closer to zero, the better is the spatial balance of the sample. Graphically, we obtain the following plot.
 
-```{r, fig.show='hold',fig.align='center'}
+
+```{r,fig.width=7,fig.height=5}
+
+library(sp)
+library(sampling)
 library(ggvoronoi)
+data("meuse")
+data("meuse.area")
+X <- scale(as.matrix(meuse[,1:2]))
+pik <- inclusionprobabilities(meuse$copper,50)
+s <- wave(X,pik)
+v <- sbAll(pik,as.matrix(meuse[,1:2]),s = which(s == 1))
+meuse$v <- v
+# meuse.sr = SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)),"meuse.riv")))
+
 ggplot() +
-  geom_point(data = data.frame(x = X[,1],y = X[,2]),
-             aes(x,y),
-             pch = 1,
-             alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s == 1,1],y = X[s == 1,2]),
-             aes(x,y),
-             colour = "black")+
-  geom_voronoi(data = data.frame(x = X[s==1,1],y = X[s== 1,2]),
-               aes(x,y),
-               colour = "steelblue",
-               alpha = 0.0) +
-  theme_light()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+  geom_polygon(data = data.frame(x = meuse.riv[,1],y = meuse.riv[,2]),aes(x = x,y = y),fill = "lightskyblue2")+
+  geom_voronoi(data = meuse[which(s == 1),],
+               aes(x = x,y = y,fill = v),
+               outline =as.data.frame(meuse.area),
+               size = 0.1,alpha = 0.8,colour = "black")+
+  geom_point(data = meuse,aes(x = x,y = y,size = copper),shape = 1,stroke = 0.3)+
+  geom_point(data = meuse[which(s == 1),] ,aes(x = x,y = y,size = copper),shape = 16,alpha = 1)+
+  labs(x = NULL,
+       y = NULL,
+       title = "Meuse river with Voronoï polygon",
+       # subtitle = "STATENT 2016",
+       size = "Copper",
+       caption = NULL)+
+  scale_fill_viridis_c()+
+  scale_size(range = c(0.5, 2))+
+  coord_equal()+
+  theme_minimal()+
+  theme(axis.text.x=element_blank(),
+		    axis.text.y=element_blank(),
+        panel.grid.major=element_blank(),
+		    panel.grid.minor=element_blank())
+
 ```
+
 
 
 ### Moran index
@@ -240,30 +192,13 @@ $$\bf B = \bf W^\top \bf D^{-1} \bf W - \frac{\bf W^\top \bf 1\bf 1^\top \bf W}{
 
 The Moran's $I$ index is implemented in the function `IB()`. It is possible to specifiy your own spatial weights with the argument `W`. There is no natural way of defining $\bf W$, here we propose to consider for each unit only the neighbour such that the sum of the inclusion probabilities of the stratum sum up to 1. It is implemented in the function `wpik()`. Another way of estimating the spatial weights is developped by @tille:dickson:2018 and use the inverse of the inclusion probabilities $1/\pi_i$ to estimate the neighbours of the unit $i$. It is implemented in the function `wpik2()`.
 
-```{r,fig.show='hold'}
-library(Matrix)
-N <- 25
-n <- 5
-pik <- rep(n/N,N)
+```{r}
 
-# GRID
-x <- seq(1,sqrt(N),1)
-X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+W <- wpik(X,pik)
+image(W)
 
-# SAMPLING
-s1 <- wave(X,pik,tore = FALSE)
-s2 <- wave(X,pik,tore = TRUE)
-
-# SPARSE MATRIX
-W1 <- wpik(as.matrix(X),pik,tore = FALSE, toreBound = 5)
-W2 <- wpik(as.matrix(X),pik,tore = TRUE,toreBound = 5)
-image(W1)
-image(W2)
-
-W1 <- W1 - diag(diag(W1))
-W2 <- W2 - diag(diag(W2))
-IB(W1,s1)
-IB(W2,s2)
+# W2 <- wpik2(X,pik,tore = FL)
+# image(W2)
 
 
 ```
@@ -271,401 +206,141 @@ IB(W2,s2)
 
 ## Performance
 
-Results of 1000 simulations in one dimension. The population and sampling parameters are respectively equal to $N = 100$ and $n = 10$. 
-```{r,results='asis', echo=FALSE}
 
 
-LOOP_1D <- function(SIM,pik,tore = TRUE){
-
-  # sb_sys <- sb_spread <- sb_lcube <- c()
-  # IB_sys <- IB_spread <- IB_lcube <- c()
-  sb_sys <- sb_spread <- sb_lcube <- sb_lpm1 <- sb_lpm2 <- sb_scps <- c()
-  IB_sys <- IB_spread <- IB_lcube <-IB_lpm1 <- IB_lpm2 <- IB_scps <- c()
-  IB2_sys <- IB2_spread <- IB2_lcube <- IB2_lpm1 <- IB2_lpm2 <- IB2_scps <-c()
-  # l <- list()
-  l <- data.frame()
-  for(i in 1:SIM){
-    # print(i)
-
-    # UNEQUAL SYSTEMATIC SAMPLING
-    s_sys <- sampling::UPsystematic(pik)
-
-    # POSITION MATRIX
-    X <- as.matrix(cbind(seq(1,N,1),rep(0,N)))
-
-    # SPREADING ALGORITHM
-    s_spread <- wave(X,pik,tore = tore,jitter = F,oneD = TRUE)
-    # s_spread <- spreadcube(X,pik,tore = TRUE,jitter = F)
-
-    # LOCAL CUBE
-    s_lcube_tmp <- BalancedSampling::lcube(pik,X,cbind(pik))
-    s_lcube <- rep(0,N)
-    s_lcube[s_lcube_tmp] <- 1
-
-    # LPM1
-    s_lpm1_tmp <- BalancedSampling::lpm1(pik,X)
-    s_lpm1 <- rep(0,N)
-    s_lpm1[s_lpm1_tmp] <- 1
-
-    # LPM2
-    s_lpm2_tmp <- BalancedSampling::lpm2(pik,X)
-    s_lpm2 <- rep(0,N)
-    s_lpm2[s_lpm2_tmp] <- 1
-
-    # SCPS
-    s_scps_tmp <- BalancedSampling::scps(pik,X)
-    s_scps <- rep(0,N)
-    s_scps[s_scps_tmp] <- 1
-
-    # 1D Voronoi SEEN ON A TORE
-    sb_sys[i] <- sb1D(pik,s_sys,tore = tore)
-    sb_spread[i] <- sb1D(pik,s_spread,tore = tore)
-    sb_lcube[i] <- sb1D(pik,s_lcube,tore = tore)
-    sb_lpm1[i] <- sb1D(pik,s_lpm1,tore = tore)
-    sb_lpm2[i] <- sb1D(pik,s_lpm2,tore = tore)
-    sb_scps[i] <- sb1D(pik,s_scps,tore = tore)
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W <- wpik(X,pik,bound = 1,tore = tore,jitter = F,toreBound = N)
-    W <- W- diag(diag(W))
-
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB_sys[i] <- IB(W,s_sys)
-    IB_spread[i] <- IB(W,s_spread)
-    IB_lcube[i] <- IB(W,s_lcube)
-    IB_lpm1[i] <- IB(W,s_lpm1)
-    IB_lpm2[i] <- IB(W,s_lpm2)
-    IB_scps[i] <- IB(W,s_scps)
-
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W2 <- wpik2(X,pik,tore = tore,jitter = F,toreBound = 0)
-    W2 <- W2
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB2_sys[i] <- IB(W2,s_sys)
-    IB2_spread[i] <- IB(W2,s_spread)
-    IB2_lcube[i] <- IB(W2,s_lcube)
-    IB2_lpm1[i] <- IB(W2,s_lpm1)
-    IB2_lpm2[i] <- IB(W2,s_lpm2)
-    IB2_scps[i] <- IB(W2,s_scps)
-
-
-  }
-
-
-  l <- data.frame(sys = mean(sb_sys),
-            wave = mean(sb_spread),
-            lcube = mean(sb_lcube),
-            lpm1 = mean(sb_lpm1),
-            lpm2 = mean(sb_lpm2),
-            scps = mean(sb_scps)
-            )
-  l[2,] <- c(sys = mean(IB_sys),
-            wave = mean(IB_spread),
-            lcube = mean(IB_lcube),
-            lpm1 = mean(IB_lpm1),
-            lpm2 = mean(IB_lpm2),
-            scps = mean(IB_scps)
-            )
-  l[3,] <-  c(sys = mean(IB2_sys),
-            wave = mean(IB2_spread),
-            lcube = mean(IB2_lcube),
-            lpm1 = mean(IB2_lpm1),
-            lpm2 = mean(IB2_lpm2),
-            scps = mean(IB2_scps)
-            )
-  rownames(l) = c("sb","IB","IB2")
-  return(l)
-}
-
-
-
-# EQUAL INCLUSION PROBABILITIES
-N <- 100
-n <- 10
-pik <- rep(n/N,N)
-SIM = 10
-
-table <- LOOP_1D(SIM = SIM, pik,tore = TRUE)
-table <- rbind(table,LOOP_1D(SIM = SIM, pik,tore = FALSE))
-
-# UNEQUAL INCLUSION PROBABILITIES
-pik <- sampling::inclusionprobabilities(runif(N),n)
-table <- rbind(table,LOOP_1D(SIM = SIM, pik,tore = TRUE))
-table <- round(rbind(table,LOOP_1D(SIM = SIM, pik,tore = FALSE)),3)
-
-nom <- c()
-for(i in 1:4){
-  nom <- c(nom,c(paste0("$B_",i,"$"),paste0("$I_{B_",i,"}$"),paste0("$I_{M_",i,"}$")))
-}
-rownames(table) <- nom
-
-library(magrittr)
+```{r, echo=FALSE}
+library(BalancedSampling)
 library(kableExtra)
+n1 <- 10
+n2 <- 20
+n3 <- 40
+n <- c(n1,n2,n3)
+N_meuse <- nrow(meuse)
 
-kable(table, format = "html", booktabs = T,escape = FALSE) %>%
-  add_header_above(c(" ", "Algorithms selection" = 6)) %>%
-  group_rows("pik equal, tore == TRUE",1,3)%>%
-  group_rows("pik equal, tore == FALSE", 4, 6)%>%
-  group_rows("pik unequal, tore == TRUE", 7, 9)%>%
-  group_rows("pik unequal, tore == FALSE", 10, 12) %>%
-		kable_styling(bootstrap_options = "striped",full_width = TRUE)
+
+pik_meuse <- list(rep(n1/N_meuse,N_meuse),
+               rep(n2/N_meuse,N_meuse),
+               rep(n3/N_meuse,N_meuse),
+               inclusionprobabilities(meuse$copper,n1),
+               inclusionprobabilities(meuse$copper,n2),
+               inclusionprobabilities(meuse$copper,n3))
+
+
+SIM <- 1
+
+s <- q <- W1<- W<- Ib <- Ib1 <- Sb <- rep(list(0),6)
+names(s) <- names(q) <- names(W) <-names(W1) <- names(Ib1) <- names(Ib) <- names(Sb) <-c("n1","n2","n3","n1_un","n2_un","n3_un")
+for(j in 1:length(s)){
+  Ib1[[j]] <- Ib[[j]] <- Sb[[j]] <- data.frame(matrix(rep(0,5*SIM),nrow = SIM,ncol =5))
+  colnames(Ib1[[j]]) <- colnames(Ib[[j]]) <- colnames(Sb[[j]]) <-  c("wave","lpm1","scps","srswor","grts")
+  s[[j]] <-  rep(list(0),5)
+  names(s[[j]]) <- c("wave","lpm1","scps","srswor","grts")
+  pikt <- UPMEpiktildefrompik(pik_meuse[[j]])
+  w_maxent <- pikt/(1-pikt)
+  q[[j]] <- UPMEqfromw(w_maxent,sum(pik_meuse[[j]]))
+}
+
+
+
+for(tt in 1:SIM){
+  for(j in 1:length(s)){
+    #W
+    W[[j]] <- wpik(X,pik_meuse[[j]])
+    W[[j]]  <-  W[[j]] - diag(diag(W[[j]]))
+    #W1
+    W1[[j]] <- wpik2(X,pik_meuse[[j]],tore = F,jitter = F,toreBound = 0)
+    #wave
+    s[[j]][[1]] <- as.vector(wave(X,pik_meuse[[j]],bound = 1,tore = F,jitter = F,oneD = F))
+
+    #lpm1
+    s[[j]][[2]] <- rep(0,N_meuse)
+    s[[j]][[2]][lpm1(pik_meuse[[j]],X)] <- 1
+
+    #scps
+    s[[j]][[3]] <- rep(0,N_meuse)
+    s[[j]][[3]][scps(pik_meuse[[j]],X)] <- 1
+
+    #srswor
+    # s[[i]][[j]][[4]] <- srswor(sum(pik[[i]][[j]]),N[[i]])
+    s[[j]][[4]] <- UPMEsfromq(q[[j]])
+
+    #grts
+    # s[[j]][[5]] <- GRTS(pik_meuse[[j]],X[,1],X[,2])
+    s[[j]][[5]] <- rep(0,N_meuse)
+    s[[j]][[5]][lpm2(pik_meuse[[j]],X)] <- 1
+    }
+
+  # fill Ib and Sb
+  for(j in 1:length(s)){
+    for(k in 1:length(s[[j]])){
+      Ib1[[j]][tt,k] <- IB(W1[[j]],s[[j]][[k]])
+      Ib[[j]][tt,k] <- IB(W[[j]],s[[j]][[k]])
+      Sb[[j]][tt,k] <- sb(pik_meuse[[j]],X,which(s[[j]][[k]] == 1))
+    }
+  }
+}
+
+
+
+
+datIbcsv <- datIb1csv <- datSbcsv <- data.frame()
+
+for(j in 1:length(Ib)){
+  datIbcsv_tmp <- Ib[[j]]
+  datIb1csv_tmp <- Ib1[[j]]
+  datSbcsv_tmp <- Sb[[j]]
+  datIbcsv_tmp$type <-  rep(paste(names(Ib)[j],sep = ":"),SIM)
+  datIb1csv_tmp$type <-  rep(paste(names(Ib1)[j],sep = ":"),SIM)
+  datSbcsv_tmp$type <-  rep(paste(names(Sb)[j],sep = ":"),SIM)
+  datIbcsv <- rbind(datIbcsv_tmp,datIbcsv)
+  datIb1csv <- rbind(datIb1csv_tmp,datIb1csv)
+  datSbcsv <- rbind(datSbcsv_tmp,datSbcsv)
+}
+
+
+Ib1 <- lapply(Ib1,colMeans)
+Ib <- lapply(Ib,colMeans)
+Sb <- lapply(Sb,colMeans)
+
+nom <- c(paste("$n =",n1,"$"),paste("$n =",n2,"$"),paste("$n =",n3,"$"))
+
+
+
+Ib1 <- cbind(data.frame(matrix(c(Ib1[[1]],Ib1[[2]],Ib1[[3]]),nrow = 3,byrow = T )),
+      data.frame(matrix(c(Ib1[[4]],Ib1[[5]],Ib1[[6]]),nrow = 3,byrow = T )))
+Ib1 <- cbind(nom,Ib1)
+# Ib1[[i]] <- cbind(rep(names(Ib1)[i],3),Ib1)
+
+
+Ib<- cbind(data.frame(matrix(c(Ib[[1]],Ib[[2]],Ib[[3]]),nrow = 3,byrow = T )),
+      data.frame(matrix(c(Ib[[4]],Ib[[5]],Ib[[6]]),nrow = 3,byrow = T )))
+Ib <- cbind(nom,Ib)
+# Ib[[i]] <- cbind(rep(names(Ib)[i],3),Ib[[i]])
+
+Sb <- cbind(data.frame(matrix(c(Sb[[1]],Sb[[2]],Sb[[3]]),nrow = 3,byrow = T )),
+      data.frame(matrix(c(Sb[[4]],Sb[[5]],Sb[[6]]),nrow = 3,byrow = T )))
+Sb <- cbind(nom,Sb)
+# Sb[[i]] <- cbind(rep(names(Sb)[i],3),Sb[[i]])
+
+colnames(Ib1) <-colnames(Ib) <- colnames(Sb) <-  c(" ","wave","lpm1","scps","srswor","grts","wave","lpm1","scps","maxent","grts")
+
+
+
+datmeuse <- rbind(Ib1,Ib,Sb)
 
 ```
 
 
+```{r,echo = FALSE}
 
-Results of 1000 simulations in two dimension on a regular grid. The population and sampling parameters are respectively equal to $N = 100$ and $n = 20$. 
-
-```{r,results='asis', echo=FALSE}
-
-LOOP_grid <- function(SIM,pik,sizeGrid){
-  N <- sizeGrid
-  x <- seq(1,N,1)
-  X <- as.matrix(expand.grid(x,x))
-  l <- data.frame()
-  sb_spread <- sb_lcube <- sb_lpm1 <- sb_lpm2 <- sb_scps <- c()
-  IB_spread <- IB_lcube <-IB_lpm1 <- IB_lpm2 <- IB_scps <- c()
-  IB2_spread <- IB2_lcube <- IB2_lpm1 <- IB2_lpm2 <- IB2_scps <-c()
-  for(i in 1:SIM){
-    # print(i)
-    # SPREADING ALGORITHM
-    s_spread <- wave(X,pik,tore = TRUE,jitter = FALSE,oneD = FALSE)
-    # s_spread <- spreadcube(X,pik,tore = TRUE,jitter = T)
-    s_spread_tmp <- which(s_spread == 1)
-
-    # LOCAL CUBE
-    s_lcube_tmp <- BalancedSampling::lcube(pik,X,cbind(pik))
-    s_lcube <- rep(0,N*N)
-    s_lcube[s_lcube_tmp] <- 1
-
-    # LPM1
-    s_lpm1_tmp <- BalancedSampling::lpm1(pik,X)
-    s_lpm1 <- rep(0,N*N)
-    s_lpm1[s_lpm1_tmp] <- 1
-
-    # LPM2
-    s_lpm2_tmp <- BalancedSampling::lpm2(pik,X)
-    s_lpm2 <- rep(0,N*N)
-    s_lpm2[s_lpm2_tmp] <- 1
-
-    # SCPS
-    s_scps_tmp <- BalancedSampling::scps(pik,X)
-    s_scps <- rep(0,N*N)
-    s_scps[s_scps_tmp] <- 1
-
-    # 1D Voronoi SEEN ON A TORE
-    sb_spread[i] <- BalancedSampling::sb(pik,X,s_spread_tmp)
-    sb_lcube[i] <- BalancedSampling::sb(pik,X,s_lcube_tmp)
-    sb_lpm1[i] <- BalancedSampling::sb(pik,X,s_lpm1_tmp)
-    sb_lpm2[i] <- BalancedSampling::sb(pik,X,s_lpm2_tmp)
-    sb_scps[i] <- BalancedSampling::sb(pik,X,s_scps_tmp)
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W <- wpik(X,pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = N)
-    W <- W- diag(diag(W))
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB_spread[i] <- IB(W,s_spread)
-    IB_lcube[i] <- IB(W,s_lcube)
-    IB_lpm1[i] <- IB(W,s_lpm1)
-    IB_lpm2[i] <- IB(W,s_lpm2)
-    IB_scps[i] <- IB(W,s_scps)
-
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W2 <- wpik2(X,pik,tore = TRUE,jitter = FALSE,toreBound = 0)
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB2_spread[i] <- IB(W2,s_spread)
-    IB2_lcube[i] <- IB(W2,s_lcube)
-    IB2_lpm1[i] <- IB(W2,s_lpm1)
-    IB2_lpm2[i] <- IB(W2,s_lpm2)
-    IB2_scps[i] <- IB(W2,s_scps)
-    # IB_grts[i] <- IB(W,s_grts)
-
-  }
-
-
-  l <- data.frame(wave = mean(sb_spread),
-            lcube = mean(sb_lcube),
-            lpm1 = mean(sb_lpm1),
-            lpm2 = mean(sb_lpm2),
-            scps = mean(sb_scps))
-  l[2,] <- c(wave = mean(IB_spread),
-            lcube = mean(IB_lcube),
-            lpm1 = mean(IB_lpm1),
-            lpm2 = mean(IB_lpm2),
-            scps = mean(IB_scps))
-
-  l[3,] <- c(wave = mean(IB2_spread),
-             lcube = mean(IB2_lcube),
-             lpm1 = mean(IB2_lpm1),
-             lpm2 = mean(IB2_lpm2),
-             scps = mean(IB2_scps))
-  rownames(l) = c("sb","IB","IB2")
-
-  return(l)
-}
-
-
-
-# EQUAL INCLUSION PROBABILITIES
-N <- 10
-n <- 20
-pik <- rep(n/(N*N),N*N)
-table <- LOOP_grid(SIM = 10,pik,sizeGrid = N)
-
-# UNEQUAL INCLUSION PROBABILITIES
-pik <- sampling::inclusionprobabilities(runif(N*N),n)
-table <- round(rbind(table,LOOP_grid(SIM = 10,pik,sizeGrid = N)),3)
-
-
-nom <- c()
-for(i in 1:2){
-  nom <- c(nom,c(paste0("$B_",i,"$"),paste0("$I_{B_",i,"}$"),paste0("$I_{M_",i,"}$")))
-}
-rownames(table) <- nom
-
-
-knitr::kable(table, format = "html", booktabs = T,escape = FALSE) %>%
-  add_header_above(c(" ", "Algorithms selection" = 5)) %>%
-  group_rows("pik equal, tore == TRUE",1,3)%>%
-  group_rows("pik unequal, tore == TRUE", 4, 6) %>%
-		kable_styling(latex_options = c("hold_position"))
-
-```
-
-
-Results of 1000 simulations in two dimension on a random uniform data. The population and sampling parameters are respectively equal to $N = 100$ and $n = 20$.
-
-```{r,echo=FALSE,results='asis'}
-
-LOOP_runif <- function(SIM,pik,sizePop){
-  N <- sizePop
-  X <- as.matrix(cbind(runif(N),runif(N)))
-  # l <- list()
-  l <- data.frame()
-  sb_spread <- sb_lcube <- sb_lpm1 <- sb_lpm2 <- sb_scps <-  c()
-  IB_spread <- IB_lcube <- IB_lpm1 <- IB_lpm2 <- IB_scps <- c()
-  IB2_spread <- IB2_lcube <- IB2_lpm1 <- IB2_lpm2 <- IB2_scps <- c()
-  for(i in 1:SIM){
-
-    # print(i)
-
-    # SPREADING ALGORITHM
-    s_spread <- wave(X,pik,tore = FALSE,jitter = FALSE,oneD = F)
-    # s_spread <- spreadcube(X,pik,tore = FALSE,jitter = FALSE)
-    s_spread_tmp <- which(s_spread == 1)
-
-    #GRTS
-    # s_grts <- GRTS(pik,x = X[,1],y = X[,2])
-    # S_grts_tmp <- which(s_grts == 1)
-
-    # LOCAL CUBE
-    s_lcube_tmp <- BalancedSampling::lcube(pik,X,cbind(pik))
-    s_lcube <- rep(0,N)
-    s_lcube[s_lcube_tmp] <- 1
-
-    # LPM1
-    s_lpm1_tmp <- BalancedSampling::lpm1(pik,X)
-    s_lpm1 <- rep(0,N)
-    s_lpm1[s_lpm1_tmp] <- 1
-
-    # LPM2
-    s_lpm2_tmp <- BalancedSampling::lpm2(pik,X)
-    s_lpm2 <- rep(0,N)
-    s_lpm2[s_lpm2_tmp] <- 1
-
-    # SCPS
-    s_scps_tmp <- BalancedSampling::scps(pik,X)
-    s_scps <- rep(0,N)
-    s_scps[s_scps_tmp] <- 1
-
-
-    # 1D Voronoi SEEN ON A TORE
-    sb_spread[i] <- BalancedSampling::sb(pik,X,s_spread_tmp)
-    sb_lcube[i] <- BalancedSampling::sb(pik,X,s_lcube_tmp)
-    sb_lpm1[i] <- BalancedSampling::sb(pik,X,s_lpm1_tmp)
-    sb_lpm2[i] <- BalancedSampling::sb(pik,X,s_lpm2_tmp)
-    sb_scps[i] <- BalancedSampling::sb(pik,X,s_scps_tmp)
-    # sb_grts[i] <- BalancedSampling::sb(pik,X,S_grts_tmp)
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W <- wpik(X,pik,bound = 1,tore = FALSE,jitter = FALSE,toreBound = 0)
-    W <- W- diag(diag(W))
-
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB_spread[i] <- IB(W,s_spread)
-    IB_lcube[i] <- IB(W,s_lcube)
-    IB_lpm1[i] <- IB(W,s_lpm1)
-    IB_lpm2[i] <- IB(W,s_lpm2)
-    IB_scps[i] <- IB(W,s_scps)
-    # IB_grts[i] <- IB(W,s_grts)
-
-    # WEIGHTS MATRIX OF POSITION (SAME FOR ALL SAMPLE)
-    W2 <- wpik2(X,pik,tore = FALSE,jitter = FALSE,toreBound = 0)
-  
-
-    # CALCULATION OF THE SPREADING MEASURE MORAN INDEX
-    IB2_spread[i] <- IB(W2,s_spread)
-    IB2_lcube[i] <- IB(W2,s_lcube)
-    IB2_lpm1[i] <- IB(W2,s_lpm1)
-    IB2_lpm2[i] <- IB(W2,s_lpm2)
-    IB2_scps[i] <- IB(W2,s_scps)
-    # IB_grts[i] <- IB(W,s_grts)
-
-  }
-
-  l <- data.frame(wave = mean(sb_spread),
-            lcube = mean(sb_lcube),
-            lpm1 = mean(sb_lpm1),
-            lpm2 = mean(sb_lpm2),
-            scps = mean(sb_scps))
-  l[2,] <- c(wave = mean(IB_spread),
-            lcube = mean(IB_lcube),
-            lpm1 = mean(IB_lpm1),
-            lpm2 = mean(IB_lpm2),
-            scps = mean(IB_scps))
-
-  l[3,] <- c(wave = mean(IB2_spread),
-             lcube = mean(IB2_lcube),
-             lpm1 = mean(IB2_lpm1),
-             lpm2 = mean(IB2_lpm2),
-             scps = mean(IB2_scps))
-  rownames(l) = c("sb","IB","IB2")
-
-  return(l)
-}
-
-
-
-# EQUAL INCLUSION PROBABILITIES
-
-N <- 100
-n <- 20
-pik <- rep(n/N,N)
-table <- LOOP_runif(SIM = 10,pik,sizePop = N)
-
-# UNEQUAL INCLUSION PROBABILITIES
-pik <- sampling::inclusionprobabilities(runif(N),n)
-table <- round(rbind(table,LOOP_runif(SIM = 10,pik,sizePop = N)),3)
-
-nom <- c()
-for(i in 1:2){
-  nom <- c(nom,c(paste0("$B_",i,"$"),paste0("$I_{B_",i,"}$"),paste0("$I_{M_",i,"}$")))
-}
-rownames(table) <- nom
-
-
-knitr::kable(table, format = "html", booktabs = T,escape = FALSE) %>%
-  add_header_above(c(" ", "Algorithms selection" = 5)) %>%
-  group_rows("Equal prob. tore measure",1,3)%>%
-  group_rows("Unequal prob. tore measure", 4, 6) %>%
-		kable_styling(latex_options = c("hold_position"))
+kable(datmeuse, format = "html",digits = 3, booktabs = T, caption = paste0("Results of ",SIM," simulations on the Meuse dataset. The population size is equal to ",N_meuse,"."),row.names = FALSE,escape = FALSE)%>%
+ add_header_above(c(" " = 1,"Equal probabilities" = 5, "Unequal probabilities" = 5),escape = F) %>%
+ add_header_above(c(" " = 1,"Sampling design" = 10)) %>%
+ # add_footnote(c("$\\pi_k = \\pi = n/N$","for all $j\\neq k, \\pi_k \\neq \\pi_j$  and $\\sum_{k \\in U} \\pi_k = n$"),escape = F,notation = "symbol") %>%
+ group_rows("$I_{B_1}$",1,3,escape = F,bold = F,latex_gap_space = "1em")%>%
+ group_rows("$I_B$",4,6,escape = F,bold = F,latex_gap_space = "1em")%>%
+ group_rows("$B$",7,9,escape = F,bold = F,latex_gap_space = "1em") %>%
+ kable_styling(latex_options = c("hold_position"))
 
 ```
 
