@@ -26,7 +26,7 @@ Geographical data are generally autocorrelated. This is why it is preferable to 
 
 ## Data generation
 
-We use the data set `meuse` from the package `sp` describe by the following statement. "This data set gives locations and topsoil heavy metal concentrations, along with a number of soil and landscape variables at the observation locations, collected in a flood plain of the river Meuse, near the village of Stein (NL)". We proposed to generate the inclusion probabilities proportional to the copper concentration. As it is explained by @grafstrom:tille:2013, this data set has a strong spatial correlation.
+We use the data set `meuse` from the package `sp`, describe by the following statement. *This data set gives locations and topsoil heavy metal concentrations, along with a number of soil and landscape variables at the observation locations, collected in a flood plain of the river Meuse, near the village of Stein (NL)*. As it is explained by @grafstrom:tille:2013, we proposed to generate the inclusion probabilities proportional to the copper concentration, a variable that have a strong spatial correlation.
 
 ```{r}
 # install.packages(sp)
@@ -155,9 +155,19 @@ meuse$v <- v
 p <- p + geom_voronoi(data = meuse[which(s == 1),],
                aes(x = x,y = y,fill = v),
                outline =as.data.frame(meuse.area),
-               size = 0.1,alpha = 0.8,
+               size = 0.1,
                colour = "black")+
-  scale_fill_viridis_c()
+  geom_point(data = meuse,
+             aes(x = x,y = y,size = copper),
+             shape = 1,
+             stroke = 0.3)+
+  geom_point(data = meuse[which(s == 1),],
+             aes(x = x,y = y,size = copper),
+             shape = 16)+
+  # scale_fill_viridis_c()
+  scale_fill_gradient2(low = "firebrick4", mid = "white",
+  high = "midnightblue", midpoint = 1, space = "Lab",
+  na.value = "grey50", guide = "colourbar", aesthetics = "fill")
 p
 
 ```
@@ -166,7 +176,7 @@ p
 
 ### Moran index
 
-Another way of estimating the spatial balance is developped by @tille:dickson:2018, it uses a corrected version of the traditional Moran's $I$ index. This estimator use spatial weights $w_{ij}$ that indicates how a unit $i$ is close from the unit $j$. Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix $\bf W$ is generally not symmetric. The spatial balance measure is given by
+Another way to estimate the spatial spread is developped by @tille:dickson:2018, it uses a corrected version of the traditional Moran's $I$ index. This estimator use spatial weights $w_{ij}$ that indicates how a unit $i$ is close from the unit $j$. Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix $\bf W$ is generally not symmetric. The spatial balance measure is given by
 
 $$ I_B =\frac{(\bf s-\bf \bar{s}_w)^\top \bf W (\bf s-\bf \bar{s}_w)}{\sqrt{(\bf s-\bf \bar{s}_w)^\top \bf D (\bf s-\bf \bar{s}_w) (\bf s-\bf \bar{s}_w)^\top \bf B (\bf s-\bf \bar{s}_w) }}, $$
 where $\bf D$ is the diagonal matrix containing the $w_i$, 
@@ -209,7 +219,7 @@ pik_meuse <- list(rep(n1/N_meuse,N_meuse),
                inclusionprobabilities(meuse$copper,n3))
 
 
-SIM <- 1
+SIM <- 100
 
 s <- q <- W1<- W<- Ib <- Ib1 <- Sb <- rep(list(0),6)
 names(s) <- names(q) <- names(W) <-names(W1) <- names(Ib1) <- names(Ib) <- names(Sb) <-c("n1","n2","n3","n1_un","n2_un","n3_un")
