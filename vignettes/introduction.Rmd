@@ -219,7 +219,7 @@ pik_meuse <- list(rep(n1/N_meuse,N_meuse),
                inclusionprobabilities(meuse$copper,n3))
 
 
-SIM <- 100
+SIM <- 1
 
 s <- q <- W1<- W<- Ib <- Ib1 <- Sb <- rep(list(0),6)
 names(s) <- names(q) <- names(W) <-names(W1) <- names(Ib1) <- names(Ib) <- names(Sb) <-c("n1","n2","n3","n1_un","n2_un","n3_un")
