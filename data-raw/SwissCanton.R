@@ -48,3 +48,10 @@ SwissLake$GMDNAME <- gsub("ä","a",SwissLake$GMDNAME)
 # SwissLake$GMDNAME[(grepl("[[:cntrl:]]", stringi::stri_enc_toascii(SwissLake$GMDNAME)))]
 usethis::use_data(SwissLake)
 
+
+
+STATENT2017 <- read.csv("C:/Users/jauslinr/switchdrive/SwissDATA/STATENT2017_N08_V190822G.csv")
+STATENT2017 <- STATENT2017[which(STATENT2017$B1708EMPT > 50 & STATENT2017$B1708EMPT <= 100 ),]
+usethis::use_data(STATENT2017,overwrite = TRUE)
+
+

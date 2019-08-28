@@ -7,14 +7,14 @@
 \title{Swiss commune boundaries}
 \format{A \code{\link[sf]{sf}} object with 2215 rows and 26 variables:
 \describe{
-  \item{GMDHISTID}{...}
-  \item{GMDNR}{...}
-  \item{GMDNAME}{...}
-  \item{BZHISTID}{...}
-  \item{BZNR}{...}
-  \item{KTNR}{...}
-  \item{GRNR}{...}
-  \item{AREA_HA}{Anonymized Mechanical Turk Worker ID}
+  \item{GMDHISTID}{Identification number of the commune.}
+  \item{GMDNR}{Commune number.}
+  \item{GMDNAME}{Commune name.}
+  \item{BZHISTID}{Identifaction number of the district.}
+  \item{BZNR}{District number.}
+  \item{KTNR}{Canton number.}
+  \item{GRNR}{Region number.}
+  \item{AREA_HA}{Area of the considered territory.}
   \item{E_MIN}{minimum E coordinate of the territory [m] according to MN95.}
   \item{E_MAX}{maximum E coordinate of the territory [m] according to MN95.}
   \item{N_MIN}{minimum N coordinate of the territory [m] according to MN95.}
@@ -32,7 +32,7 @@
   \item{Y_MAX}{maximum x coordinate of the territory [m] according to MN03.}
   \item{X_CNTR}{hectometric coordinate x of the central coordinates according to MN03. }
   \item{Y_CNTR}{hectometric coordinate y of the central coordinates according to MN03.}
-  \item{geometry}{Trial number, from 1..NNN}
+  \item{geometry}{geometry considered}
 }}
 \source{
 \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}

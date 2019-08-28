@@ -7,9 +7,9 @@
 \title{Swiss lakes boundaries}
 \format{A \code{\link[sf]{sf}} object with 23 rows and 16 variables:
 \describe{
-  \item{GMDNR}{...}
-  \item{GMDNAME}{...}
-  \item{SEE_HA}{Anonymized Mechanical Turk Worker ID}
+  \item{GMDNR}{Commune number.}
+  \item{GMDNAME}{Commune name.}
+  \item{SEE_HA}{Area of the lake.}
   \item{X_MIN}{minimum x coordinate of the territory [m] according to MN03.}
   \item{X_MAX}{maximum x coordinate of the territory [m] according to MN03.}
   \item{Y_MIN}{minimum x coordinate of the territory [m] according to MN03.}
@@ -22,7 +22,7 @@
   \item{N_MAX}{maximum N coordinate of the territory [m] according to MN95.}
   \item{E_CNTR}{hectometric coordinate E of the central coordinates according to MN95.}
   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}  
-  \item{geometry}{Trial number, from 1..NNN}
+  \item{geometry}{geometry consiered}
 }}
 \source{
 \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}

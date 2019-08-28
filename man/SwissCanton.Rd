@@ -7,10 +7,10 @@
 \title{Swiss canton boundaries}
 \format{An \code{\link[sf]{sf}} object with 26 rows and 21 variables
 \itemize{
-  \item{KTNR}{Anonymized Mechanical Turk Worker ID}
-  \item{KTNAME}{Anonymized Mechanical Turk Worker ID}
-  \item{GRNR}{Anonymized Mechanical Turk Worker ID}
-  \item{AREA_HA}{Anonymized Mechanical Turk Worker ID}
+  \item{KTNR}{Canton number.}
+  \item{KTNAME}{Canton name.}
+  \item{GRNR}{Region number.}
+  \item{AREA_HA}{Area of the considered territory.}
   \item{X_MIN}{minimum x coordinate of the territory [m] according to MN03.}
   \item{X_MAX}{maximum x coordinate of the territory [m] according to MN03.}
   \item{Y_MIN}{minimum x coordinate of the territory [m] according to MN03.}
@@ -27,7 +27,7 @@
   \item{N_MAX}{maximum N coordinate of the territory [m] according to MN95.}
   \item{E_CNTR}{hectometric coordinate E of the central coordinates according to MN95.}
   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}
-  \item{geometry}{Trial number, from 1..NNN}
+  \item{geometry}{geometry considered}
 }}
 \source{
 \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}

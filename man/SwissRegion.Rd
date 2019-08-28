@@ -7,9 +7,9 @@
 \title{Swiss region boundaries}
 \format{A \code{\link[sf]{sf}} object with 7 rows and 20 variables:
 \describe{
-  \item{GRNR}{...}
-  \item{GRNAME}{...}
-  \item{AREA_HA}{Anonymized Mechanical Turk Worker ID}
+  \item{GRNR}{Region number.}
+  \item{GRNAME}{Region name.}
+  \item{AREA_HA}{Area of the considered territory.}
   \item{X_MIN}{minimum x coordinate of the territory [m] according to MN03.}
   \item{X_MAX}{maximum x coordinate of the territory [m] according to MN03.}
   \item{Y_MIN}{minimum x coordinate of the territory [m] according to MN03.}
@@ -26,7 +26,7 @@
   \item{N_MAX}{maximum N coordinate of the territory [m] according to MN95.}
   \item{E_CNTR}{hectometric coordinate E of the central coordinates according to MN95.}
   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}  
-  \item{geometry}{Trial number, from 1..NNN}
+  \item{geometry}{geometry considered}
 }}
 \source{
 \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}
