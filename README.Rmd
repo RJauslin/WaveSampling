@@ -26,7 +26,7 @@ You can install the released version of wave from GitHub
 devtools::install_github("Rjauslin/wave")
 ```
 
-## Example
+## Simple example
 
 This is a basic example which shows you how to solve a common problem. Firtly we need to generate the spatial coordinates. We then create randomly uniform coordinates from the function `runif()`,
 
@@ -39,34 +39,68 @@ X <- cbind(runif(N),runif(N))
 head(X,10)
 ```
 
-Now we need the inclusion probabilities `pik`. Hence, we generate a vector `pik_equal` that have all the same values with the function `rep()`.
+Now we need the inclusion probabilities `pik`. Hence, we generate a vector `pik` that have all the same values with the function `rep()`.
 
 ```{r}
-pik_equal <- rep(n/N,times = N)
+pik <- rep(n/N,times = N)
 ```
 
 
 All that is left, is to use the function `wave()`.
 
 ```{r}
-s_equal <- wave(X,pik_equal)
+s <- wave(X,pik)
 ```
 
 We can also generate a plot to see
 
-```{r, fig.show='hold',fig.align='center'}
+```{r, fig.show='hold',fig.align='center',fig.height=10,fig.width=10}
 library(ggplot2)
 ggplot() +
   geom_point(data = data.frame(x = X[,1],y = X[,2]),
              aes(x = x,y = y),
-             pch = 1,
+             shape = 1,
              alpha = 0.2)+
-  geom_point(data = data.frame(x = X[s_equal == 1,1],y = X[s_equal == 1,2]),
+  geom_point(data = data.frame(x = X[s == 1,1],y = X[s == 1,2]),
              aes(x,y),
+             shape = 16,
              colour = "black")+
-  theme_light()+
+  theme_minimal()+
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank())
 
 ```
+
+## Real example
+
+The `wave` package contains 
+
+```{r}
+library(sf)
+library(raster)
+data("STATENT2017")
+data("SwissRegion")
+data("SwissLake")
+
+```
+
+
+
+```{r,fig.height=10,fig.width=10}
+
+R1 <- SwissRegion[1,]
+STATENT2017_R1 <- rasterFromXYZ(STATENT2017,
+              crs = CRS("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs"))
+STATENT2017_R1 <- mask(STATENT2017_R1,R1)
+STATENT2017_R1  <-  as(STATENT2017_R1,"SpatialPixelsDataFrame")
+STATENT2017_R1 <- as.data.frame(STATENT2017_R1)
+
+ggplot() +
+  geom_sf(data = R1,fill = "transparent")+
+  geom_point(data = STATENT2017_R1,aes(x = x,y = y))+
+  theme_light()
+
+```
+
+
 
