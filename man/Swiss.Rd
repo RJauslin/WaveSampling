@@ -5,7 +5,7 @@
 \name{Swiss}
 \alias{Swiss}
 \title{Swiss country boundaries}
-\format{A data frame with NNNN rows and NN variables:
+\format{A \code{\link[sf]{sf}} object with 1 rows and 19 variables:
 \describe{
   \item{CODE_ISO}{...}
   \item{X_MIN}{minimum x coordinate of the territory [m] according to MN03.}
@@ -27,11 +27,13 @@
   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}
   \item{geometry}{Trial number, from 1..NNN}
 }}
+\source{
+\url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}
+}
 \usage{
 Swiss
 }
 \description{
-This is data from the first experiment ever to try XYZ using Mechanical
-Turk workers.
+\code{\link[sf]{sf}} sf object that represent the boundaries of the Switzerland.
 }
 \keyword{datasets}

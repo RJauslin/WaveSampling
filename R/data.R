@@ -1,9 +1,8 @@
 #' Swiss canton boundaries
-#'
-#' This is data from the first experiment ever to try XYZ using Mechanical
-#' Turk workers.
 #' 
-#' @format A data frame with 26 rows and 21 variables
+#' \code{\link[sf]{sf}} sf object that represent the boundaries of the canton of the Switzerland. 
+#' 
+#' @format An \code{\link[sf]{sf}} object with 26 rows and 21 variables
 #' \itemize{
 #'   \item{KTNR}{Anonymized Mechanical Turk Worker ID}
 #'   \item{KTNAME}{Anonymized Mechanical Turk Worker ID}
@@ -27,14 +26,15 @@
 #'   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}
 #'   \item{geometry}{Trial number, from 1..NNN}
 #' }
+#' @source \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}
+#' @encoding UTF-8  
 "SwissCanton"
 
 #' Swiss country boundaries
 #'
-#' This is data from the first experiment ever to try XYZ using Mechanical
-#' Turk workers.
+#' \code{\link[sf]{sf}} sf object that represent the boundaries of the Switzerland.
 #' 
-#' @format A data frame with NNNN rows and NN variables:
+#' @format A \code{\link[sf]{sf}} object with 1 rows and 19 variables:
 #' \describe{
 #'   \item{CODE_ISO}{...}
 #'   \item{X_MIN}{minimum x coordinate of the territory [m] according to MN03.}
@@ -56,5 +56,7 @@
 #'   \item{N_CNTR}{hectometric coordinate N of the central coordinates according to MN95.}
 #'   \item{geometry}{Trial number, from 1..NNN}
 #' }
+#' 
+#' @source \url{https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.html}
 #' @encoding UTF-8  
 "Swiss"
