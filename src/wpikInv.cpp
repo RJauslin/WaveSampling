@@ -9,7 +9,7 @@ using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
-//' @title Spatial weights from inclusion probabilities
+//' @title Spatial weights from inverse inclusion probabilities
 //'
 //' @description
 //'
@@ -54,7 +54,7 @@ using namespace std;
 //' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
 //' 
 //' @seealso
-//' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+//' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 //' @examples
 //' \dontrun{
 //' X <- cbind(runif(1000),runif(1000))
@@ -63,12 +63,12 @@ using namespace std;
 //' for(i in 1:1000){
 //'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 //' }
-//' system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+//' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
 //' }
 //' 
 //' @export
 // [[Rcpp::export]]
-arma::sp_mat wpik2(arma::mat X,
+arma::sp_mat wpikInv(arma::mat X,
                   arma::vec pik,
                   bool tore = false,
                   bool jitter = false,

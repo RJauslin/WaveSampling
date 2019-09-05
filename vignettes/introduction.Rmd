@@ -149,7 +149,7 @@ library(ggvoronoi)
 data("meuse")
 data("meuse.area")
 
-v <- sbAll(pik,as.matrix(meuse[,1:2]),s = which(s == 1))
+v <- sbAll(pik,as.matrix(meuse[,1:2]),s = s)
 meuse$v <- v
 
 p <- p + geom_voronoi(data = meuse[which(s == 1),],
@@ -165,9 +165,7 @@ p <- p + geom_voronoi(data = meuse[which(s == 1),],
              aes(x = x,y = y,size = copper),
              shape = 16)+
   # scale_fill_viridis_c()
-  scale_fill_gradient2(low = "firebrick4", mid = "white",
-  high = "midnightblue", midpoint = 1, space = "Lab",
-  na.value = "grey50", guide = "colourbar", aesthetics = "fill")
+  scale_fill_gradient2(midpoint = 1)
 p
 
 ```
@@ -184,7 +182,7 @@ $$\bf \bar{s}_w = \bf 1 \frac{\bf s^\top \bf W \bf 1}{\bf 1^\top \bf W \bf 1},$$
 and 
 $$\bf B = \bf W^\top \bf D^{-1} \bf W - \frac{\bf W^\top \bf 1\bf 1^\top \bf W}{\bf1^\top \bf W \bf 1}.$$
 
-The Moran's $I$ index is implemented in the function `IB()`. It is possible to specifiy your own spatial weights with the argument `W`. There is no natural way of defining $\bf W$, here we propose to consider for each unit only the neighbour such that the sum of the inclusion probabilities of the stratum sum up to 1. It is implemented in the function `wpik()`. Another way of estimating the spatial weights is developped by @tille:dickson:2018 and use the inverse of the inclusion probabilities $1/\pi_i$ to estimate the neighbours of the unit $i$. It is implemented in the function `wpik2()`.
+The Moran's $I$ index is implemented in the function `IB()`. It is possible to specifiy your own spatial weights with the argument `W`. There is no natural way of defining $\bf W$, here we propose to consider for each unit only the neighbour such that the sum of the inclusion probabilities of the stratum sum up to 1. It is implemented in the function `wpik()`. Another way of estimating the spatial weights is developped by @tille:dickson:2018 and use the inverse of the inclusion probabilities $1/\pi_i$ to estimate the neighbours of the unit $i$. It is implemented in the function `wpikInv()`.
 
 ```{r}
 
@@ -241,7 +239,7 @@ for(tt in 1:SIM){
     W[[j]] <- wpik(X,pik_meuse[[j]])
     W[[j]]  <-  W[[j]] - diag(diag(W[[j]]))
     #W1
-    W1[[j]] <- wpik2(X,pik_meuse[[j]],tore = F,jitter = F,toreBound = 0)
+    W1[[j]] <- wpikInv(X,pik_meuse[[j]],tore = F,jitter = F,toreBound = 0)
     #wave
     s[[j]][[1]] <- as.vector(wave(X,pik_meuse[[j]],bound = 1,tore = F,jitter = F,oneD = F))
 

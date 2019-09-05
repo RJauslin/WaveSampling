@@ -26,7 +26,7 @@ This function implements for one dimension case the spatial balance developped b
 It replace the Voronoï polygons by intervals.
 }
 \details{
-Implement the one dimension spatial balance \code{\link[BalancedSampling:sb]{BalancedSampling::sb()}}. For each intervals of the sampling units,
+Implement the one dimension spatial balance \code{\link[BalancedSampling:sb]{sb()}}. For each intervals of the sampling units,
 it calculates the subtraction between the sum of the inclusion probabilities and 1.
 Mathematically this gives,
 
@@ -107,7 +107,7 @@ Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natur
 \emph{Journal of the American Statistical Association 99, 262-278}
 }
 \seealso{
-\code{\link[BalancedSampling:sb]{BalancedSampling::sb}}
+\code{\link[BalancedSampling:sb]{sb}}
 }
 \author{
 Raphaël Jauslin \email{raphael.jauslin@unine.ch}

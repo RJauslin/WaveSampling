@@ -1,11 +1,11 @@
-#ifndef wpik2_H
-#define wpik2_H
+#ifndef wpikInv_H
+#define wpikInv_H
 
 
 #include "distUnitk.h"
 #include <RcppArmadillo.h>
 
-arma::sp_mat wpik2(arma::mat X,
+arma::sp_mat wpikInv(arma::mat X,
                   arma::vec pik,
                   bool tore,
                   bool jitter,

@@ -97,6 +97,7 @@ STATENT2017_R1 <- as.data.frame(STATENT2017_R1)
 
 ggplot() +
   geom_sf(data = R1,fill = "transparent")+
+  
   geom_point(data = STATENT2017_R1,aes(x = x,y = y))+
   theme_light()
 

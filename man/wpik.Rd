@@ -74,7 +74,7 @@ Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spat
 \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
 }
 \seealso{
-\code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+\code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 }
 \author{
 Raphaël Jauslin \email{raphael.jauslin@unine.ch}

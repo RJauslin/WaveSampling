@@ -66,106 +66,6 @@ IB <- function(W, s) {
     .Call(`_wave_IB`, W, s)
 }
 
-#' @encoding UTF-8
-#' @title Iterative proportional fitting procedure (IPFP) or raking ratio.
-#' 
-#' @description
-#' Iterative proportional fitting procedure (IPFP) implemented for sparse Matrix.
-#'
-#' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
-#' @param bh a vector representing the row margin.
-#' @param bi a vector representing the columm margin.
-#' @param maxiter an integer indicating the maximum iterations allowed.
-#' @param tol a real value that the error should reach before stopped.
-#' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
-#' 
-#' @return sparse matrix \code{A} adjusted.
-#' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
-#' 
-#' @references
-#' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
-#' 
-#' 
-#' @examples
-#' \dontrun{
-#' X <- as.matrix(cbind(runif(1000),runif(1000)))
-#'   pik <- rep(1/5,1000)
-#'   A <- wpik(X,pik,bound = 1,tore = FALSE,jitter = FALSE,toreBound = 0.0)
-#'   A <- A+t(A)
-#'   isSymmetric(A)
-#'   
-#'   A1 <- IPFP(A,bh = rep(1,nrow(A)),
-#'             bi = rep(1,nrow(A)),
-#'             maxiter = 1000,
-#'             tol = 1e-4,
-#'             comment = TRUE)
-#'   A2 <- IPFPsym(A,bh = rep(1,nrow(A)),
-#'             bi = rep(1,nrow(A)),
-#'             maxiter = 4000,
-#'             tol = 1e-4,
-#'             comment = TRUE) # takes more iterations because the symmetric structure is kept.
-#'   rowSums(A1)
-#'   rowSums(A2)
-#'   colSums(A1)
-#'   colSums(A2)
-#'   
-#'   isSymmetric(A1) # not symmetric
-#'   isSymmetric(A2) # symmetric
-#' }
-#' 
-NULL
-
-#' @encoding UTF-8
-#' @title Iterative proportional fitting procedure (IPFP) or raking ratio for symmetric sparse matrix.
-#' 
-#' @description
-#' Iterative proportional fitting procedure (IPFP) implemented for sparse matrix.
-#'
-#' @param A a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}.
-#' @param bh a vector representing the row margin.
-#' @param bi a vector representing the columm margin.
-#' @param maxiter an integer indicating the maximum iterations allowed.
-#' @param tol a real value that the error should reach before stoped.
-#' @param comment an optional logical value, indicating some informations during the execution. Default is FALSE.
-#' 
-#' @return sparse matrix \code{A} adjusted.
-#' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
-#' 
-#' @references
-#' Tillé, Y. (2019). \emph{Théorie des sondages : Échantillonage et estimation en populations finies} (2e édition ed.). Paris: Dunod
-#' 
-#' 
-#' @examples
-#' \dontrun{
-#'   X <- as.matrix(cbind(runif(1000),runif(1000)))
-#'   pik <- rep(1/5,1000)
-#'   A <- wpik(X,pik,bound = 1,tore = FALSE,jitter = FALSE,toreBound = 0.0)
-#'   A <- A+t(A)
-#'   isSymmetric(A)
-#'   
-#'   A1 <- IPFP(A,bh = rep(1,nrow(A)),
-#'             bi = rep(1,nrow(A)),
-#'             maxiter = 1000,
-#'             tol = 1e-4,
-#'             comment = TRUE)
-#'   A2 <- IPFPsym(A,bh = rep(1,nrow(A)),
-#'             bi = rep(1,nrow(A)),
-#'             maxiter = 4000,
-#'             tol = 1e-4,
-#'             comment = TRUE) # takes more iterations because the symmetric structure is kept.
-#'   rowSums(A1)
-#'   rowSums(A2)
-#'   colSums(A1)
-#'   colSums(A2)
-#'   
-#'   isSymmetric(A1) # not symmetric
-#'   isSymmetric(A2) # symmetric
-#' }
-#'
-NULL
-
 #' @title Square of the euclidean distance of the unit k.
 #'
 #' @description
@@ -255,18 +155,6 @@ distUnitk <- function(X, k, tore, toreBound) {
 #' }
 NULL
 
-#' @encoding UTF-8
-#' @title QR arma used in wave
-#' @param A matrix
-#' @return A list
-NULL
-
-#' @encoding UTF-8
-#' @title SVD arma used in wave
-#' @param A matrix
-#' @return A list
-NULL
-
 #' @title Column sums for sparseMatrix
 #'
 #' @description
@@ -324,65 +212,55 @@ NULL
 NULL
 
 #' @encoding UTF-8
-#' @title Weakly associated vectors sampling
-#'
+#' @title Spatial balance vk
+#' 
 #' @description
-#'
-#' Select a spread spatial samples from inclusion probabilities using the weakly associated vectors sampling method.  
-#'
-#' @param X matrix of size N x 2 representing the spatial coordinates. 
+#' 
+#' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
+#' 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param bound a scalar representing the bound to reach. See Details. Default is 1.
-#' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details. Default is \code{FALSE}.
-#' @param oneD an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.
-#' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
-#'
+#' @param X matrix of size N x 2 representing the spatial coordinates.
+#' @param s A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
+#' 
 #' @details
-#' Weakly associated vectors sampling find the vector \eqn{\bf u} that is
-#' the weakest associated vector of the linear transformations generated by a contiguity table \eqn{ \bf W}.
-#' The matrix \eqn{\bf W} is calculated from the matrix of coordinates \eqn{\bf X} by the function \code{\link{wpik}}.
-#' The vector \eqn{\bf u} is calculated from a singular value decompositon or a QR decomposition depending on the rank of the matrix 
-#' \eqn{\bf W}.
 #' 
-#' The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and the matrix \eqn{\bf W} following the cube 
-#' method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
-#' used in spatial sampling by Grafström and Tillé (2013).
+#' The spatial balance measure based on the Voronoï polygons is defined by 
 #' 
-#' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
+#' \deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 }.
 #' 
-#' For more informations on the option \code{jitter}, see \code{\link{wpik}}.
-#'
-#' @return A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
+#' The function return the \eqn{v_k} values. The function is based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling}.
+#' 
+#' @return A vector of size N with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
-#' Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube method. Biometrika, 91(4), 893-912
 #' 
-#' Chauvet, G. and Tillé, Y. (2006). A fast algorithm for balanced sampling. Computational Statistics, 21(1), 53-62
+#' Grafström, A., Lundström, N.L.P. and Schelin, L. (2012). Spatially balanced sampling through the Pivotal method. 
+#' \emph{Biometrics}, 68(2), 514-520
 #' 
-#' Grafström, A. and Tillé, Y. (2013). Doubly balanced spatial sampling with spreading and restitution of auxiliary totals. Environmetrics, 24(2), 120-131
+#' Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natural resources.
+#' \emph{Journal of the American Statistical Association 99, 262-278}
 #' 
 #' @seealso
-#' \code{\link{wpik}}, \code{\link{distUnitk}}.
+#' \code{\link[BalancedSampling:sb]{sb}}
 #' 
 #' 
 #' @examples
 #' \dontrun{
-#'   N <- 36 # 6 x 6 grid
-#'   n <- 12 # number of unit selected
-#'   x <- seq(1,sqrt(N),1)
-#'   X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
-#'   pik <- rep(n/N,N)
-#'   s <- wave(X,pik, tore = TRUE,jitter = FALSE)
-#'   plot(X)
-#'   points(X[s == 1,],pch = 16)
+#' X <- as.matrix(cbind(runif(50),runif(50)))
+#' pik <- rep(10/50,50)
+#' pik <- inclusionprobabilities(runif(50),10)
+#' s <- wave(X,pik)
+#' v <- sb_vk(pik,X,s)
+#' 1/10*sum((v[which(v != 0)]-1)^2)
+#' BalancedSampling::sb(pik,X,which(s == 1))
 #' }
 #' 
-#' 
-#' 
-NULL
+#' @export
+sb_vk <- function(pik, X, s) {
+    .Call(`_wave_sb_vk`, pik, X, s)
+}
 
 #' @encoding UTF-8
 #' @title Weakly associated vectors sampling
@@ -501,7 +379,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 #' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
 #' 
 #' @seealso
-#' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+#' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' 
 #' @examples
 #' \dontrun{
@@ -522,7 +400,7 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 }
 
 #' @encoding UTF-8
-#' @title Spatial weights from inclusion probabilities
+#' @title Spatial weights from inverse inclusion probabilities
 #'
 #' @description
 #'
@@ -567,7 +445,7 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 #' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
 #' 
 #' @seealso
-#' \code{\link{wpik2}}, \code{\link{distUnitk}}, \code{\link{wave}}.
+#' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' @examples
 #' \dontrun{
 #' X <- cbind(runif(1000),runif(1000))
@@ -576,11 +454,11 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 #' for(i in 1:1000){
 #'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 #' }
-#' system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+#' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
 #' }
 #' 
 #' @export
-wpik2 <- function(X, pik, tore = FALSE, jitter = FALSE, toreBound = -1) {
-    .Call(`_wave_wpik2`, X, pik, tore, jitter, toreBound)
+wpikInv <- function(X, pik, tore = FALSE, jitter = FALSE, toreBound = -1) {
+    .Call(`_wave_wpikInv`, X, pik, tore, jitter, toreBound)
 }
 

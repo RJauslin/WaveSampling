@@ -32,6 +32,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sb_vk
+arma::vec sb_vk(arma::vec pik, arma::mat X, arma::vec s);
+RcppExport SEXP _wave_sb_vk(SEXP pikSEXP, SEXP XSEXP, SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type s(sSEXP);
+    rcpp_result_gen = Rcpp::wrap(sb_vk(pik, X, s));
+    return rcpp_result_gen;
+END_RCPP
+}
 // wave
 arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool jitter, bool oneD, bool comment);
 RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
@@ -65,9 +78,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// wpik2
-arma::sp_mat wpik2(arma::mat X, arma::vec pik, bool tore, bool jitter, double toreBound);
-RcppExport SEXP _wave_wpik2(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
+// wpikInv
+arma::sp_mat wpikInv(arma::mat X, arma::vec pik, bool tore, bool jitter, double toreBound);
+RcppExport SEXP _wave_wpikInv(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -76,7 +89,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
     Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
     Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
-    rcpp_result_gen = Rcpp::wrap(wpik2(X, pik, tore, jitter, toreBound));
+    rcpp_result_gen = Rcpp::wrap(wpikInv(X, pik, tore, jitter, toreBound));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -84,9 +97,10 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
+    {"_wave_sb_vk", (DL_FUNC) &_wave_sb_vk, 3},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
-    {"_wave_wpik2", (DL_FUNC) &_wave_wpik2, 5},
+    {"_wave_wpikInv", (DL_FUNC) &_wave_wpikInv, 5},
     {NULL, NULL, 0}
 };
 
