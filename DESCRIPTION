@@ -1,7 +1,7 @@
 Package: wave
 Type: Package
 Title: Weakly associated vectors (wave)
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
   person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre")),
   person("Yves", "Tillé",role = c("aut"))
