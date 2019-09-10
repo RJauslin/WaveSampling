@@ -52,6 +52,19 @@ usethis::use_data(SwissLake)
 
 STATENT2017 <- read.csv("C:/Users/jauslinr/switchdrive/SwissDATA/STATENT2017_N08_V190822G.csv")
 STATENT2017 <- STATENT2017[which(STATENT2017$B1708EMPT > 50 & STATENT2017$B1708EMPT <= 100 ),]
+# STATENT2017 <- STATENT2017[,c(1:4,6,10)]
 usethis::use_data(STATENT2017,overwrite = TRUE)
 
+
+
+NE <- SwissCanton[24,]
+Lac <- SwissLake[6,]
+Commune <- SwissCommune[which(SwissCommune$KTNR == 24),]
+STATENT2017_NE <- rasterFromXYZ(STATENT2017,
+                                   crs = CRS("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs"))
+STATENT2017_NE <- mask(STATENT2017_NE,NE)
+STATENT2017_NE  <-  as(STATENT2017_NE,"SpatialPixelsDataFrame")
+STATENT2017_NE <- as.data.frame(STATENT2017_NE)
+colnames(STATENT2017_NE) <- c(colnames(STATENT2017)[3:29],colnames(STATENT2017)[1:2])
+usethis::use_data(STATENT2017_NE)
 
