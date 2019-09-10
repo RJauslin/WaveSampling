@@ -21,9 +21,8 @@
 #' }
 #' 
 varIRS <- function(y,pik,s){
-  index <- which(s == 1)
-  n <- length(index)
-  m <- mean(y[index]/pik[index])
-  return((n/(n-1))*sum( (y[index]/pik[index] - m)^2 ))
+  n <- length(s)
+  m <- mean(y/pik)
+  return((n/(n-1))*sum((y/pik - m)^2))
   
 }
