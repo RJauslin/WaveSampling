@@ -52,6 +52,13 @@ double varNBH2(arma::vec y,arma::vec pik, arma::uvec s,arma::mat X,int d){
       tmp(idx(k)) = 1e200;
     }
     // std::cout << idx << std::endl;
+    // std::cout << nearest(idx) << std::endl;
+    
+    //weights 
+    
+    
+    
+    
     double yD = sum(y.elem(idx))/d; // mean the neighborhood
     arma::vec w = (1/nearest(idx))/sum(1/nearest(idx)); // calculates the weights
     out = out + arma::sum(w%pow(y(idx)/pik(idx) - yD,2));
@@ -70,6 +77,7 @@ library(viridis)
 library(raster)
 library(sampling)
 library(sf)
+library(spsurvey)
 
 data("STATENT2017_NE")
 data("SwissLake")
@@ -83,8 +91,8 @@ Lac <- SwissLake[6,]
 Commune <- SwissCommune[which(SwissCommune$KTNR == 24),]
 
 
-STATENT2017_NE$B1708T <- STATENT2017_NE$B1708T*0.001
-STATENT2017_NE$B1708EMPT <- STATENT2017_NE$B1708EMPT*0.001
+# STATENT2017_NE$B1708T <- STATENT2017_NE$B1708T*0.001
+# STATENT2017_NE$B1708EMPT <- STATENT2017_NE$B1708EMPT*0.001
 
 X <- as.matrix(scale(cbind(STATENT2017_NE$E_KOORD,STATENT2017_NE$N_KOORD)))
 y <- STATENT2017_NE$B1708EMPT
@@ -92,6 +100,14 @@ pik <- inclusionprobabilities(STATENT2017_NE$B1708T,10)
 
 s <- wave(X,pik)
 s_lpm1 <- lpm1(pik,X) 
+
+w <- localmean.weight(X[which(s == 1),1],X[which(s == 1),2],pik[which(s == 1)])
+localmean.var(y[which(s == 1)],w)
+
+w <- localmean.weight(X[s_lpm1,1],X[s_lpm1,2],pik[s_lpm1])
+localmean.var(y[s_lpm1],w)
+
+
 
 
 varNBH2(y[which(s==1)],pik[which(s ==1)],which(s == 1),X[which(s == 1),],d = 4)

@@ -10,8 +10,5 @@
 #' 
 varHR <- function(y,pik,s){
   n <- length(s)
-  tmp1 <- 1-pik
-  tmp2 <- tmp1/pik
-  return(n/(n-1)*sum(tmp1*(y/pik - (y*tmp2)/sum(tmp1))^2))
-  
+  return((n/(n-1))*sum((1-pik)*(y/pik-sum(y*(1-pik)/pik)/sum(1-pik))^2));
 }
