@@ -15,7 +15,7 @@
 //' @param pik vector of the inclusion probabilites. The length should be equal to n.
 //' @param s vector of size n with elements equal to the index of the selected units.
 //' @param X coordinates of the sampled units.
-//' @param d number of neighbors
+//' 
 //' @details
 //' 
 //' blablalb
@@ -33,7 +33,7 @@
 //' 
 //' @export
 // [[Rcpp::export]]
-double varNBH2(arma::vec y,arma::vec pik, arma::uvec s,arma::mat X,int d){
+double varNBH2(arma::vec y,arma::vec pik, arma::uvec s,arma::mat X){
   
   double out = 0.0;
   int n = s.size();
@@ -43,25 +43,28 @@ double varNBH2(arma::vec y,arma::vec pik, arma::uvec s,arma::mat X,int d){
   for(int i = 1; i <= n; i++){ // 1-based loop on the number of unit in the sample
     tmp = distUnitk(X,i,false,0.0);
     arma::vec nearest(tmp);
-
     // std::cout << nearest << std::endl;
     tmp(i-1) = 1e200;
-    arma::uvec idx(d,arma::fill::zeros);
-    for(int k = 0; k < d; k++){ // take the d closest number
-      idx(k) = arma::index_min(tmp);
-      tmp(idx(k)) = 1e200;
-    }
+    arma::uword idx = arma::index_min(tmp);
+    // std::cout << nearest(i-1) << std::endl;
     // std::cout << idx << std::endl;
     // std::cout << nearest(idx) << std::endl;
     
+    out = out + arma::sum((1-pik(i-1))*pow( (y(i-1)/pik(i-1)) - (y(idx)/pik(idx)) ,2));
+    
+    
+    // arma::uvec idx(d,arma::fill::zeros);
+    // for(int k = 0; k < d; k++){ // take the d closest number
+    //   idx(k) = arma::index_min(tmp);
+    //   tmp(idx(k)) = 1e200;
+    // }
+    
+    
+    // 
     //weights 
-    
-    
-    
-    
-    double yD = sum(y.elem(idx))/d; // mean the neighborhood
-    arma::vec w = (1/nearest(idx))/sum(1/nearest(idx)); // calculates the weights
-    out = out + arma::sum(w%pow(y(idx)/pik(idx) - yD,2));
+    // double yD = sum(y.elem(idx))/d; // mean the neighborhood
+    // arma::vec w = (1/nearest(idx))/sum(1/nearest(idx)); // calculates the weights
+    // out = out + arma::sum(w%pow(y(idx)/pik(idx) - yD,2));
   }
   return(out);
 }
@@ -110,8 +113,8 @@ localmean.var(y[s_lpm1],w)
 
 
 
-varNBH2(y[which(s==1)],pik[which(s ==1)],which(s == 1),X[which(s == 1),],d = 4)
-varNBH(y[which(s==1)],pik[which(s ==1)],which(s == 1),X[which(s == 1),],d = 4)
+varNBH2(y[which(s==1)],pik[which(s ==1)],which(s == 1),X[which(s == 1),])
+varNBH(y[which(s==1)],pik[which(s ==1)],which(s == 1),X[which(s == 1),])
 
 
 */

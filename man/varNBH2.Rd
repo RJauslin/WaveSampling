@@ -5,7 +5,7 @@
 \alias{varNBH2}
 \title{Local mean variance estimator}
 \usage{
-varNBH2(y, pik, s, X, d)
+varNBH2(y, pik, s, X)
 }
 \arguments{
 \item{y}{vector of size n that represent the variable of interest.}
@@ -15,8 +15,6 @@ varNBH2(y, pik, s, X, d)
 \item{s}{vector of size n with elements equal to the index of the selected units.}
 
 \item{X}{coordinates of the sampled units.}
-
-\item{d}{number of neighbors}
 }
 \value{
 An integer the variance estimator

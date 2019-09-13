@@ -46,8 +46,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // varNBH2
-double varNBH2(arma::vec y, arma::vec pik, arma::uvec s, arma::mat X, int d);
-RcppExport SEXP _wave_varNBH2(SEXP ySEXP, SEXP pikSEXP, SEXP sSEXP, SEXP XSEXP, SEXP dSEXP) {
+double varNBH2(arma::vec y, arma::vec pik, arma::uvec s, arma::mat X);
+RcppExport SEXP _wave_varNBH2(SEXP ySEXP, SEXP pikSEXP, SEXP sSEXP, SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,8 +55,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
     Rcpp::traits::input_parameter< arma::uvec >::type s(sSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< int >::type d(dSEXP);
-    rcpp_result_gen = Rcpp::wrap(varNBH2(y, pik, s, X, d));
+    rcpp_result_gen = Rcpp::wrap(varNBH2(y, pik, s, X));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -113,7 +112,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
     {"_wave_sb_vk", (DL_FUNC) &_wave_sb_vk, 3},
-    {"_wave_varNBH2", (DL_FUNC) &_wave_varNBH2, 5},
+    {"_wave_varNBH2", (DL_FUNC) &_wave_varNBH2, 4},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
     {"_wave_wpikInv", (DL_FUNC) &_wave_wpikInv, 5},

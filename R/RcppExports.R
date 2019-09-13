@@ -273,7 +273,7 @@ sb_vk <- function(pik, X, s) {
 #' @param pik vector of the inclusion probabilites. The length should be equal to n.
 #' @param s vector of size n with elements equal to the index of the selected units.
 #' @param X coordinates of the sampled units.
-#' @param d number of neighbors
+#' 
 #' @details
 #' 
 #' blablalb
@@ -290,8 +290,8 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' 
 #' @export
-varNBH2 <- function(y, pik, s, X, d) {
-    .Call(`_wave_varNBH2`, y, pik, s, X, d)
+varNBH2 <- function(y, pik, s, X) {
+    .Call(`_wave_varNBH2`, y, pik, s, X)
 }
 
 #' @encoding UTF-8
