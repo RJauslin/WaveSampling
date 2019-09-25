@@ -1,11 +1,9 @@
-
 #include <RcppArmadillo.h>
 
 #include "distUnitk.h"
 #include "wpik.h"
 #include "rowcolSumsiter.h"
 #include "projOp.h"
-
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
@@ -33,6 +31,7 @@
 //' The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and the matrix \eqn{\bf W} following the cube 
 //' method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
 //' used in spatial sampling by Grafström and Tillé (2013).
+//' 
 //' 
 //' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
 //' 
@@ -119,7 +118,6 @@ arma::vec wave(const arma::mat& X,
       // arma::mat tmp2 = diagmat(1/re.elem(i));
       // Wsp_tmp = tmp2*Wsp_tmp;
       
-      
       // Wsp_tmp = Wsp.submat(i,i);
       // arma::mat tmp2 = diagmat(1/pik.elem(i));
       // Wsp_tmp = tmp2*Wsp_tmp;
@@ -132,6 +130,8 @@ arma::vec wave(const arma::mat& X,
       arma::mat D = diagmat(1/re.elem(i));
       A = A*D;
     }
+    
+    
     
     
     arma::vec u(i_size);

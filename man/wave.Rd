@@ -40,6 +40,7 @@ The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and th
 method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
 used in spatial sampling by Grafström and Tillé (2013).
 
+
 For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
 
 For more informations on the option \code{jitter}, see \code{\link{wpik}}.

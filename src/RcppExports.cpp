@@ -45,20 +45,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// varNBH2
-double varNBH2(arma::vec y, arma::vec pik, arma::uvec s, arma::mat X);
-RcppExport SEXP _wave_varNBH2(SEXP ySEXP, SEXP pikSEXP, SEXP sSEXP, SEXP XSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type y(ySEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
-    Rcpp::traits::input_parameter< arma::uvec >::type s(sSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    rcpp_result_gen = Rcpp::wrap(varNBH2(y, pik, s, X));
-    return rcpp_result_gen;
-END_RCPP
-}
 // wave
 arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool jitter, bool oneD, bool comment);
 RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
@@ -112,7 +98,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
     {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
     {"_wave_sb_vk", (DL_FUNC) &_wave_sb_vk, 3},
-    {"_wave_varNBH2", (DL_FUNC) &_wave_varNBH2, 4},
     {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
     {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
     {"_wave_wpikInv", (DL_FUNC) &_wave_wpikInv, 5},

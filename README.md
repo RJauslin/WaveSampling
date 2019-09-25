@@ -39,17 +39,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>            [,1]        [,2]
-#>  [1,] 0.4369690 0.006418783
-#>  [2,] 0.6435161 0.902777382
-#>  [3,] 0.2148230 0.695752177
-#>  [4,] 0.4760727 0.060653641
-#>  [5,] 0.3702949 0.496840097
-#>  [6,] 0.4520309 0.590789186
-#>  [7,] 0.2578333 0.054030413
-#>  [8,] 0.9668865 0.477932062
-#>  [9,] 0.2180042 0.057213888
-#> [10,] 0.2380351 0.454214565
+#>            [,1]      [,2]
+#>  [1,] 0.4412080 0.9993916
+#>  [2,] 0.5913552 0.7192961
+#>  [3,] 0.5526881 0.7196404
+#>  [4,] 0.0690092 0.6339129
+#>  [5,] 0.6303978 0.7880169
+#>  [6,] 0.7249935 0.7709820
+#>  [7,] 0.5572982 0.6871028
+#>  [8,] 0.2608775 0.1282434
+#>  [9,] 0.1594454 0.4388582
+#> [10,] 0.2089302 0.7922272
 ```
 
 Now we need the inclusion probabilities `pik`. Hence, we generate a
@@ -84,34 +84,3 @@ ggplot() +
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
-
-## Real example
-
-The `wave` package contains
-
-``` r
-library(sf)
-#> Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
-library(raster)
-#> Loading required package: sp
-data("STATENT2017")
-data("SwissRegion")
-data("SwissLake")
-```
-
-``` r
-
-R1 <- SwissRegion[1,]
-STATENT2017_R1 <- rasterFromXYZ(STATENT2017,
-              crs = CRS("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs"))
-STATENT2017_R1 <- mask(STATENT2017_R1,R1)
-STATENT2017_R1  <-  as(STATENT2017_R1,"SpatialPixelsDataFrame")
-STATENT2017_R1 <- as.data.frame(STATENT2017_R1)
-
-ggplot() +
-  geom_sf(data = R1,fill = "transparent")+
-  geom_point(data = STATENT2017_R1,aes(x = x,y = y))+
-  theme_light()
-```
-
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />

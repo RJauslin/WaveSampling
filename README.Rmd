@@ -71,37 +71,6 @@ ggplot() +
 
 ```
 
-## Real example
-
-The `wave` package contains 
-
-```{r}
-library(sf)
-library(raster)
-data("STATENT2017")
-data("SwissRegion")
-data("SwissLake")
-
-```
-
-
-
-```{r,fig.height=10,fig.width=10}
-
-R1 <- SwissRegion[1,]
-STATENT2017_R1 <- rasterFromXYZ(STATENT2017,
-              crs = CRS("+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +units=m +no_defs"))
-STATENT2017_R1 <- mask(STATENT2017_R1,R1)
-STATENT2017_R1  <-  as(STATENT2017_R1,"SpatialPixelsDataFrame")
-STATENT2017_R1 <- as.data.frame(STATENT2017_R1)
-
-ggplot() +
-  geom_sf(data = R1,fill = "transparent")+
-  
-  geom_point(data = STATENT2017_R1,aes(x = x,y = y))+
-  theme_light()
-
-```
 
 
 

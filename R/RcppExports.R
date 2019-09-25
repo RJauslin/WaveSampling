@@ -263,38 +263,6 @@ sb_vk <- function(pik, X, s) {
 }
 
 #' @encoding UTF-8
-#' @title Local mean variance estimator
-#' 
-#' @description
-#' 
-#' Calculates the varaiance estimator based on the local mean.
-#' 
-#' @param y vector of size n that represent the variable of interest.
-#' @param pik vector of the inclusion probabilites. The length should be equal to n.
-#' @param s vector of size n with elements equal to the index of the selected units.
-#' @param X coordinates of the sampled units.
-#' 
-#' @details
-#' 
-#' blablalb
-#' 
-#' @return An integer the variance estimator
-#' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
-#' 
-#' @references 
-#' 
-#' Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natural resources.
-#' \emph{Journal of the American Statistical Association 99, 262-278}
-#' 
-#' 
-#' 
-#' @export
-varNBH2 <- function(y, pik, s, X) {
-    .Call(`_wave_varNBH2`, y, pik, s, X)
-}
-
-#' @encoding UTF-8
 #' @title Weakly associated vectors sampling
 #'
 #' @description
@@ -319,6 +287,7 @@ varNBH2 <- function(y, pik, s, X) {
 #' The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and the matrix \eqn{\bf W} following the cube 
 #' method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
 #' used in spatial sampling by Grafström and Tillé (2013).
+#' 
 #' 
 #' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
 #' 
