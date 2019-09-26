@@ -3,11 +3,11 @@
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
-//' @title Spatial balance based on Moran's \eqn{I} index
+//' @title Spreading measure based on Moran's \eqn{I} index
 //'
 //' @description
 //'
-//' This function implements the spatial balance based on Moran's \eqn{I} index.
+//' This function implements the spreading measure based on Moran's \eqn{I} index.
 //'
 //' @param W a stratification matrix inheriting from \code{\link[Matrix]{sparseMatrix}} that represents the spatial weights. See \code{\link{wpik}}.
 //' @param s a vector of size \eqn{N} with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.
@@ -15,7 +15,7 @@
 //'
 //' @details
 //' 
-//' This measure of the spatial balance is developped by Tillé et al. (2018).
+//' This index is developped by Tillé et al. (2018) and measure the spreading of a sample drawn from a population.
 //' It uses a corrected version of the traditional Moran's \eqn{I} index. Each row of the matrix \eqn{\bf W} should represents a stratum. Each 
 //' stratum is defined by a particular unit and its neighbouring units. See \code{\link{wpik}}.
 //' The spatial balance measure is equal to
