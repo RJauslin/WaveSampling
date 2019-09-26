@@ -46,8 +46,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // wave
-arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool jitter, bool oneD, bool comment);
-RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
+arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool shift, bool oneD, bool comment);
+RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,16 +55,16 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::vec& >::type pik(pikSEXP);
     Rcpp::traits::input_parameter< double >::type bound(boundSEXP);
     Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
-    Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
+    Rcpp::traits::input_parameter< bool >::type shift(shiftSEXP);
     Rcpp::traits::input_parameter< bool >::type oneD(oneDSEXP);
     Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(wave(X, pik, bound, tore, jitter, oneD, comment));
+    rcpp_result_gen = Rcpp::wrap(wave(X, pik, bound, tore, shift, oneD, comment));
     return rcpp_result_gen;
 END_RCPP
 }
 // wpik
-arma::sp_mat wpik(arma::mat X, arma::vec pik, double bound, bool tore, bool jitter, double toreBound);
-RcppExport SEXP _wave_wpik(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
+arma::sp_mat wpik(arma::mat X, arma::vec pik, double bound, bool tore, bool shift, double toreBound);
+RcppExport SEXP _wave_wpik(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,24 +72,24 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
     Rcpp::traits::input_parameter< double >::type bound(boundSEXP);
     Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
-    Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
+    Rcpp::traits::input_parameter< bool >::type shift(shiftSEXP);
     Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
-    rcpp_result_gen = Rcpp::wrap(wpik(X, pik, bound, tore, jitter, toreBound));
+    rcpp_result_gen = Rcpp::wrap(wpik(X, pik, bound, tore, shift, toreBound));
     return rcpp_result_gen;
 END_RCPP
 }
 // wpikInv
-arma::sp_mat wpikInv(arma::mat X, arma::vec pik, bool tore, bool jitter, double toreBound);
-RcppExport SEXP _wave_wpikInv(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP jitterSEXP, SEXP toreBoundSEXP) {
+arma::sp_mat wpikInv(arma::mat X, arma::vec pik, bool tore, bool shift, double toreBound);
+RcppExport SEXP _wave_wpikInv(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type pik(pikSEXP);
     Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
-    Rcpp::traits::input_parameter< bool >::type jitter(jitterSEXP);
+    Rcpp::traits::input_parameter< bool >::type shift(shiftSEXP);
     Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
-    rcpp_result_gen = Rcpp::wrap(wpikInv(X, pik, tore, jitter, toreBound));
+    rcpp_result_gen = Rcpp::wrap(wpikInv(X, pik, tore, shift, toreBound));
     return rcpp_result_gen;
 END_RCPP
 }

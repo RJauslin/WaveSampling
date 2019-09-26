@@ -2,9 +2,8 @@
 
 export(IB)
 export(distUnitk)
-export(sb1D)
 export(sb_vk)
-export(varHR)
+export(varHAJ)
 export(wave)
 export(wpik)
 export(wpikInv)

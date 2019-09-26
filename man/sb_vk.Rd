@@ -3,19 +3,19 @@
 \encoding{UTF-8}
 \name{sb_vk}
 \alias{sb_vk}
-\title{Spatial balance vk}
+\title{Values \eqn{v_k} to compute the Spatial balance}
 \usage{
 sb_vk(pik, X, s)
 }
 \arguments{
 \item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
 
-\item{X}{matrix of size N x 2 representing the spatial coordinates.}
+\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
 
-\item{s}{A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.}
+\item{s}{A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.}
 }
 \value{
-A vector of size N with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
+A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
 }
 \description{
 Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
@@ -23,25 +23,27 @@ Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and
 \details{
 The spatial balance measure based on the Voronoï polygons is defined by 
 
-\deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 }.
+\deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 .}
 
-The function return the \eqn{v_k} values. The function is based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling}.
+The function return the \eqn{v_k} values and is mainly based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling} Grafström and Lisic (2019).
 }
 \examples{
-\dontrun{
-X <- as.matrix(cbind(runif(50),runif(50)))
-pik <- rep(10/50,50)
-pik <- inclusionprobabilities(runif(50),10)
+N <- 50
+n <- 10
+X <- as.matrix(cbind(runif(N),runif(N)))
+pik <- sampling::inclusionprobabilities(runif(N),n)
 s <- wave(X,pik)
 v <- sb_vk(pik,X,s)
-1/10*sum((v[which(v != 0)]-1)^2)
+1/n*sum((v[which(v != 0)]-1)^2)
 BalancedSampling::sb(pik,X,which(s == 1))
-}
 
 }
 \references{
 Grafström, A., Lundström, N.L.P. and Schelin, L. (2012). Spatially balanced sampling through the Pivotal method. 
 \emph{Biometrics}, 68(2), 514-520
+
+Grafström, A., Lisic J. (2019). BalancedSampling: Balanced and Spatially Balanced Sampling. R package version 1.5.5.
+https://CRAN.R-project.org/package=BalancedSampling
 
 Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natural resources.
 \emph{Journal of the American Statistical Association 99, 262-278}

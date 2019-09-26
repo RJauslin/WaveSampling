@@ -2,27 +2,24 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @encoding UTF-8
-#' @title Spatial balance based on Moran's I index
+#' @title Spatial balance based on Moran's \eqn{I} index
 #'
 #' @description
 #'
-#' This function implements the spatial balance based on Moran's I index.
+#' This function implements the spatial balance based on Moran's \eqn{I} index.
 #'
-#' @param W a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}, representing the spatial weights. See \code{\link{wpik}}.
-#' @param s a vector of size N with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.
+#' @param W a stratification matrix inheriting from \code{\link[Matrix]{sparseMatrix}} that represents the spatial weights. See \code{\link{wpik}}.
+#' @param s a vector of size \eqn{N} with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.
 #'
 #'
 #' @details
 #' 
 #' This measure of the spatial balance is developped by Tillé et al. (2018).
-#' It uses a corrected version of the traditional Moran's I index.
-#' This estimator use spatial weights \eqn{w_{ij}} that indicates how a unit
-#' \eqn{i} is far from the unit \eqn{j}.
-#'  Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix
-#' \eqn{\bf W} is generally not symmetric. The spatial balance measure is equal to
+#' It uses a corrected version of the traditional Moran's \eqn{I} index. Each row of the matrix \eqn{\bf W} should represents a stratum. Each 
+#' stratum is defined by a particular unit and its neighbouring units. See \code{\link{wpik}}.
+#' The spatial balance measure is equal to
 #' 
-#' 
-#' \deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}}}
+#' \deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}},}
 #' 
 #' where \eqn{\bf D} is the diagonal matrix containing the \eqn{w_i}, 
 #' 
@@ -30,9 +27,9 @@
 #' 
 #' and 
 #' 
-#' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}}.
+#' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}.}
 #' 
-#' To specifiy the spatial weights uses the argument \code{W}. See \code{\link{wpik}}.
+#' To specifiy the spatial weights uses the argument \code{W}.
 #'
 #' @return A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 #' 
@@ -46,20 +43,15 @@
 #' \code{\link{wpik}}
 #' 
 #' @examples
-#' \dontrun{
-#'   N <- 100
-#'   n <- 20
+#'   N <- 36
+#'   n <- 12
 #'   x <- seq(1,sqrt(N),1)
 #'   X <- expand.grid(x,x)
 #'   pik <- rep(n/N,N)
-#'   W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = sqrt(N))
+#'   W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,shift = FALSE,toreBound = sqrt(N))
 #'   W <- W - diag(diag(W))
-#'   s <- wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE)
-#'   I1 <- IB(W,s)
-#' 
-#'   plot(X)
-#'   points(X[s == 1,],pch = 16)
-#' }
+#'   s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE)
+#'   IB(W,s)
 #' 
 #' @export
 IB <- function(W, s) {
@@ -72,33 +64,33 @@ IB <- function(W, s) {
 #' Calculate the squared euclidean distance from the unit k to the other units.
 #' 
 #'
-#' @param X matrix of size N x 2 representing the spatial coordinates. 
+#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
 #' @param k the unit index to be used.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
-#' @param toreBound an optional numeric value that specify the size of the grid.
+#' @param toreBound an optional numeric value that specify the length of the tore.
 #'
 #'
 #' @details
 #' 
-#' Let \eqn{x_k = (x_{k_1},x_{k_2})} be the spatial coordinates of the unit \eqn{k}. The classical euclidean distance is given by
+#' Let \eqn{\mathbf{x}_k,\mathbf{x}_l} be the spatial coordinates of the unit \eqn{k,l \in U}. The classical euclidean distance is given by
 #' 
-#' \deqn{d^2(k,l) = (x_k - x_l)^\top (x_k - x_l). }
+#' \deqn{d^2(k,l) = (\mathbf{x}_k - \mathbf{x}_l)^\top (\mathbf{x}_k - \mathbf{x}_l). }
 #' 
-#' When the points are distributed on a \eqn{r_1 \times r_2} regular grid of \eqn{R^2}.
-#' It is possible to consider the units like they were placed on a tore. Specifically,
+#' When the points are distributed on a \eqn{N_1 \times N_2} regular grid of \eqn{R^2}.
+#' It is possible to consider the units like they were placed on a tore. It can be illustrated by Pac-Man passing through the wall to get away from ghosts. Specifically,
 #' we could consider two units on the same column (resp. row) that are on the opposite have a small distance,
 #' 
-#' \deqn{ d(k,l) = min( (x_{k_1} - x_{l_1})^2,
-#'                       (r_1 + x_{k_1} - x_{l_1})^2,
-#'                       (r_1 - x_{k_1} + x_{l_1})^2) +}
+#' \deqn{ d^2_T(k,l) = min( (x_{k_1} - x_{l_1})^2,
+#'                       (x_{k_1} + N_1 - x_{l_1})^2,
+#'                       (x_{k_1} - N_1 - x_{l_1})^2) +}
 #' \deqn{ min( (x_{k_2} - x_{l_2})^2,
-#'                       (r_2 + x_{k_2} - x_{l_2})^2,
-#'                       (r_2 - x_{k_2} + x_{l_2})^2)}.
+#'                       (x_{k_2} + N_2 - x_{l_2})^2,
+#'                       (x_{k_2} - N_2 - x_{l_2})^2).}
 #'
-#' The option \code{toreBound} specify the size of the grid in the case of \eqn{r_1 = r_2 = r}. 
-#' It is omitted if the tore option is equal to FALSE.
+#' The option \code{toreBound} specify the length of the tore in the case of \eqn{N_1 = N_2 = N}. 
+#' It is omitted if the \code{tore} option is equal to \code{FALSE}.
 #'
-#' @return distance values of the unit k.
+#' @return a vector of length \eqn{N} that contains the distances from the unit \eqn{k} to all other units.
 #'
 #'
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
@@ -108,13 +100,11 @@ IB <- function(W, s) {
 #' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
 #'
 #' @examples
-#' \dontrun{
-#'   N <- 5
-#'   x <- seq(1,N,1)
-#'   X <- as.matrix(expand.grid(x,x))
-#'   distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
-#'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
-#' }
+#' N <- 5
+#' x <- seq(1,N,1)
+#' X <- as.matrix(expand.grid(x,x))
+#' distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+#' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
 #' @export
 distUnitk <- function(X, k, tore, toreBound) {
     .Call(`_wave_distUnitk`, X, k, tore, toreBound)
@@ -212,25 +202,25 @@ NULL
 NULL
 
 #' @encoding UTF-8
-#' @title Spatial balance vk
+#' @title Values \eqn{v_k} to compute the Spatial balance
 #' 
 #' @description
 #' 
 #' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
 #' 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param X matrix of size N x 2 representing the spatial coordinates.
-#' @param s A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
+#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates.
+#' @param s A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
 #' @details
 #' 
 #' The spatial balance measure based on the Voronoï polygons is defined by 
 #' 
-#' \deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 }.
+#' \deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 .}
 #' 
-#' The function return the \eqn{v_k} values. The function is based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling}.
+#' The function return the \eqn{v_k} values and is mainly based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling} Grafström and Lisic (2019).
 #' 
-#' @return A vector of size N with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
+#' @return A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -238,6 +228,9 @@ NULL
 #' 
 #' Grafström, A., Lundström, N.L.P. and Schelin, L. (2012). Spatially balanced sampling through the Pivotal method. 
 #' \emph{Biometrics}, 68(2), 514-520
+#' 
+#' Grafström, A., Lisic J. (2019). BalancedSampling: Balanced and Spatially Balanced Sampling. R package version 1.5.5.
+#' https://CRAN.R-project.org/package=BalancedSampling
 #' 
 #' Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natural resources.
 #' \emph{Journal of the American Statistical Association 99, 262-278}
@@ -247,15 +240,14 @@ NULL
 #' 
 #' 
 #' @examples
-#' \dontrun{
-#' X <- as.matrix(cbind(runif(50),runif(50)))
-#' pik <- rep(10/50,50)
-#' pik <- inclusionprobabilities(runif(50),10)
+#' N <- 50
+#' n <- 10
+#' X <- as.matrix(cbind(runif(N),runif(N)))
+#' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' s <- wave(X,pik)
 #' v <- sb_vk(pik,X,s)
-#' 1/10*sum((v[which(v != 0)]-1)^2)
+#' 1/n*sum((v[which(v != 0)]-1)^2)
 #' BalancedSampling::sb(pik,X,which(s == 1))
-#' }
 #' 
 #' @export
 sb_vk <- function(pik, X, s) {
@@ -267,109 +259,105 @@ sb_vk <- function(pik, X, s) {
 #'
 #' @description
 #'
-#' Select a spread spatial samples from inclusion probabilities using the weakly associated vectors sampling method.  
+#' Select a spread sample from inclusion probabilities using the weakly associated vectors sampling method.  
 #'
-#' @param X matrix of size N x 2 representing the spatial coordinates. 
+#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
 #' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details. Default is \code{FALSE}.
+#' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
 #' @param oneD an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.
 #' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 #'
 #' @details
-#' Weakly associated vectors sampling find the vector \eqn{\bf u} that is
-#' the weakest associated vector of the linear transformations generated by a contiguity table \eqn{ \bf W}.
-#' The matrix \eqn{\bf W} is calculated from the matrix of coordinates \eqn{\bf X} by the function \code{\link{wpik}}.
-#' The vector \eqn{\bf u} is calculated from a singular value decompositon or a QR decomposition depending on the rank of the matrix 
-#' \eqn{\bf W}.
 #' 
-#' The procedure then update the inclusion probabilities vector \eqn{\bf\pi} and the matrix \eqn{\bf W} following the cube 
-#' method developped by Deville and Tillé (2004), improved by Chauvet and Tillé (2006) and 
-#' used in spatial sampling by Grafström and Tillé (2013).
+#' The main idea is derived from the cube method (Devill and Tillé, 2004). At each step, the inclusion probabilities vector \code{pik}
+#' is randomly modified. This modification is carried out in a direction that best preserves the spreading of the sample.
 #' 
+#' A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
+#' Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
+#' 
+#' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is seleced:
+#' \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
+#' 
+#' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} and \eqn{\sigma } the singular vectors assoctiated to the 
+#' smallest singular value of \eqn{\bf A} such that
+#' 
+#' \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}
+#' 
+#' Vector \eqn{ \bf v } is then centered to ensure fixed sample size. At each step, inclusion probabilities is modified and at least on component is set to 0 or 1. Matrix \eqn{\bf A } is updated 
+#' from the new inclusion probabilities. The whole procedure it repeated until it remains only one component that is not equal to 0 or 1.
 #' 
 #' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
 #' 
-#' For more informations on the option \code{jitter}, see \code{\link{wpik}}.
+#' For more informations on the option \code{shift}, see \code{\link{wpik}}.
 #'
-#' @return A vector of size N with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
+#' @return A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
 #' Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube method. Biometrika, 91(4), 893-912
 #' 
-#' Chauvet, G. and Tillé, Y. (2006). A fast algorithm for balanced sampling. Computational Statistics, 21(1), 53-62
-#' 
-#' Grafström, A. and Tillé, Y. (2013). Doubly balanced spatial sampling with spreading and restitution of auxiliary totals. Environmetrics, 24(2), 120-131
 #' 
 #' @seealso
 #' \code{\link{wpik}}, \code{\link{distUnitk}}.
 #' 
 #' 
 #' @examples
-#' \dontrun{
 #'   N <- 36 # 6 x 6 grid
 #'   n <- 12 # number of unit selected
 #'   x <- seq(1,sqrt(N),1)
 #'   X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 #'   pik <- rep(n/N,N)
-#'   s <- wave(X,pik, tore = TRUE,jitter = FALSE)
-#'   plot(X)
-#'   points(X[s == 1,],pch = 16)
-#' }
-#' 
-#' 
-#' 
+#'   s <- wave(X,pik, tore = TRUE,shift = FALSE)
 #' @export
-wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE, comment = FALSE) {
-    .Call(`_wave_wave`, X, pik, bound, tore, jitter, oneD, comment)
+wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE, comment = FALSE) {
+    .Call(`_wave_wave`, X, pik, bound, tore, shift, oneD, comment)
 }
 
 #' @encoding UTF-8
-#' @title Spatial weights from inclusion probabilities
+#' @title Stratification matrix from inclusion probabilities
 #'
 #' @description
 #'
-#' Spatial weights calculated from inclusion probabilies taking distance between units into account.
+#' The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
 #'  
 #'
-#' @param X matrix of size N x 2 representing the spatial coordinates. 
-#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+#' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
 #' @param bound a scalar representing the bound to reach. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+#' @param shift an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.
 #' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' 
 #' @details
 #' 
-#' Spatial weights indicates how the units are close from each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
-#' is close to the unit \eqn{j}. This function consider that a unit represents its neighbor till their inclusion probabilities
-#' sum up to 1.
+#' Entries of the stratification matrix indicates how the units are close from each others. Hence a large value \eqn{w_{kl}} means that the unit \eqn{k} 
+#' is close to the unit \eqn{l}. This function considers that a unit represents its neighbor till their inclusion probabilities
+#' sum up to \code{bound}.
 #' 
-#' We define \eqn{H_i} the set of the nearest neighbor of the unit \eqn{i} including \eqn{i} such that the sum of their inclusion
-#' probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
+#' We define \eqn{G_k} the set of the nearest neighbor of the unit \eqn{k} including \eqn{k} such that the sum of their inclusion
+#' probabilities is just greater than \code{bound}. Moreover, let \eqn{g_k = \#{G_k}}, the number of elements in \eqn{G_k}.
 #' The matrix \eqn{\bf W} is then defined as follows,
+#' \itemize{
+#'   \item \eqn{ w_{kl} = \pi_l} if unit \eqn{l} is in the set of the  \eqn{g_k - 1} nearest neighbor of \eqn{k}.
+#'   \item \eqn{ w_{kl} = \pi_l + 1 - (\sum_{t \in G_k} \pi_t)} if unit \eqn{l} is the \eqn{g_k} nearest neighbour of \eqn{k}.
+#'   \item \eqn{w_{kl} = 0} otherwise.
+#' }
 #' 
-#' \deqn{ w_{ij} = \pi_j}
-#'  if unit \eqn{j} is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
-#' \deqn{ w_{ij} = g_j}
-#'  if unit \eqn{j} is the \eqn{h_i} nearest neighbour of \eqn{i}.
-#' \deqn{w_{ij} = 0}
-#'  otherwise.
 #' 
-#' where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the \eqn{i}th row of the matrix represents
+#' Hence, the \eqn{k}th row of the matrix represents
 #' neighborhood or stratum of the unit such that the inclusion probabilities sum up to 1 and
-#' the \eqn{i}th column the weights that unit \eqn{i} takes for each stratum. 
+#' the \eqn{k}th column the weights that unit \eqn{k} takes for each stratum. 
 #' 
-#' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+#' The option \code{shift} add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
 #' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
 #' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
-#' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+#' of the both units is updated. If a shift perturbation is used then all the distances are differents and only one unit
 #' weight is update such that the bound is reached. 
 #' 
-#' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+#' The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
@@ -383,59 +371,59 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, oneD = FALSE
 #' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' 
 #' @examples
-#' \dontrun{
-#' N <- 5
-#' x <- seq(1,N,1)
+#' N <- 25
+#' n <- 5
+#' x <- seq(1,sqrt(N),1)
 #' X <- as.matrix(expand.grid(x,x))
-#' pik <- sampling::inclusionprobabilities(runif(25),5)
+#' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' W <- wpik(X,pik) # tore == FALSE so it works
-#' W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-#' W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
-#' W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
-#' }
-#' 
-#' 
+#' # W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+#' W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
+#' # W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
 #' @export
-wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = -1.0) {
-    .Call(`_wave_wpik`, X, pik, bound, tore, jitter, toreBound)
+wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1.0) {
+    .Call(`_wave_wpik`, X, pik, bound, tore, shift, toreBound)
 }
 
 #' @encoding UTF-8
-#' @title Spatial weights from inverse inclusion probabilities
+#' @title Stratification matrix from inverse inclusion probabilities
 #'
 #' @description
 #'
-#' Spatial weights calculated from inclusion probabilies taking distance between units into account. It is a direct
+#' The stratification matrix is calculated from the inverse inclusion probabilities. It is a direct
 #' implementation of the spatial weights specified in Tillé et al., (2018).
 #'
-#' @param X matrix of size N x 2 representing the spatial coordinates. 
+#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
-#' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+#' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
 #' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' 
 #' @details
 #' 
-#' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
-#' is close to the unit \eqn{j}. This function consider that if \eqn{i} were selected in the sample drawn from the population then
-#' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would be natural to consider
-#' that \eqn{i} has \eqn{k_i = (1/\pi_i -1 )} neighbours in the population. The \eqn{k_i} neighbours can be the nearest 
-#' neighbours of \eqn{i} according to the distance. The weights are so calculated as follows,
+#' Entries of the stratification matrix indicates how the units are close from each others. Hence a large value \eqn{w_{kl}} means that the unit \eqn{k} 
+#' is close to the unit \eqn{l}. This function considers that if unit \eqn{k} were selected in the sample drawn from the population then
+#' \eqn{k} would represent \eqn{1/\pi_k} units in the population and, as a consequence, it would be natural to consider that
+#' \eqn{k} has \eqn{n_k =  (1/\pi_k - 1)} neighbours in the population. The \eqn{n_k} neighbours are the nearest neighbours of \eqn{k} according to distances.
+#' The weights are so calculated as follows :
 #' 
-#' \deqn{ w_{ij} = 1,}
-#'  if unit \eqn{j \in N_{\lfloor k_i \rfloor}}.
-#' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor,}
-#'  if unit \eqn{j} is the \eqn{\lceil k_i \rceil} the nearest neighbour of \eqn{i}.
-#' \deqn{w_{ij} = 0,}
-#'  otherwise. \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} be the inferior and the superior integers of \eqn{k_i}.
+#' \itemize{
+#'   \item \eqn{ w_{kl} = 1} if unit \eqn{l \in N_{\lfloor n_k \rfloor }}
+#'   \item \eqn{ w_{kl} = n_k - \lfloor n_k \rfloor} if unit \eqn{l} is the \eqn{\lceil n_k \rceil} nearest neighbour of \eqn{k}.
+#'   \item \eqn{w_{kl} = 0} otherwise.
+#' }
 #' 
-#' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+#' 
+#' \eqn{\lfloor n_k \rfloor } and \eqn{\lceil n_k \rceil} are the inferior and the superior integers of \eqn{n_k}.
+#' 
+#' The option \code{shift} add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
 #' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
 #' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
-#' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+#' of the both units is updated. If a shift perturbation is used then all the distances are differents and only one unit
 #' weight is update such that the bound is reached. 
 #' 
-#' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+#' The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+#'
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
@@ -455,11 +443,11 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, jitter = FALSE, toreBound = 
 #' for(i in 1:1000){
 #'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 #' }
-#' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+#' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
 #' }
 #' 
 #' @export
-wpikInv <- function(X, pik, tore = FALSE, jitter = FALSE, toreBound = -1) {
-    .Call(`_wave_wpikInv`, X, pik, tore, jitter, toreBound)
+wpikInv <- function(X, pik, tore = FALSE, shift = FALSE, toreBound = -1) {
+    .Call(`_wave_wpikInv`, X, pik, tore, shift, toreBound)
 }
 

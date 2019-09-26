@@ -3,31 +3,28 @@
 \encoding{UTF-8}
 \name{IB}
 \alias{IB}
-\title{Spatial balance based on Moran's I index}
+\title{Spatial balance based on Moran's \eqn{I} index}
 \usage{
 IB(W, s)
 }
 \arguments{
-\item{W}{a sparseMatrix, i.e, inheriting from \code{\link[Matrix]{sparseMatrix}}, representing the spatial weights. See \code{\link{wpik}}.}
+\item{W}{a stratification matrix inheriting from \code{\link[Matrix]{sparseMatrix}} that represents the spatial weights. See \code{\link{wpik}}.}
 
-\item{s}{a vector of size N with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.}
+\item{s}{a vector of size \eqn{N} with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.}
 }
 \value{
 A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered).
 }
 \description{
-This function implements the spatial balance based on Moran's I index.
+This function implements the spatial balance based on Moran's \eqn{I} index.
 }
 \details{
 This measure of the spatial balance is developped by Tillé et al. (2018).
-It uses a corrected version of the traditional Moran's I index.
-This estimator use spatial weights \eqn{w_{ij}} that indicates how a unit
-\eqn{i} is far from the unit \eqn{j}.
- Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix
-\eqn{\bf W} is generally not symmetric. The spatial balance measure is equal to
+It uses a corrected version of the traditional Moran's \eqn{I} index. Each row of the matrix \eqn{\bf W} should represents a stratum. Each 
+stratum is defined by a particular unit and its neighbouring units. See \code{\link{wpik}}.
+The spatial balance measure is equal to
 
-
-\deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}}}
+\deqn{I_B =\frac{( \bf s- \bar{s}_w)^\top  W ( s- \bar{s}_w)}{\bf \sqrt{( s- \bar{s}_w)^\top  D ( s- \bar{s}_w) ( s- \bar{s}_w)^\top  B ( s- \bar{s}_w)}},}
 
 where \eqn{\bf D} is the diagonal matrix containing the \eqn{w_i}, 
 
@@ -35,25 +32,20 @@ where \eqn{\bf D} is the diagonal matrix containing the \eqn{w_i},
 
 and 
 
-\deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}}.
+\deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}.}
 
-To specifiy the spatial weights uses the argument \code{W}. See \code{\link{wpik}}.
+To specifiy the spatial weights uses the argument \code{W}.
 }
 \examples{
-\dontrun{
-  N <- 100
-  n <- 20
+  N <- 36
+  n <- 12
   x <- seq(1,sqrt(N),1)
   X <- expand.grid(x,x)
   pik <- rep(n/N,N)
-  W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = sqrt(N))
+  W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,shift = FALSE,toreBound = sqrt(N))
   W <- W - diag(diag(W))
-  s <- wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE)
-  I1 <- IB(W,s)
-
-  plot(X)
-  points(X[s == 1,],pch = 16)
-}
+  s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE)
+  IB(W,s)
 
 }
 \references{

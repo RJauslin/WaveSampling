@@ -9,41 +9,44 @@ using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
-//' @title Spatial weights from inverse inclusion probabilities
+//' @title Stratification matrix from inverse inclusion probabilities
 //'
 //' @description
 //'
-//' Spatial weights calculated from inclusion probabilies taking distance between units into account. It is a direct
+//' The stratification matrix is calculated from the inverse inclusion probabilities. It is a direct
 //' implementation of the spatial weights specified in Tillé et al., (2018).
 //'
-//' @param X matrix of size N x 2 representing the spatial coordinates. 
+//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
 //' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
-//' @param jitter an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.
+//' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
 //' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' 
 //' @details
 //' 
-//' Spatial weights indicates how close the units are frome each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
-//' is close to the unit \eqn{j}. This function consider that if \eqn{i} were selected in the sample drawn from the population then
-//' \eqn{i} would represent \eqn{1/\pi_i} units in the population and, as a consequence, it would be natural to consider
-//' that \eqn{i} has \eqn{k_i = (1/\pi_i -1 )} neighbours in the population. The \eqn{k_i} neighbours can be the nearest 
-//' neighbours of \eqn{i} according to the distance. The weights are so calculated as follows,
+//' Entries of the stratification matrix indicates how the units are close from each others. Hence a large value \eqn{w_{kl}} means that the unit \eqn{k} 
+//' is close to the unit \eqn{l}. This function considers that if unit \eqn{k} were selected in the sample drawn from the population then
+//' \eqn{k} would represent \eqn{1/\pi_k} units in the population and, as a consequence, it would be natural to consider that
+//' \eqn{k} has \eqn{n_k =  (1/\pi_k - 1)} neighbours in the population. The \eqn{n_k} neighbours are the nearest neighbours of \eqn{k} according to distances.
+//' The weights are so calculated as follows :
 //' 
-//' \deqn{ w_{ij} = 1,}
-//'  if unit \eqn{j \in N_{\lfloor k_i \rfloor}}.
-//' \deqn{ w_{ij} = k_i - \lfloor k_i \rfloor,}
-//'  if unit \eqn{j} is the \eqn{\lceil k_i \rceil} the nearest neighbour of \eqn{i}.
-//' \deqn{w_{ij} = 0,}
-//'  otherwise. \eqn{ \lfloor k_i \rfloor} and \eqn{\lceil k_i \rceil} be the inferior and the superior integers of \eqn{k_i}.
+//' \itemize{
+//'   \item \eqn{ w_{kl} = 1} if unit \eqn{l \in N_{\lfloor n_k \rfloor }}
+//'   \item \eqn{ w_{kl} = n_k - \lfloor n_k \rfloor} if unit \eqn{l} is the \eqn{\lceil n_k \rceil} nearest neighbour of \eqn{k}.
+//'   \item \eqn{w_{kl} = 0} otherwise.
+//' }
 //' 
-//' The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+//' 
+//' \eqn{\lfloor n_k \rfloor } and \eqn{\lceil n_k \rceil} are the inferior and the superior integers of \eqn{n_k}.
+//' 
+//' The option \code{shift} add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
 //' of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
 //' Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
-//' of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+//' of the both units is updated. If a shift perturbation is used then all the distances are differents and only one unit
 //' weight is update such that the bound is reached. 
 //' 
-//' The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+//' The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+//'
 //' 
 //' @return A sparse matrix representing the spatial weights.
 //' 
@@ -63,7 +66,7 @@ using namespace std;
 //' for(i in 1:1000){
 //'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 //' }
-//' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+//' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
 //' }
 //' 
 //' @export
@@ -71,7 +74,7 @@ using namespace std;
 arma::sp_mat wpikInv(arma::mat X,
                   arma::vec pik,
                   bool tore = false,
-                  bool jitter = false,
+                  bool shift = false,
                   double toreBound = -1){
 
   /*
@@ -88,7 +91,7 @@ arma::sp_mat wpikInv(arma::mat X,
   */
   double tb1(0.0);
   double tb2(0.0);
-  if(jitter == true){
+  if(shift == true){
     tb1 = R::rnorm(0.0, 0.01);
     tb2 = R::rnorm(0.0, 0.01);
   }
@@ -104,7 +107,7 @@ arma::sp_mat wpikInv(arma::mat X,
     * --------------- add a jiter.
     */
 
-    if(jitter == true){
+    if(shift == true){
       double tmp1 = X(k-1,0);
       double tmp2 = X(k-1,1);
       X(k-1,0) = X(k-1,0) + tb1;
@@ -179,7 +182,7 @@ d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:1000){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
-system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+system.time(W <- wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
 
 
 rm(list = ls())
@@ -209,7 +212,7 @@ for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = TRUE,toreBound = 5)
 }
 
-as(wpik2R(d,pik),"sparseMatrix") == wpik2(X,pik = pik,tore = TRUE,jitter = FALSE,toreBound = 5)
+as(wpik2R(d,pik),"sparseMatrix") == wpik2(X,pik = pik,tore = TRUE,shift = FALSE,toreBound = 5)
 
 
 X <- cbind(runif(25),runif(25))
@@ -220,8 +223,8 @@ for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
 
-as(wpik2R(d,pik), "sparseMatrix") == wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound = 0)
-image(wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound = 0))
+as(wpik2R(d,pik), "sparseMatrix") == wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0)
+image(wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0))
 
 
 
@@ -236,7 +239,7 @@ for(i in 1:25){
 }
 system.time(as(wpik2R(d,pik), "sparseMatrix"))
 system.time(wpik2R(d,pik))
-system.time(W <- wpik2(X,pik = pik,tore = FALSE,jitter = FALSE,toreBound =0))
+system.time(W <- wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
 
 
 

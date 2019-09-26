@@ -3,21 +3,21 @@
 \encoding{UTF-8}
 \name{wpik}
 \alias{wpik}
-\title{Spatial weights from inclusion probabilities}
+\title{Stratification matrix from inclusion probabilities}
 \usage{
-wpik(X, pik, bound = 1, tore = FALSE, jitter = FALSE,
+wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE,
   toreBound = -1)
 }
 \arguments{
-\item{X}{matrix of size N x 2 representing the spatial coordinates.}
+\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
 
-\item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
+\item{pik}{vector of the inclusion probabilites. The length should be equal to \eqn{N}.}
 
 \item{bound}{a scalar representing the bound to reach. Default is 1.}
 
 \item{tore}{an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.}
 
-\item{jitter}{an optional logical value, if you would use a jitter perturbation. See Details for more infomrations. Default is \code{FALSE}.}
+\item{shift}{an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.}
 
 \item{toreBound}{a numeric value that specify the size of the grid. Default is -1.}
 }
@@ -25,49 +25,45 @@ wpik(X, pik, bound = 1, tore = FALSE, jitter = FALSE,
 A sparse matrix representing the spatial weights.
 }
 \description{
-Spatial weights calculated from inclusion probabilies taking distance between units into account.
+The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
 }
 \details{
-Spatial weights indicates how the units are close from each others. Hence a large value \eqn{w_{ij}} means that the unit \eqn{i} 
-is close to the unit \eqn{j}. This function consider that a unit represents its neighbor till their inclusion probabilities
-sum up to 1.
+Entries of the stratification matrix indicates how the units are close from each others. Hence a large value \eqn{w_{kl}} means that the unit \eqn{k} 
+is close to the unit \eqn{l}. This function considers that a unit represents its neighbor till their inclusion probabilities
+sum up to \code{bound}.
 
-We define \eqn{H_i} the set of the nearest neighbor of the unit \eqn{i} including \eqn{i} such that the sum of their inclusion
-probabilities is just greater than 1. Moreover, let \eqn{h_i = card{H_i}}, the number of elements in \eqn{H_i}.
+We define \eqn{G_k} the set of the nearest neighbor of the unit \eqn{k} including \eqn{k} such that the sum of their inclusion
+probabilities is just greater than \code{bound}. Moreover, let \eqn{g_k = \#{G_k}}, the number of elements in \eqn{G_k}.
 The matrix \eqn{\bf W} is then defined as follows,
+\itemize{
+  \item \eqn{ w_{kl} = \pi_l} if unit \eqn{l} is in the set of the  \eqn{g_k - 1} nearest neighbor of \eqn{k}.
+  \item \eqn{ w_{kl} = \pi_l + 1 - (\sum_{t \in G_k} \pi_t)} if unit \eqn{l} is the \eqn{g_k} nearest neighbour of \eqn{k}.
+  \item \eqn{w_{kl} = 0} otherwise.
+}
 
-\deqn{ w_{ij} = \pi_j}
- if unit \eqn{j} is in the set of the  \eqn{h_i - 1} nearest neighbor of \eqn{i}.
-\deqn{ w_{ij} = g_j}
- if unit \eqn{j} is the \eqn{h_i} nearest neighbour of \eqn{i}.
-\deqn{w_{ij} = 0}
- otherwise.
 
-where \eqn{g_j = 1- (\sum_{k \in H_i} \pi_k -\pi_j)}. Hence, the \eqn{i}th row of the matrix represents
+Hence, the \eqn{k}th row of the matrix represents
 neighborhood or stratum of the unit such that the inclusion probabilities sum up to 1 and
-the \eqn{i}th column the weights that unit \eqn{i} takes for each stratum. 
+the \eqn{k}th column the weights that unit \eqn{k} takes for each stratum. 
 
-The option \code{jitter} will add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
+The option \code{shift} add a small normally distributed perturbation \code{rnorm(0,0.01)} to the coordinates
 of the centroid of the stratum considered. This could be useful if there are many unit that have the same distances.
 Indeed, if two units have the same distance and are the last unit before that the bound is reached, then the weights
-of the both units is updated. If a jitter perturbation is used then all the distance are different and only one unit
+of the both units is updated. If a shift perturbation is used then all the distances are differents and only one unit
 weight is update such that the bound is reached. 
 
-The jitter perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
+The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 }
 \examples{
-\dontrun{
-N <- 5
-x <- seq(1,N,1)
+N <- 25
+n <- 5
+x <- seq(1,sqrt(N),1)
 X <- as.matrix(expand.grid(x,x))
-pik <- sampling::inclusionprobabilities(runif(25),5)
+pik <- sampling::inclusionprobabilities(runif(N),n)
 W <- wpik(X,pik) # tore == FALSE so it works
-W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
-W <- wpik(X,pik, tore = FALSE,jitter = TRUE) # warnings
-}
-
-
+# W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
+# W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
 }
 \references{
 Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
