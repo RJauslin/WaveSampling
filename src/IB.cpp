@@ -64,9 +64,10 @@ double IB(const arma::sp_mat& W,const arma::vec& s){
   double tot =0.0;
   for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it) {
     tot = tot + *it;
-    
   }
   sb.fill(arma::sum(wi%s)/tot);
+  
+  
   
   arma::vec z = s-sb;
   arma::vec u(N);
@@ -74,6 +75,8 @@ double IB(const arma::sp_mat& W,const arma::vec& s){
   
   arma::mat B;
   B = W.t()*diagmat(1/wi)*W - (W.t()*u)*u.t()*W/tot;
+  
+  
   
   double num = as_scalar(z.t()*W*z);
   double den1 = as_scalar(z.t()*diagmat(wi)*z);
