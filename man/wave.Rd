@@ -9,7 +9,7 @@ wave(X, pik, bound = 1, tore = FALSE, shift = FALSE, oneD = FALSE,
   comment = FALSE)
 }
 \arguments{
-\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
+\item{X}{matrix representing the spatial coordinates.}
 
 \item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
 

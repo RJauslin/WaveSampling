@@ -9,7 +9,7 @@ wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE,
   toreBound = -1)
 }
 \arguments{
-\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
+\item{X}{matrix representing the spatial coordinates.}
 
 \item{pik}{vector of the inclusion probabilites. The length should be equal to \eqn{N}.}
 
@@ -57,17 +57,10 @@ The shift perturbation is generated at the beginning of the procedure such that 
 \examples{
 N <- 25
 n <- 5
-x <- seq(1,sqrt(N),1)
-X <- as.matrix(expand.grid(x,x))
+X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- sampling::inclusionprobabilities(runif(N),n)
-W <- wpik(X,pik) # tore == FALSE so it works
-# W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
-# W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
-}
-\references{
-Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
-\emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
+W <- wpik(X,pik)
+
 }
 \seealso{
 \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.

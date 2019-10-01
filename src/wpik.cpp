@@ -15,7 +15,7 @@ using namespace std;
 //' The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
 //'  
 //'
-//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+//' @param X matrix representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
 //' @param bound a scalar representing the bound to reach. Default is 1.
 //' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
@@ -54,23 +54,16 @@ using namespace std;
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
-//' @references 
-//' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
-//' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
-//' 
 //' @seealso
 //' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 //' 
 //' @examples
 //' N <- 25
 //' n <- 5
-//' x <- seq(1,sqrt(N),1)
-//' X <- as.matrix(expand.grid(x,x))
+//' X <- as.matrix(cbind(runif(N),runif(N)))
 //' pik <- sampling::inclusionprobabilities(runif(N),n)
-//' W <- wpik(X,pik) # tore == FALSE so it works
-//' # W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-//' W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
-//' # W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
+//' W <- wpik(X,pik)
+//' 
 //' @export
 // [[Rcpp::export]]
 arma::sp_mat wpik(arma::mat X,
@@ -312,6 +305,11 @@ X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- inclusionprobabilities(runif(N),100)
 system.time(W <- wpik(X,pik, tore = FALSE))
 
+
+# tore == FALSE so it works
+# # //' # W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+# //' W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
+# //' # W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
 
 */
 

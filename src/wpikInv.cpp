@@ -16,7 +16,7 @@ using namespace std;
 //' The stratification matrix is calculated from the inverse inclusion probabilities. It is a direct
 //' implementation of the spatial weights specified in Tillé et al., (2018).
 //'
-//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+//' @param X matrix representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
 //' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
 //' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
@@ -59,15 +59,11 @@ using namespace std;
 //' @seealso
 //' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 //' @examples
-//' \dontrun{
-//' X <- cbind(runif(1000),runif(1000))
-//' pik <- sampling::inclusionprobabilities(runif(1000),100)
-//' d <- array(rep(0,1000*1000),c(1000,1000))
-//' for(i in 1:1000){
-//'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
-//' }
-//' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
-//' }
+//' N <- 25
+//' n <- 5
+//' X <- as.matrix(cbind(runif(N),runif(N)))
+//' pik <- sampling::inclusionprobabilities(runif(N),n)
+//' W <- wpikInv(X,pik)
 //' 
 //' @export
 // [[Rcpp::export]]

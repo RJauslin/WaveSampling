@@ -31,7 +31,7 @@
 #' 
 #' To specifiy the spatial weights uses the argument \code{W}.
 #'
-#' @return A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
+#' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -58,13 +58,13 @@ IB <- function(W, s) {
     .Call(`_wave_IB`, W, s)
 }
 
-#' @title Square of the euclidean distance of the unit k.
+#' @title Squared euclidean distances of the unit k.
 #'
 #' @description
-#' Calculate the squared euclidean distance from the unit k to the other units.
+#' Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
 #' 
 #'
-#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+#' @param X matrix representing the spatial coordinates. 
 #' @param k the unit index to be used.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
 #' @param toreBound an optional numeric value that specify the length of the tore.
@@ -209,7 +209,7 @@ NULL
 #' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
 #' 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
-#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates.
+#' @param X matrix representing the spatial coordinates.
 #' @param s A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
 #' @details
@@ -261,7 +261,7 @@ sb_vk <- function(pik, X, s) {
 #'
 #' Select a spread sample from inclusion probabilities using the weakly associated vectors sampling method.  
 #'
-#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+#' @param X matrix representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
 #' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
@@ -324,7 +324,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE,
 #' The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
 #'  
 #'
-#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+#' @param X matrix representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
 #' @param bound a scalar representing the bound to reach. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
@@ -363,23 +363,16 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE,
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
-#' @references 
-#' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
-#' \emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
-#' 
 #' @seealso
 #' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' 
 #' @examples
 #' N <- 25
 #' n <- 5
-#' x <- seq(1,sqrt(N),1)
-#' X <- as.matrix(expand.grid(x,x))
+#' X <- as.matrix(cbind(runif(N),runif(N)))
 #' pik <- sampling::inclusionprobabilities(runif(N),n)
-#' W <- wpik(X,pik) # tore == FALSE so it works
-#' # W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
-#' W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
-#' # W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
+#' W <- wpik(X,pik)
+#' 
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1.0) {
     .Call(`_wave_wpik`, X, pik, bound, tore, shift, toreBound)
@@ -393,7 +386,7 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' The stratification matrix is calculated from the inverse inclusion probabilities. It is a direct
 #' implementation of the spatial weights specified in Tillé et al., (2018).
 #'
-#' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+#' @param X matrix representing the spatial coordinates. 
 #' @param pik vector of the inclusion probabilites. The length should be equal to N.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
@@ -436,15 +429,11 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' @seealso
 #' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' @examples
-#' \dontrun{
-#' X <- cbind(runif(1000),runif(1000))
-#' pik <- sampling::inclusionprobabilities(runif(1000),100)
-#' d <- array(rep(0,1000*1000),c(1000,1000))
-#' for(i in 1:1000){
-#'   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
-#' }
-#' system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
-#' }
+#' N <- 25
+#' n <- 5
+#' X <- as.matrix(cbind(runif(N),runif(N)))
+#' pik <- sampling::inclusionprobabilities(runif(N),n)
+#' W <- wpikInv(X,pik)
 #' 
 #' @export
 wpikInv <- function(X, pik, tore = FALSE, shift = FALSE, toreBound = -1) {

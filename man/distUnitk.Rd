@@ -2,12 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{distUnitk}
 \alias{distUnitk}
-\title{Square of the euclidean distance of the unit k.}
+\title{Squared euclidean distances of the unit k.}
 \usage{
 distUnitk(X, k, tore, toreBound)
 }
 \arguments{
-\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
+\item{X}{matrix representing the spatial coordinates.}
 
 \item{k}{the unit index to be used.}
 
@@ -19,7 +19,7 @@ distUnitk(X, k, tore, toreBound)
 a vector of length \eqn{N} that contains the distances from the unit \eqn{k} to all other units.
 }
 \description{
-Calculate the squared euclidean distance from the unit k to the other units.
+Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
 }
 \details{
 Let \eqn{\mathbf{x}_k,\mathbf{x}_l} be the spatial coordinates of the unit \eqn{k,l \in U}. The classical euclidean distance is given by

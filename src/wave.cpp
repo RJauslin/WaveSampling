@@ -13,7 +13,7 @@
 //'
 //' Select a spread sample from inclusion probabilities using the weakly associated vectors sampling method.  
 //'
-//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+//' @param X matrix representing the spatial coordinates. 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
 //' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 //' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.

@@ -8,7 +8,7 @@
 wpikInv(X, pik, tore = FALSE, shift = FALSE, toreBound = -1)
 }
 \arguments{
-\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
+\item{X}{matrix representing the spatial coordinates.}
 
 \item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
 
@@ -50,15 +50,11 @@ weight is update such that the bound is reached.
 The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 }
 \examples{
-\dontrun{
-X <- cbind(runif(1000),runif(1000))
-pik <- sampling::inclusionprobabilities(runif(1000),100)
-d <- array(rep(0,1000*1000),c(1000,1000))
-for(i in 1:1000){
-  d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
-}
-system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
-}
+N <- 25
+n <- 5
+X <- as.matrix(cbind(runif(N),runif(N)))
+pik <- sampling::inclusionprobabilities(runif(N),n)
+W <- wpikInv(X,pik)
 
 }
 \references{

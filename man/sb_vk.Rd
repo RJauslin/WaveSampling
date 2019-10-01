@@ -10,7 +10,7 @@ sb_vk(pik, X, s)
 \arguments{
 \item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
 
-\item{X}{matrix of size \eqn{N} x 2 representing the spatial coordinates.}
+\item{X}{matrix representing the spatial coordinates.}
 
 \item{s}{A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.}
 }

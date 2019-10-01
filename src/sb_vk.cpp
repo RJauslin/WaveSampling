@@ -10,7 +10,7 @@
 //' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
 //' 
 //' @param pik vector of the inclusion probabilites. The length should be equal to N.
-//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates.
+//' @param X matrix representing the spatial coordinates.
 //' @param s A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 //' 
 //' @details

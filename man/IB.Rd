@@ -13,7 +13,7 @@ IB(W, s)
 \item{s}{a vector of size \eqn{N} with elements equal to 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen units.}
 }
 \value{
-A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered).
+A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered).
 }
 \description{
 This function implements the spreading measure based on Moran's \eqn{I} index.

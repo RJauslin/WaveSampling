@@ -5,13 +5,13 @@ using namespace arma;
 using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
-//' @title Square of the euclidean distance of the unit k.
+//' @title Squared euclidean distances of the unit k.
 //'
 //' @description
-//' Calculate the squared euclidean distance from the unit k to the other units.
+//' Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
 //' 
 //'
-//' @param X matrix of size \eqn{N} x 2 representing the spatial coordinates. 
+//' @param X matrix representing the spatial coordinates. 
 //' @param k the unit index to be used.
 //' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
 //' @param toreBound an optional numeric value that specify the length of the tore.
@@ -120,5 +120,14 @@ x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
 distUnitk(X,2,tore = TRUE,toreBound = 5)
 distUnitk(X,1,tore = FALSE,toreBound = 5)
+
+
+
+
+
+
+ N <- 25
+ X <- as.matrix(cbind(runif(N),runif(N),runif(N)))
+ distUnitk(X,2,tore = F,toreBound = -1)
 
 */

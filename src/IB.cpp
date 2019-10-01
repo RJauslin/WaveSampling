@@ -32,7 +32,7 @@
 //' 
 //' To specifiy the spatial weights uses the argument \code{W}.
 //'
-//' @return A numeric value that represent the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
+//' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
