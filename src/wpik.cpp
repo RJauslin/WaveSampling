@@ -5,7 +5,6 @@ using namespace Rcpp;
 using namespace arma;
 using namespace std;
 
-
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
 //' @title Stratification matrix from inclusion probabilities
