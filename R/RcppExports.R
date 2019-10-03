@@ -305,12 +305,14 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' 
 #' @examples
-#'   N <- 36 # 6 x 6 grid
-#'   n <- 12 # number of unit selected
-#'   x <- seq(1,sqrt(N),1)
-#'   X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
-#'   pik <- rep(n/N,N)
-#'   s <- wave(X,pik, tore = TRUE,shift = FALSE)
+#' 
+#' N <- 36 # 6 x 6 grid
+#' n <- 12 # number of unit selected
+#' x <- seq(1,sqrt(N),1)
+#' X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+#' pik <- rep(n/N,N)
+#' s <- wave(X,pik, tore = TRUE,shift = FALSE)
+#' 
 #' @export
 wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE, comment = FALSE) {
     .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, oneD, comment)

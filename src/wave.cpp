@@ -59,12 +59,14 @@
 //' 
 //' 
 //' @examples
-//'   N <- 36 # 6 x 6 grid
-//'   n <- 12 # number of unit selected
-//'   x <- seq(1,sqrt(N),1)
-//'   X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
-//'   pik <- rep(n/N,N)
-//'   s <- wave(X,pik, tore = TRUE,shift = FALSE)
+//' 
+//' N <- 36 # 6 x 6 grid
+//' n <- 12 # number of unit selected
+//' x <- seq(1,sqrt(N),1)
+//' X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+//' pik <- rep(n/N,N)
+//' s <- wave(X,pik, tore = TRUE,shift = FALSE)
+//' 
 //' @export
 // [[Rcpp::export]]
 arma::vec wave(const arma::mat& X,
@@ -97,10 +99,14 @@ arma::vec wave(const arma::mat& X,
   arma::vec s;
   arma::mat V;
   
+  if(comment  == true){
+    Rcpp::Rcout << "--- Sample selection ---" << std::endl;
+  }
+  
   while(i_size > 1){
     if(comment  == true){
       if(i_size % 1 == 0){
-        // Rcpp::Rcout << i_size << std::endl;
+        Rcpp::Rcout << "Current dimension of the Matrix W : " << i_size << std::endl;
       }
     }
     
@@ -111,17 +117,6 @@ arma::vec wave(const arma::mat& X,
       break;
     }else{
       one = arma::ones<arma::mat>(i_size,1);
-      // Wsp_tmp = Wsp.submat(i,i);
-      // arma::mat tmp1 = diagmat(re.elem(i)/pik.elem(i));
-      // Wsp_tmp = tmp1*Wsp_tmp;
-      // arma::mat tmp2 = diagmat(1/re.elem(i));
-      // Wsp_tmp = tmp2*Wsp_tmp;
-      
-      // Wsp_tmp = Wsp.submat(i,i);
-      // arma::mat tmp2 = diagmat(1/pik.elem(i));
-      // Wsp_tmp = tmp2*Wsp_tmp;
-      // Wsp_tmp.insert_cols(0,one);
-      
       arma::uvec index(2);
       index(0) = 0;
       index(1) = 1;
@@ -130,32 +125,32 @@ arma::vec wave(const arma::mat& X,
       A = A*D;
     }
     
-    
-    
-    
+    // init vector for updating pik
     arma::vec u(i_size);
+    
+    /* QR OR SVD
+     * 
+     * svd_econ faster than a QR decomposition to extract null space.
+     * 
+     * TODO:
+     * find a faster way to find the smallest associated
+     * vector CHECK for LOPBCG and/or other methods.
+     * 
+     */
     arma::svd_econ(U,s,V,A,"right","dc");
-    // arma::svd(U,s,V,A,"dc");
     arma::uvec r = find(s >= eps);
     unsigned int rang = r.size();
     if(rang < i_size){
-      // if(comment  == true){
-        // std::cout << "low"<< std::endl;
-      // }
+        // same for now but could be different in future dev.
         u = V.col(V.n_cols - 1);
     }else{
-      // if(comment  == true){
-      // std::cout << "high"<< std::endl;
-      // }
         u = V.col(V.n_cols - 1);
     }
-    
     u = u - projOp(u,one);
     
     la1 = 1e+200;
     la2 = 1e+200;
     la = 1e-9;
-    
     for(unsigned int k = 0; k < i.size(); k++){
       if(u[k]> 0){
         la1 = std::min(la1,(1.0-re[i[k]])/u[k]);
@@ -183,8 +178,12 @@ arma::vec wave(const arma::mat& X,
     i = arma::find(re > eps && re < (1-eps));
     i_size = i.size();
   }
-  return(arma::round(re));
   
+  if(comment  == true){
+    Rcpp::Rcout << "--- Sample selection finished ---" << std::endl;
+  }
+  
+  return(arma::round(re));
 }
 
 
@@ -199,12 +198,12 @@ x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
 s <- wave(X,pik,tore = T,shift =F,comment = TRUE)
-s <- wave2(X,pik,tore = T,shift =F,comment = TRUE)
+s <- wave(X,pik,tore = T,shift =F,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
 
 X <- as.matrix(cbind(runif(N),runif(N)))
-s <- wave2(X,pik,tore = F,shift =F,comment = TRUE)
+s <- wave(X,pik,tore = F,shift =F,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
 
@@ -235,9 +234,6 @@ plot(X)
 points(X[s == 1,],pch = 16)
 
   
-
-
-
 N <- 25
 n <- 5
 x <- seq(1,sqrt(N),1)
@@ -249,8 +245,6 @@ plot(X)
 points(X[s == 1,],pch = 16)
 
 
-
-
 rm(list = ls())
 N <- 30
 n <- 100
@@ -259,83 +253,15 @@ y <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,y))
 
 pik <- rep(n/(N*N),N*N)
-
 W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = T,toreBound = N))
 image(W)
-system.time(test <- wave(as.matrix(X),pik, tore = TRUE,shift = T))
-
+system.time(test <- wave(as.matrix(X),pik, tore = TRUE,shift = T,comment = TRUE))
 # utilisateur     système      écoulé
 # 54.22        5.75       15.25
-system.time(test2 <- wave2(as.matrix(X),pik, tore = TRUE,shift = T))
-  # utilisateur     système      écoulé
-# 165.92       16.83       49.95
-
 plot(X)
 points(X[test ==1,],pch = 16)
 
-##################################################################
 
-N <- 35
-n <- 300
-x <- seq(1,N,1)
-y <- seq(1,N,1)
-X <- as.matrix(expand.grid(x,y))
-
-pik <- rep(n/(N*N),N*N)
-
-W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = T,toreBound = N))
-image(W)
-system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,shift = T))
-
-
-###################################################################
-
-N <- 6
-n <- 13
-x <- seq(1,N,1)
-y <- seq(1,N,1)
-X <- as.matrix(expand.grid(x,y))
-
-pik <- rep(n/(N*N),N*N)
-
-W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = F,toreBound = N))
-image(W)
-system.time(test <- spreadcubeArma(as.matrix(X),pik, tore = TRUE,shift = F))
-sum(test)
-# utilisateur     système      écoulé
-# 8.28        0.79        2.56
-system.time(test2 <- spreadcube(as.matrix(X),pik, tore = TRUE,shift = F))
-sum(test2)
-# utilisateur     système      écoulé
-# 4.22        0.07        4.29
-
-
-plot(X)
-points(X[test==1,],pch = 16)
-
-
-W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = T,toreBound = N))
-image(W)
-W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = F,toreBound = N))
-image(W)
-
-
-
-###################################################################
-
-N <- 12
-n <- 48
-x <- seq(1,N,1)
-y <- seq(1,N,1)
-X <- as.matrix(expand.grid(x,y))
-
-pik <- rep(n/(N*N),N*N)
-
-W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = F,toreBound = N))
-image(W)
-s <- wave(as.matrix(X),pik, tore = TRUE,shift =T )
-plot(X)
-points(X[s ==1,],pch = 16)
 
 
 */

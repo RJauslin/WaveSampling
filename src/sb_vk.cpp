@@ -67,15 +67,16 @@ arma::vec sb_vk(arma::vec pik,arma::mat X,arma::vec s) {
   double mindist = 1e+200;
   double d = 0.0;
   
-
-  
-  for(int i=0;i<N;i++){ // loop on the population
+  // loop on the population
+  for(int i=0;i<N;i++){ 
     nrNearest = 0; 
     mindist = 1e+200;
     for(int j=0;j<n;j++){ 
       d = 0.0;
-      for(int k=0;k<ncol;k++){ // loop on the number of coordinates 
-        d += pow(X(i,k)-X(s1(j),k),2); // distance i to the jth element
+      // loop on the number of coordinates 
+      for(int k=0;k<ncol;k++){ 
+        // distance i to the jth element
+        d += pow(X(i,k)-X(s1(j),k),2); 
       }
       if(d==mindist){
         nearest(nrNearest) =s1(j);
@@ -87,8 +88,8 @@ arma::vec sb_vk(arma::vec pik,arma::mat X,arma::vec s) {
         nrNearest = 1;
       }
     }
-    
-    for(int k=0;k<nrNearest;k++){ // loop on the number of point in the Voronoi polygons
+    // loop on the number of point in the Voronoi polygons
+    for(int k=0;k<nrNearest;k++){ 
       vk(nearest(k)) = vk(nearest(k)) + pik(i)/nrNearest;
     }
   }
@@ -109,13 +110,10 @@ s <- wave(X,pik)
 plot(X)
 points(X[s == 1,],pch = 16)
 
-
 v <- sb_vk(pik,X,s)
 1/10*sum((v[which(v != 0)]-1)^2)
 
 BalancedSampling::sb(pik,X,which(s == 1))
-
-
 
 */
 
