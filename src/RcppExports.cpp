@@ -32,6 +32,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// distUnitk2
+arma::vec distUnitk2(arma::mat X, int k, bool tore, double toreBound);
+RcppExport SEXP _WaveSampling_distUnitk2(SEXP XSEXP, SEXP kSEXP, SEXP toreSEXP, SEXP toreBoundSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< bool >::type tore(toreSEXP);
+    Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
+    rcpp_result_gen = Rcpp::wrap(distUnitk2(X, k, tore, toreBound));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sb_vk
 arma::vec sb_vk(arma::vec pik, arma::mat X, arma::vec s);
 RcppExport SEXP _WaveSampling_sb_vk(SEXP pikSEXP, SEXP XSEXP, SEXP sSEXP) {
@@ -97,6 +111,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_WaveSampling_IB", (DL_FUNC) &_WaveSampling_IB, 2},
     {"_WaveSampling_distUnitk", (DL_FUNC) &_WaveSampling_distUnitk, 4},
+    {"_WaveSampling_distUnitk2", (DL_FUNC) &_WaveSampling_distUnitk2, 4},
     {"_WaveSampling_sb_vk", (DL_FUNC) &_WaveSampling_sb_vk, 3},
     {"_WaveSampling_wave", (DL_FUNC) &_WaveSampling_wave, 7},
     {"_WaveSampling_wpik", (DL_FUNC) &_WaveSampling_wpik, 6},

@@ -54,56 +54,71 @@ using namespace std;
 //' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
 //' @export
 // [[Rcpp::export]]
-arma::vec distUnitk(arma::mat X,
+arma::vec distUnitk2(arma::mat X,
                     int k,
                     bool tore,
                     double toreBound){
-
+  
   //initializing variables
   int N = X.n_rows;
+  int p = X.n_cols;
+  
   arma::vec unitkX(N);
   arma::vec unitkY(N);
-  unitkX.fill(X((k-1),0)); // 0-based
-  unitkY.fill(X((k-1),1)); // 0-based
+  
+  
+  
+  // Matrix with coordinates equal to the unit k
+  arma::vec tmp(N);
+  arma::mat coord_unitk(N,p);
+  for(unsigned int j = 0; j < p; j++){
+    coord_unitk.col(j) = tmp.fill(X((k-1),j));
+  }
+  
   
   //out vector
   arma::vec dist(N);
-
   
+  // temporary matrix for the tore option
+  arma::mat x1(N,p);
+  arma::mat x2(N,p);
+  arma::mat x3(N,p);
+  arma::mat x(N,p);
   if(tore == true){
-
+    
+    // toreBound vector
     arma::vec toreBound_vec(N);
     toreBound_vec.fill(toreBound);
 
-    arma::vec x1 = (unitkX - X.col(0))% (unitkX - X.col(0));
-    arma::vec x2 = (unitkX + toreBound_vec - X.col(0))%(unitkX + toreBound_vec - X.col(0));
-    arma::vec x3 = (-unitkX + toreBound_vec + X.col(0))%(-unitkX + toreBound_vec + X.col(0));
-
-    arma::vec y1 = (unitkY - X.col(1))%(unitkY - X.col(1));
-    arma::vec y2 = (unitkY + toreBound_vec - X.col(1))%(unitkY + toreBound_vec - X.col(1));
-    arma::vec y3 = (-unitkY + toreBound_vec + X.col(1))%(-unitkY + toreBound_vec + X.col(1));
-
-
-    arma::vec d1(N);
-    arma::vec d2(N);
-
-    
-    // find minimum value between the three
-    for(int i = 0;i < N; i++){
-      d1(i) = min(x1(i),x2(i));
-      d1(i) = min(d1(i),x3(i));
-      d2(i) = min(y1(i),y2(i));
-      d2(i) = min(d2(i),y3(i));
+    // calculate the three distance
+    for(unsigned int k = 0; k < p; k++){
+      x1.col(k) = (coord_unitk.col(k)  - X.col(k))% (coord_unitk.col(k)  - X.col(k));
+      x2.col(k) = (coord_unitk.col(k) + toreBound_vec - X.col(k))%(coord_unitk.col(k) + toreBound_vec - X.col(k));
+      x3.col(k) = (-coord_unitk.col(k) + toreBound_vec + X.col(k))%(-coord_unitk.col(k) + toreBound_vec + X.col(k));
     }
-
-    dist = d1 + d2;
+    
+    // choose the minimal one
+    for(int i = 0;i < N; i++){
+      for(int j = 0;j < p; j++){
+        x(i,j) = min(x1(i,j),x2(i,j));
+        x(i,j) = min(x(i,j),x3(i,j));
+      }
+    }
+    
+    //sum over the possible dimension
+    dist = sum(x,1);
 
   }else{
+  
+    // Euclidean distance without tore so just on each dimension
+    for(unsigned int k = 0; k < p; k++){
+      x1.col(k) = (coord_unitk.col(k)  - X.col(k))% (coord_unitk.col(k)  - X.col(k));
+    }
     
-    // Euclidean distance if tore == false
-    dist = (unitkX - X.col(0))%(unitkX - X.col(0)) + (unitkY - X.col(1))%(unitkY - X.col(1));
+    // sum over the possible dimension
+    dist = sum(x1,1);
   }
-
+  
   return(dist);
 }
 
@@ -114,24 +129,30 @@ arma::vec distUnitk(arma::mat X,
 x <- seq(1,2,1)
 y <- seq(1,2,1)
 X <- as.matrix(expand.grid(x,y))
-distUnitk(X,1,tore = TRUE,toreBound = NA)
+distUnitk2(X,1,tore = TRUE,toreBound = NA)
 
 
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
+distUnitk2(X,2,tore = TRUE,toreBound = 5)
 distUnitk(X,2,tore = TRUE,toreBound = 5)
-distUnitk(X,1,tore = FALSE,toreBound = 5)
-
-
-N <- 25
-X <- as.matrix(cbind(runif(N),runif(N),runif(N)))
-distUnitk(X,2,tore = F,toreBound = -1)
 
 
 X <- as.matrix(seq(1,10,1))
+X <- as.matrix(runif(10))
 dist(X)
-distUnitk(X,2,tore = TRUE,toreBound = NA)
+distUnitk2(X,1,tore = TRUE,toreBound = 10)
+distUnitk2(X,4,tore = FALSE,toreBound = NA)
+
+
+
+
+N <- 100
+x <- seq(1,N,1)
+X <- as.matrix(expand.grid(x,x))
+system.time(test1 <- distUnitk(X,100,tore = TRUE,toreBound = 100))
+system.time(test2 <- distUnitk2(X,2,tore = TRUE,toreBound = 100))
 
 
 */
