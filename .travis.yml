@@ -4,9 +4,7 @@ dist: trusty
 sudo: required
 
 r:
-  - oldrel
   - release
-  - devel
 
 before_install:
   - chmod +x configure

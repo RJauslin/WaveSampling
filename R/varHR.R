@@ -24,7 +24,7 @@
 #' @encoding UTF-8
 #' @import Matrix
 #' 
-#' @useDynLib wave, .registration = TRUE
+#' @useDynLib WaveSampling, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @export
 varHAJ <- function(y,pik,s){

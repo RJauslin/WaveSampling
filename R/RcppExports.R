@@ -55,7 +55,7 @@
 #' 
 #' @export
 IB <- function(W, s) {
-    .Call(`_wave_IB`, W, s)
+    .Call(`_WaveSampling_IB`, W, s)
 }
 
 #' @title Squared euclidean distances of the unit k.
@@ -107,7 +107,7 @@ IB <- function(W, s) {
 #' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
 #' @export
 distUnitk <- function(X, k, tore, toreBound) {
-    .Call(`_wave_distUnitk`, X, k, tore, toreBound)
+    .Call(`_WaveSampling_distUnitk`, X, k, tore, toreBound)
 }
 
 #' @encoding UTF-8
@@ -251,7 +251,7 @@ NULL
 #' 
 #' @export
 sb_vk <- function(pik, X, s) {
-    .Call(`_wave_sb_vk`, pik, X, s)
+    .Call(`_WaveSampling_sb_vk`, pik, X, s)
 }
 
 #' @encoding UTF-8
@@ -313,7 +313,7 @@ sb_vk <- function(pik, X, s) {
 #'   s <- wave(X,pik, tore = TRUE,shift = FALSE)
 #' @export
 wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE, comment = FALSE) {
-    .Call(`_wave_wave`, X, pik, bound, tore, shift, oneD, comment)
+    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, oneD, comment)
 }
 
 #' @encoding UTF-8
@@ -375,7 +375,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE,
 #' 
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1.0) {
-    .Call(`_wave_wpik`, X, pik, bound, tore, shift, toreBound)
+    .Call(`_WaveSampling_wpik`, X, pik, bound, tore, shift, toreBound)
 }
 
 #' @encoding UTF-8
@@ -437,6 +437,6 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' 
 #' @export
 wpikInv <- function(X, pik, tore = FALSE, shift = FALSE, toreBound = -1) {
-    .Call(`_wave_wpikInv`, X, pik, tore, shift, toreBound)
+    .Call(`_WaveSampling_wpikInv`, X, pik, tore, shift, toreBound)
 }
 

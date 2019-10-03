@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // IB
 double IB(const arma::sp_mat& W, const arma::vec& s);
-RcppExport SEXP _wave_IB(SEXP WSEXP, SEXP sSEXP) {
+RcppExport SEXP _WaveSampling_IB(SEXP WSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // distUnitk
 arma::vec distUnitk(arma::mat X, int k, bool tore, double toreBound);
-RcppExport SEXP _wave_distUnitk(SEXP XSEXP, SEXP kSEXP, SEXP toreSEXP, SEXP toreBoundSEXP) {
+RcppExport SEXP _WaveSampling_distUnitk(SEXP XSEXP, SEXP kSEXP, SEXP toreSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,7 +34,7 @@ END_RCPP
 }
 // sb_vk
 arma::vec sb_vk(arma::vec pik, arma::mat X, arma::vec s);
-RcppExport SEXP _wave_sb_vk(SEXP pikSEXP, SEXP XSEXP, SEXP sSEXP) {
+RcppExport SEXP _WaveSampling_sb_vk(SEXP pikSEXP, SEXP XSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,7 +47,7 @@ END_RCPP
 }
 // wave
 arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool shift, bool oneD, bool comment);
-RcppExport SEXP _wave_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
+RcppExport SEXP _WaveSampling_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP oneDSEXP, SEXP commentSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -64,7 +64,7 @@ END_RCPP
 }
 // wpik
 arma::sp_mat wpik(arma::mat X, arma::vec pik, double bound, bool tore, bool shift, double toreBound);
-RcppExport SEXP _wave_wpik(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
+RcppExport SEXP _WaveSampling_wpik(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // wpikInv
 arma::sp_mat wpikInv(arma::mat X, arma::vec pik, bool tore, bool shift, double toreBound);
-RcppExport SEXP _wave_wpikInv(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
+RcppExport SEXP _WaveSampling_wpikInv(SEXP XSEXP, SEXP pikSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -95,16 +95,16 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_wave_IB", (DL_FUNC) &_wave_IB, 2},
-    {"_wave_distUnitk", (DL_FUNC) &_wave_distUnitk, 4},
-    {"_wave_sb_vk", (DL_FUNC) &_wave_sb_vk, 3},
-    {"_wave_wave", (DL_FUNC) &_wave_wave, 7},
-    {"_wave_wpik", (DL_FUNC) &_wave_wpik, 6},
-    {"_wave_wpikInv", (DL_FUNC) &_wave_wpikInv, 5},
+    {"_WaveSampling_IB", (DL_FUNC) &_WaveSampling_IB, 2},
+    {"_WaveSampling_distUnitk", (DL_FUNC) &_WaveSampling_distUnitk, 4},
+    {"_WaveSampling_sb_vk", (DL_FUNC) &_WaveSampling_sb_vk, 3},
+    {"_WaveSampling_wave", (DL_FUNC) &_WaveSampling_wave, 7},
+    {"_WaveSampling_wpik", (DL_FUNC) &_WaveSampling_wpik, 6},
+    {"_WaveSampling_wpikInv", (DL_FUNC) &_WaveSampling_wpikInv, 5},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_wave(DllInfo *dll) {
+RcppExport void R_init_WaveSampling(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

@@ -5,6 +5,8 @@
 #include "rowcolSumsiter.h"
 #include "projOp.h"
 
+
+
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
 //' @title Weakly associated vectors sampling
