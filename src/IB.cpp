@@ -57,27 +57,35 @@
 //' @export
 // [[Rcpp::export]]
 double IB(const arma::sp_mat& W,const arma::vec& s){
+  
+  // initializing temp variables
   int N = s.size();
+  
+  // rowsum of the matrix W
   arma::vec wi = rowSumsiter(W);
-  // arma::rowvec wi = arma::sum(W,1);
+  
+  // weighted mean sample
   arma::vec sb(N);
+  // total sum of the matrix 
   double tot =0.0;
   for(arma::sp_mat::const_iterator it = W.begin(); it != W.end(); ++it) {
     tot = tot + *it;
   }
+  
   sb.fill(arma::sum(wi%s)/tot);
   
-  
-  
+  // centered sample
   arma::vec z = s-sb;
+  
+  // unity vector
   arma::vec u(N);
   u.fill(1.0);
   
+  //matrix B
   arma::mat B;
   B = W.t()*diagmat(1/wi)*W - (W.t()*u)*u.t()*W/tot;
   
-  
-  
+  // temporary values
   double num = as_scalar(z.t()*W*z);
   double den1 = as_scalar(z.t()*diagmat(wi)*z);
   double den2 = as_scalar(z.t()*B*z);
@@ -90,15 +98,16 @@ double IB(const arma::sp_mat& W,const arma::vec& s){
 
 /*** R
 
-
-N <- 100
-n <- 20
+N <- 576
+n <- 100
 x <- seq(1,sqrt(N),1)
 X <- expand.grid(x,x)
 pik <- rep(n/N,N)
-W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,jitter = FALSE,toreBound = sqrt(N))
+W <- wpik(as.matrix(X),pik,bound = 1,tore = TRUE,shift = FALSE,toreBound = sqrt(N))
 W <- W - diag(diag(W))
-s <- round(wave(as.matrix(X),pik,tore = TRUE,jitter = TRUE,comment = TRUE))
+# utilisateur     système      écoulé 
+# 108.59        0.70      109.30
+system.time(s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE))
 
 system.time(I1 <- IB(W,s))
 plot(X)

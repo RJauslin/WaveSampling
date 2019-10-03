@@ -59,18 +59,17 @@ arma::vec distUnitk(arma::mat X,
                     bool tore,
                     double toreBound){
 
-  //intializing used variable
+  //initializing variables
   int N = X.n_rows;
-  // double r = sqrt(N);
-
   arma::vec unitkX(N);
   arma::vec unitkY(N);
-
-  arma::vec dist(N);
-
   unitkX.fill(X((k-1),0));
   unitkY.fill(X((k-1),1));
+  
+  //out vector
+  arma::vec dist(N);
 
+  
   if(tore == true){
 
     arma::vec toreBound_vec(N);
@@ -88,6 +87,8 @@ arma::vec distUnitk(arma::mat X,
     arma::vec d1(N);
     arma::vec d2(N);
 
+    
+    // find minimum value between the three
     for(int i = 0;i < N; i++){
       d1(i) = min(x1(i),x2(i));
       d1(i) = min(d1(i),x3(i));
@@ -98,6 +99,8 @@ arma::vec distUnitk(arma::mat X,
     dist = d1 + d2;
 
   }else{
+    
+    // Euclidean distance if tore == false
     dist = (unitkX - X.col(0))%(unitkX - X.col(0)) + (unitkY - X.col(1))%(unitkY - X.col(1));
   }
 
@@ -114,7 +117,6 @@ X <- as.matrix(expand.grid(x,y))
 distUnitk(X,1,tore = TRUE,toreBound = NA)
 
 
-
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
@@ -122,12 +124,8 @@ distUnitk(X,2,tore = TRUE,toreBound = 5)
 distUnitk(X,1,tore = FALSE,toreBound = 5)
 
 
-
-
-
-
- N <- 25
- X <- as.matrix(cbind(runif(N),runif(N),runif(N)))
- distUnitk(X,2,tore = F,toreBound = -1)
+N <- 25
+X <- as.matrix(cbind(runif(N),runif(N),runif(N)))
+distUnitk(X,2,tore = F,toreBound = -1)
 
 */

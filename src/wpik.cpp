@@ -80,7 +80,7 @@ arma::sp_mat wpik(arma::mat X,
   arma::sp_mat W = arma::sp_mat(N,N);
 
   /*
-  * If jiiter is is equal true then we
+  * If shift is is equal true then we
   *  add a perturbation on the central element of each strata
   *  specified here because we need to ensure that we add the
   *  same perturbation to each points.
@@ -99,16 +99,16 @@ arma::sp_mat wpik(arma::mat X,
   }
   
   /*
-  * Main loop on the row of the Matrix X
+  * Main loop on the "row" 
+  * (in fact on the column because it is column major) 
+  * of the Matrix X
   */
   for(int k = 1; k <= N; k++){
     arma::vec d(N);
 
 
     /*
-    * Choose between the distance
-    * -----------------------a tore.
-    * --------------- add a jiter.
+    * Choice of the distance
     */
 
     if(shift == true){
@@ -121,8 +121,6 @@ arma::sp_mat wpik(arma::mat X,
       }else{
         d = distUnitk(X,k,false,0.0); //toreBound not used in distUnitk
       }
-      // std::cout << d << std::endl;
-
       X(k-1,0) = tmp1;
       X(k-1,1) = tmp2;
     }else{
@@ -167,8 +165,6 @@ arma::sp_mat wpik(arma::mat X,
     j = j-1; //j represent only the number of element added and so id(j) point to the last element added.
 
 
-
-
     /*
     * find unit that are at the same distance to the +1 neighbor
     */
@@ -190,16 +186,6 @@ arma::sp_mat wpik(arma::mat X,
     *  2) the element of modif are all outise the neighbors and the bound is not reached.
     */
 
-    /*
-    *  Check if the previous element added is inside modif and that the bound is exactly reached
-    */
-    // if(find(modif == idx(j-1)).is_empty() == false &&  std::abs(bound - cum) < eps ){
-    //
-    //   for(int tt = 0;tt <= j; tt++){
-    //     w(idx(tt)) = pik(idx(tt));
-    //   }
-    //
-    // }else{
 
     /* LOWBOUND
     *
@@ -219,20 +205,7 @@ arma::sp_mat wpik(arma::mat X,
         tmp = find(modif == idx(s));
       }
     }
-    // if(arma::find(modif == idx(0)).is_empty() == true){
-    //   // cout << "idx(0) is not inside modif" << endl;
-    //   while(arma::find(modif == idx(s)).is_empty() == false){
-    //     lowbound = lowbound - pik(idx(s));
-    //     s = s - 1;
-    //   }
-    // }
-    // DEPRECATED
-    // else{
-    //   cout << "idx(0) is inside modif" << endl;
-    //   s = 0;
-    //   lowbound = 0.0;
-    // }
-
+   
 
     /* HIGHBOUND
     *
@@ -286,8 +259,6 @@ W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
 W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
 W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
 
-
-
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
@@ -297,11 +268,9 @@ W <- wpik(X,pik, tore = TRUE,toreBound = 5)
 
 rankMatrix(W)
 
-
-
 N <- 2048
 X <- as.matrix(cbind(runif(N),runif(N)))
-pik <- inclusionprobabilities(runif(N),100)
+pik <- sampling::inclusionprobabilities(runif(N),100)
 system.time(W <- wpik(X,pik, tore = FALSE))
 
 

@@ -20,6 +20,19 @@ env:
  global:
    - CRAN: http://cran.rstudio.com
 
+r_packages:
+  - knitr
+  - rmarkdown
+  - ggplot2
+  - ggvoronoi
+  - kableExtra
+  - magrittr
+  - sampling
+  - BalancedSampling
+  - sp
+  - sf
+  - stats
+  
 addons:
   apt:
     packages:

@@ -43,7 +43,6 @@ arma::vec projOp(arma::vec v,arma::vec u) {
 }
 
 /*** R
-
 u = c(0,1)
 v = c(1,1)
 projOp(v,u)

@@ -30,7 +30,7 @@ arma::vec colSumsiter(const arma::sp_mat& x) {
 
   int N = x.n_cols;
 
-  // initialise memory for result
+  // initialize memory for result
   arma::vec result(N);
   result.fill(0.0);
 
@@ -81,28 +81,29 @@ arma::vec rowSumsiter(const arma::sp_mat& x) {
 rm(list = ls())
 X <- as.matrix(cbind(runif(30),runif(30)))
 pik <- rep(1/5,30)
-A <- wpik(X,pik,bound = 1,tore = TRUE,jitter = TRUE,toreBound = 0)
+A <- wpik(X,pik,bound = 1,tore = TRUE,shift = TRUE,toreBound = 0)
 # A <- A+ t(A)
 image(A)
-colSumsiter(A)
+## No longer working as function not exported
+# WaveSampling:::colSumsiter(A)
 colSums(A)
-
-rowSumsiter(A)
+## No longer working as function not exported
+# rowSumsiter(A)
 rowSums(A)
 
+## No longer working as function not exported
 
+# Was a tiny bit slower but we could use this in a c++ code
 
-
-## A tiny bit slower but we could use this in a c++ code
-sp <- rsparsematrix(5000,500,density = 0.4)
-system.time(test1 <- Matrix::colSums(sp))
-system.time(test2 <- colSumsiter(sp))
-
-system.time(svd(sp))
-system.time(svds(sp,NSvals = 1,which = "S"))
-
-system.time(rowSums(sp))
-system.time(rowSumsiter(sp))
+# sp <- rsparsematrix(5000,500,density = 0.4)
+# system.time(test1 <- Matrix::colSums(sp))
+# system.time(test2 <- colSumsiter(sp))
+# 
+# system.time(svd(sp))
+# system.time(svds(sp,NSvals = 1,which = "S"))
+# 
+# system.time(rowSums(sp))
+# system.time(rowSumsiter(sp))
 
 
 */

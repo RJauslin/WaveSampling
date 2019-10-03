@@ -3,8 +3,11 @@ Type: Package
 Title: Weakly associated vectors (wave) sampling
 Version: 0.1.0
 Authors@R: c(
-  person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre")),
-  person("Yves", "Tillé",role = c("aut"))
+  person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0003-1088-3356")
+    ),
+  person("Yves", "Tillé",role = c("aut"),
+    comment = c(ORCID = "0000-0003-0904-5523"))
   )
 Description: Spatial data are generally autocorrelated, meaning that if two 
   units selected are close to each other, then it is likely that they share the
