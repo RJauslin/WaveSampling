@@ -5,7 +5,6 @@ sudo: required
 
 r:
   - release
-  - devel
 
 before_install:
   - chmod +x configure
