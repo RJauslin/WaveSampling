@@ -15,7 +15,7 @@ the inclusion probabilities vector into a sample.
 ## Build
 
 [![Build
-Status](https://travis-ci.org/RJauslin/wave.svg?branch=master)](https://travis-ci.org/RJauslin/wave)
+Status](https://travis-ci.org/RJauslin/WaveSampling.svg?branch=master)](https://travis-ci.org/RJauslin/WaveSampling)
 
 ## Installation
 
@@ -39,17 +39,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>            [,1]       [,2]
-#>  [1,] 0.9827716 0.02720247
-#>  [2,] 0.9099612 0.35267267
-#>  [3,] 0.7984794 0.88668410
-#>  [4,] 0.5981094 0.97463048
-#>  [5,] 0.4927665 0.14498118
-#>  [6,] 0.6816093 0.54230465
-#>  [7,] 0.9375286 0.60360192
-#>  [8,] 0.5571925 0.16860458
-#>  [9,] 0.3223545 0.18762365
-#> [10,] 0.4211185 0.17919766
+#>             [,1]       [,2]
+#>  [1,] 0.21261887 0.31034632
+#>  [2,] 0.42808286 0.46127169
+#>  [3,] 0.22365724 0.51317551
+#>  [4,] 0.07037486 0.65225122
+#>  [5,] 0.49935828 0.78124337
+#>  [6,] 0.68688671 0.98001601
+#>  [7,] 0.06034167 0.02506027
+#>  [8,] 0.43572750 0.26305536
+#>  [9,] 0.29332271 0.40218011
+#> [10,] 0.66901770 0.68717741
 ```
 
 Now we need the inclusion probabilities `pik`. Hence, we generate a
