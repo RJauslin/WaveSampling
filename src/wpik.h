@@ -9,7 +9,7 @@ arma::sp_mat wpik(arma::mat X,
                   arma::vec pik,
                   double bound,
                   bool tore,
-                  bool jitter,
+                  bool shift,
                   double toreBound);
 
 

@@ -110,58 +110,6 @@ distUnitk <- function(X, k, tore, toreBound) {
     .Call(`_WaveSampling_distUnitk`, X, k, tore, toreBound)
 }
 
-#' @title Squared euclidean distances of the unit k.
-#'
-#' @description
-#' Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
-#' 
-#'
-#' @param X matrix representing the spatial coordinates. 
-#' @param k the unit index to be used.
-#' @param tore an optional logical value, if we are considering the distance on a tore. See Details.
-#' @param toreBound an optional numeric value that specify the length of the tore.
-#'
-#'
-#' @details
-#' 
-#' Let \eqn{\mathbf{x}_k,\mathbf{x}_l} be the spatial coordinates of the unit \eqn{k,l \in U}. The classical euclidean distance is given by
-#' 
-#' \deqn{d^2(k,l) = (\mathbf{x}_k - \mathbf{x}_l)^\top (\mathbf{x}_k - \mathbf{x}_l). }
-#' 
-#' When the points are distributed on a \eqn{N_1 \times N_2} regular grid of \eqn{R^2}.
-#' It is possible to consider the units like they were placed on a tore. It can be illustrated by Pac-Man passing through the wall to get away from ghosts. Specifically,
-#' we could consider two units on the same column (resp. row) that are on the opposite have a small distance,
-#' 
-#' \deqn{ d^2_T(k,l) = min( (x_{k_1} - x_{l_1})^2,
-#'                       (x_{k_1} + N_1 - x_{l_1})^2,
-#'                       (x_{k_1} - N_1 - x_{l_1})^2) +}
-#' \deqn{ min( (x_{k_2} - x_{l_2})^2,
-#'                       (x_{k_2} + N_2 - x_{l_2})^2,
-#'                       (x_{k_2} - N_2 - x_{l_2})^2).}
-#'
-#' The option \code{toreBound} specify the length of the tore in the case of \eqn{N_1 = N_2 = N}. 
-#' It is omitted if the \code{tore} option is equal to \code{FALSE}.
-#'
-#' @return a vector of length \eqn{N} that contains the distances from the unit \eqn{k} to all other units.
-#'
-#'
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
-#' 
-#' 
-#' @seealso
-#' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
-#'
-#' @examples
-#' N <- 5
-#' x <- seq(1,N,1)
-#' X <- as.matrix(expand.grid(x,x))
-#' distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
-#' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
-#' @export
-distUnitk2 <- function(X, k, tore, toreBound) {
-    .Call(`_WaveSampling_distUnitk2`, X, k, tore, toreBound)
-}
-
 #' @encoding UTF-8
 #' @title Projection operator
 #'
@@ -318,7 +266,7 @@ sb_vk <- function(pik, X, s) {
 #' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
-#' @param oneD an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.
+#' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 #'
 #' @details
@@ -340,7 +288,9 @@ sb_vk <- function(pik, X, s) {
 #' Vector \eqn{ \bf v } is then centered to ensure fixed sample size. At each step, inclusion probabilities is modified and at least on component is set to 0 or 1. Matrix \eqn{\bf A } is updated 
 #' from the new inclusion probabilities. The whole procedure it repeated until it remains only one component that is not equal to 0 or 1.
 #' 
-#' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
+#' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}. If \code{tore} is set up \code{TRUE} and \code{toreBound} not specified the \code{toreBound} is equal to 
+#' \deqn{N^{1/p}}
+#' where \eqn{p} is equal to the number of column of the matrix \code{X}.
 #' 
 #' For more informations on the option \code{shift}, see \code{\link{wpik}}.
 #'
@@ -358,6 +308,20 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' @examples
 #' 
+#' #------------
+#' # Example 2D
+#' #------------
+#' 
+#' N <- 50
+#' n <- 15
+#' x <- as.matrix(runif(N),runif(N))
+#' pik <- sampling::inclusionprobabilities(runif(N),n)
+#' s <- wave(x,pik)
+#' 
+#' #------------
+#' # Example 2D grid 
+#' #------------
+#' 
 #' N <- 36 # 6 x 6 grid
 #' n <- 12 # number of unit selected
 #' x <- seq(1,sqrt(N),1)
@@ -365,9 +329,22 @@ sb_vk <- function(pik, X, s) {
 #' pik <- rep(n/N,N)
 #' s <- wave(X,pik, tore = TRUE,shift = FALSE)
 #' 
+#' #------------
+#' # Example 1D grid
+#' #------------
+#' 
+#' N <- 100
+#' n <- 10
+#' x <- as.matrix(seq(1,N,1))
+#' pik <- rep(n/N,N)
+#' s <- wave(x,pik,tore = TRUE,shift =FALSE,comment = TRUE)
+#' plot(x,rep(0,N))
+#' points(x[s == 1,],rep(0,n),pch = 16)
+#' 
+#' 
 #' @export
-wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, oneD = FALSE, comment = FALSE) {
-    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, oneD, comment)
+wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1, comment = FALSE) {
+    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, toreBound, comment)
 }
 
 #' @encoding UTF-8

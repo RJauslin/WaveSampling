@@ -1,14 +1,13 @@
 #ifndef wpikInv_H
 #define wpikInv_H
 
-
-#include "distUnitk.h"
 #include <RcppArmadillo.h>
+#include "distUnitk.h"
 
 arma::sp_mat wpikInv(arma::mat X,
                   arma::vec pik,
                   bool tore,
-                  bool jitter,
+                  bool shift,
                   double toreBound);
 
 

@@ -5,8 +5,8 @@
 \alias{wave}
 \title{Weakly associated vectors sampling}
 \usage{
-wave(X, pik, bound = 1, tore = FALSE, shift = FALSE, oneD = FALSE,
-  comment = FALSE)
+wave(X, pik, bound = 1, tore = FALSE, shift = FALSE,
+  toreBound = -1, comment = FALSE)
 }
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}
@@ -19,7 +19,7 @@ wave(X, pik, bound = 1, tore = FALSE, shift = FALSE, oneD = FALSE,
 
 \item{shift}{an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.}
 
-\item{oneD}{an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.}
+\item{toreBound}{a numeric value that specify the size of the grid. Default is -1.}
 
 \item{comment}{an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.}
 }
@@ -47,11 +47,27 @@ smallest singular value of \eqn{\bf A} such that
 Vector \eqn{ \bf v } is then centered to ensure fixed sample size. At each step, inclusion probabilities is modified and at least on component is set to 0 or 1. Matrix \eqn{\bf A } is updated 
 from the new inclusion probabilities. The whole procedure it repeated until it remains only one component that is not equal to 0 or 1.
 
-For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
+For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}. If \code{tore} is set up \code{TRUE} and \code{toreBound} not specified the \code{toreBound} is equal to 
+\deqn{N^{1/p}}
+where \eqn{p} is equal to the number of column of the matrix \code{X}.
 
 For more informations on the option \code{shift}, see \code{\link{wpik}}.
 }
 \examples{
+
+#------------
+# Example 2D
+#------------
+
+N <- 50
+n <- 15
+x <- as.matrix(runif(N),runif(N))
+pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(x,pik)
+
+#------------
+# Example 2D grid 
+#------------
 
 N <- 36 # 6 x 6 grid
 n <- 12 # number of unit selected
@@ -59,6 +75,19 @@ x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
 s <- wave(X,pik, tore = TRUE,shift = FALSE)
+
+#------------
+# Example 1D grid
+#------------
+
+N <- 100
+n <- 10
+x <- as.matrix(seq(1,N,1))
+pik <- rep(n/N,N)
+s <- wave(x,pik,tore = TRUE,shift =FALSE,comment = TRUE)
+plot(x,rep(0,N))
+points(x[s == 1,],rep(0,n),pch = 16)
+
 
 }
 \references{

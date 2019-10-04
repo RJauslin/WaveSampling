@@ -20,7 +20,7 @@
 //' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 //' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
 //' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
-//' @param oneD an optional logical value, specifying if we are in one dimension. Default is \code{FALSE}.
+//' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
 //'
 //' @details
@@ -42,7 +42,9 @@
 //' Vector \eqn{ \bf v } is then centered to ensure fixed sample size. At each step, inclusion probabilities is modified and at least on component is set to 0 or 1. Matrix \eqn{\bf A } is updated 
 //' from the new inclusion probabilities. The whole procedure it repeated until it remains only one component that is not equal to 0 or 1.
 //' 
-//' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}.
+//' For more informations on the options \code{tore} and \code{toreBound}, see \code{\link{distUnitk}}. If \code{tore} is set up \code{TRUE} and \code{toreBound} not specified the \code{toreBound} is equal to 
+//' \deqn{N^{1/p}}
+//' where \eqn{p} is equal to the number of column of the matrix \code{X}.
 //' 
 //' For more informations on the option \code{shift}, see \code{\link{wpik}}.
 //'
@@ -60,12 +62,39 @@
 //' 
 //' @examples
 //' 
+//' #------------
+//' # Example 2D
+//' #------------
+//' 
+//' N <- 50
+//' n <- 15
+//' x <- as.matrix(runif(N),runif(N))
+//' pik <- sampling::inclusionprobabilities(runif(N),n)
+//' s <- wave(x,pik)
+//' 
+//' #------------
+//' # Example 2D grid 
+//' #------------
+//' 
 //' N <- 36 # 6 x 6 grid
 //' n <- 12 # number of unit selected
 //' x <- seq(1,sqrt(N),1)
 //' X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 //' pik <- rep(n/N,N)
 //' s <- wave(X,pik, tore = TRUE,shift = FALSE)
+//' 
+//' #------------
+//' # Example 1D grid
+//' #------------
+//' 
+//' N <- 100
+//' n <- 10
+//' x <- as.matrix(seq(1,N,1))
+//' pik <- rep(n/N,N)
+//' s <- wave(x,pik,tore = TRUE,shift =FALSE,comment = TRUE)
+//' plot(x,rep(0,N))
+//' points(x[s == 1,],rep(0,n),pch = 16)
+//' 
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -74,7 +103,7 @@ arma::vec wave(const arma::mat& X,
                double bound = 1.0,
                bool tore = false,
                bool shift = false,
-               bool oneD = false,
+               double toreBound = -1,
                bool comment = false) {
   // INITIALIZE CONSTANT
   double la1 = 1e+200;
@@ -82,17 +111,31 @@ arma::vec wave(const arma::mat& X,
   double la = 1e-9;
   double eps = 1e-13;
   int N = X.n_rows;
-  double tb = sqrt(N);
-  if(oneD == true){
-    tb = N;
+  
+  //double is important in order to take 1/p
+  double p = X.n_cols;
+  // if the bound is specified.
+  double tb = 0.0;
+  if(toreBound == -1){
+    tb = pow(N,1/p);
+  }else{
+    tb = toreBound;
+  }
+
+  // vector of indices of the number of dimension for extract matrix 
+  arma::uvec ncol(p);
+  for(int l = 0; l < p; l++){
+    ncol(l) = l;
   }
   
+  // vector of one
   arma::mat one = arma::ones<arma::mat>(N,1);
+  
+  // vector of pik that are gonna be updated
   arma::vec re(pik);
   arma::uvec i = arma::find(re > eps && re < (1-eps));
   
   unsigned int i_size = i.size();
-  
   
   //INITIALIZING VARIABLE 
   arma::mat U;
@@ -103,7 +146,9 @@ arma::vec wave(const arma::mat& X,
     Rcpp::Rcout << "--- Sample selection ---" << std::endl;
   }
   
+  // MAIN LOOP
   while(i_size > 1){
+    
     if(comment  == true){
       if(i_size % 1 == 0){
         Rcpp::Rcout << "Current dimension of the Matrix W : " << i_size << std::endl;
@@ -111,19 +156,11 @@ arma::vec wave(const arma::mat& X,
     }
     
     arma::mat A(i_size,i_size);
+    one = arma::ones<arma::mat>(i_size,1);
+    A = wpik(X.submat(i,ncol),re.elem(i),1.0,tore,shift,tb);
+    arma::mat D = diagmat(1/re.elem(i));
+    A = A*D;
     
-    if(sum(re.elem(i)) < 1){
-      //It remains only one element and the there is only one stratum
-      break;
-    }else{
-      one = arma::ones<arma::mat>(i_size,1);
-      arma::uvec index(2);
-      index(0) = 0;
-      index(1) = 1;
-      A = wpik(X.submat(i,index),re.elem(i),1.0,tore,shift,tb);
-      arma::mat D = diagmat(1/re.elem(i));
-      A = A*D;
-    }
     
     // init vector for updating pik
     arma::vec u(i_size);
@@ -183,6 +220,7 @@ arma::vec wave(const arma::mat& X,
     Rcpp::Rcout << "--- Sample selection finished ---" << std::endl;
   }
   
+  
   return(arma::round(re));
 }
 
@@ -190,14 +228,20 @@ arma::vec wave(const arma::mat& X,
 
 /*** R
 
+N <- 50
+n <- 15
+x <- as.matrix(runif(N),runif(N))
+pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(x,pik)
+
 ############# EXAMPLE 1
 
 N <- 36
-n <- 18
+n <- 12
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
-s <- wave(X,pik,tore = T,shift =F,comment = TRUE)
+s <- wave(X,pik,tore = T,shift =F,toreBound = -1, comment = TRUE)
 s <- wave(X,pik,tore = T,shift =F,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
@@ -216,7 +260,6 @@ pik <- rep(n/N,N)
 
 # W <- wpik(X,pik,bound = 1,tore = TRUE,shift = TRUE,toreBound = 15 )
 s <- wave(X,pik,tore = T,shift =T,comment = TRUE)
-s <- wave2(X,pik,tore = T,shift =T,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)
 
@@ -256,12 +299,23 @@ pik <- rep(n/(N*N),N*N)
 W <- t(wpik(as.matrix(X),pik,bound = 1.0,tore = TRUE,shift = T,toreBound = N))
 image(W)
 system.time(test <- wave(as.matrix(X),pik, tore = TRUE,shift = T,comment = TRUE))
-# utilisateur     système      écoulé
-# 54.22        5.75       15.25
 plot(X)
 points(X[test ==1,],pch = 16)
 
 
+#############
+# 1D
+
+
+N <- 100
+n <- 10
+x <- as.matrix(seq(1,N,1))
+# x <- as.matrix(runif(N))
+pik <- rep(n/N,N)
+# pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(x,pik,tore = T,shift =F,comment = T)
+plot(x,rep(0,N))
+points(x[s == 1,],rep(0,n),pch = 16)
 
 
 */

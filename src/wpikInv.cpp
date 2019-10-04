@@ -1,11 +1,5 @@
-
 #include <RcppArmadillo.h>
 #include "distUnitk.h"
-
-using namespace Rcpp;
-using namespace arma;
-using namespace std;
-
 
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
@@ -132,9 +126,9 @@ arma::sp_mat wpikInv(arma::mat X,
     */
     // arma::uvec idx =  arma::stable_sort_index(d); // sort the distance with exact index even if we have ties
 
-    arma::uvec d_unique = find_unique(d,true);
-    arma::vec d_unique_sorted  = sort(d.elem(d_unique));
-    arma::vec w(N,fill::zeros); // returned vec
+    arma::uvec d_unique = arma::find_unique(d,true);
+    arma::vec d_unique_sorted  = arma::sort(d.elem(d_unique));
+    arma::vec w(N,arma::fill::zeros); // returned vec
 
     double k_i = 1/pik[k-1];
     int k_i_floor = floor(1/pik[k-1]);
@@ -147,7 +141,7 @@ arma::sp_mat wpikInv(arma::mat X,
     do{
       w_tmp.fill(0.0);
       // modif = find(d == d[d_unique[tt]]);
-      modif = find(d == d_unique_sorted[tt]);
+      modif = arma::find(d == d_unique_sorted[tt]);
       w.elem(modif) += 1.0;
       w_tmp.elem(modif) +=1.0;
       tt = tt + 1;
@@ -178,7 +172,6 @@ d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:1000){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
-system.time(W <- wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
 
 
 rm(list = ls())
@@ -208,7 +201,7 @@ for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = TRUE,toreBound = 5)
 }
 
-as(wpik2R(d,pik),"sparseMatrix") == wpik2(X,pik = pik,tore = TRUE,shift = FALSE,toreBound = 5)
+as(wpik2R(d,pik),"sparseMatrix") == wpikInv(X,pik = pik,tore = TRUE,shift = FALSE,toreBound = 5)
 
 
 X <- cbind(runif(25),runif(25))
@@ -219,8 +212,8 @@ for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
 
-as(wpik2R(d,pik), "sparseMatrix") == wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0)
-image(wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0))
+as(wpik2R(d,pik), "sparseMatrix") == wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0)
+image(wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0))
 
 
 
@@ -233,11 +226,14 @@ d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
 }
+
+
 system.time(as(wpik2R(d,pik), "sparseMatrix"))
-system.time(wpik2R(d,pik))
-system.time(W <- wpik2(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
-
-
+# utilisateur     système      écoulé 
+# 12.00        2.18       14.18 
+system.time(W <- wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound =0))
+# utilisateur     système      écoulé 
+# 0.81        0.00        0.81 
 
 
 

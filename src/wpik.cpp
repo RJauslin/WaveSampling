@@ -1,10 +1,6 @@
 #include <RcppArmadillo.h>
 #include "distUnitk.h"
 
-using namespace Rcpp;
-using namespace arma;
-using namespace std;
-
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
 //' @title Stratification matrix from inclusion probabilities
@@ -95,7 +91,7 @@ arma::sp_mat wpik(arma::mat X,
     Rcpp::stop("You have set tore == true but you not gave a toreBound" );
   }
   if(tore == false && shift == true){
-    warning("You have set tore == false but you set shift = TRUE. That might be an error or you know what you are doing :-)." );
+    Rcpp::warning("You have set tore == false but you set shift = TRUE. That might be an error or you know what you are doing :-)." );
   }
   
   /*
@@ -137,7 +133,7 @@ arma::sp_mat wpik(arma::mat X,
     * CAREFUL : index of the distance 0-based.
     */
     arma::uvec idx =  arma::stable_sort_index(d); // sort the distance with exact index even if we have ties
-    arma::vec w(N,fill::zeros); // returned vec
+    arma::vec w(N,arma::fill::zeros); // returned vec
 
     /*
     * check print
@@ -168,7 +164,7 @@ arma::sp_mat wpik(arma::mat X,
     /*
     * find unit that are at the same distance to the +1 neighbor
     */
-    arma::uvec modif = find(d == d(idx(j)));
+    arma::uvec modif = arma::find(d == d(idx(j)));
 
 
     /*
@@ -196,13 +192,13 @@ arma::sp_mat wpik(arma::mat X,
     */
     double lowbound = cum; // initialize bound to cum
     int s = j; // intilize s to j
-    arma::uvec tmp = find(modif == idx(0));
+    arma::uvec tmp = arma::find(modif == idx(0));
     if(tmp.is_empty()==true){ // modif does not contains centroid
-      tmp = find(modif == idx(s));
+      tmp = arma::find(modif == idx(s));
       while(tmp.is_empty() == false){
         lowbound = lowbound - pik(idx(s));
         s = s-1;
-        tmp = find(modif == idx(s));
+        tmp = arma::find(modif == idx(s));
       }
     }
    
@@ -278,6 +274,15 @@ system.time(W <- wpik(X,pik, tore = FALSE))
 # # //' # W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
 # //' W <- wpik(X,pik, tore = TRUE,toreBound = sqrt(N)) # works
 # //' # W <- wpik(X,pik, tore = FALSE,shift = TRUE) # warnings
+
+N <- 10
+X <- as.matrix(seq(1,N,1))
+pik <- rep(2/10,10)
+pik <- sampling::inclusionprobabilities(runif(10),2)
+W <- wpik(X,pik) # tore == FALSE so it works
+W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
+W <- wpik(X,pik, tore = TRUE,toreBound = 10) 
+
 
 */
 
