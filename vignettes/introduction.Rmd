@@ -31,10 +31,12 @@ We use the data set `meuse` from the package `sp`, describe by the following sta
 ```{r}
 # install.packages(sp)
 library(sp)
+library(sf)
 library(sampling)
 data("meuse")
 data("meuse.riv")
-meuse.riv <- meuse.riv[which(meuse.riv[,2] < 335000 & meuse.riv[,2] > 328750),]
+meuse.riv <- meuse.riv[which(meuse.riv[,2] < 334200 & meuse.riv[,2] > 329400),]
+meuse_sf <- st_as_sf(meuse, coords = c("x", "y"), crs = 28992, agr = "constant")
 
 X <- scale(as.matrix(meuse[,1:2]))
 pik <- inclusionprobabilities(meuse$copper,30)
@@ -54,6 +56,7 @@ sum(s)
 ```{r,fig.width=5,fig.height=5}
 library(ggplot2)
 p <- ggplot()+
+  geom_sf(data = meuse_sf,aes(size=copper),show.legend = 'point',shape = 1,stroke = 0.3)+
   geom_polygon(data = data.frame(x = meuse.riv[,1],y = meuse.riv[,2]),
                aes(x = x,y = y),
                fill = "lightskyblue2",
@@ -65,13 +68,12 @@ p <- ggplot()+
   geom_point(data = meuse[which(s == 1),],
              aes(x = x,y = y,size = copper),
              shape = 16)+
-  labs(x = NULL,
-       y = NULL,
-       title = "Meuse river",
+  labs(x = "Longitude",
+       y = "Latitude",
+       title = NULL,
        size = "Copper",
        caption = NULL)+
-  scale_size(range = c(0.5, 2))+
-  coord_equal()+
+  scale_size(range = c(0.5, 3.5))+
   theme_minimal()
 p
   

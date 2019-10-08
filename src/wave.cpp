@@ -31,11 +31,11 @@
 //' A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
 //' Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
 //' 
-//' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is seleced:
+//' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is selected:
 //' \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
 //' 
-//' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} and \eqn{\sigma } the singular vectors assoctiated to the 
-//' smallest singular value of \eqn{\bf A} such that
+//' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors assoctiated to the 
+//' smallest singular value \eqn{\sigma } of \eqn{\bf A} such that
 //' 
 //' \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}
 //' 
@@ -111,6 +111,12 @@ arma::vec wave(const arma::mat& X,
   double la = 1e-9;
   double eps = 1e-13;
   int N = X.n_rows;
+  
+  
+  //
+  if(N >= 500){
+    Rcpp::Rcout << "WARNING : Your population size is greater than 500 this could be quite time-consuming..." << std::endl;
+  }
   
   //double is important in order to take 1/p
   double p = X.n_cols;
@@ -214,6 +220,13 @@ arma::vec wave(const arma::mat& X,
     }
     i = arma::find(re > eps && re < (1-eps));
     i_size = i.size();
+    
+    //Check if the user stop the function (approximately every 10 iterations)
+    if (i_size % 10 == 0){
+      Rcpp::checkUserInterrupt();
+    }
+      
+    
   }
   
   if(comment  == true){
@@ -264,14 +277,14 @@ plot(X)
 points(X[s == 1,],pch = 16)
 
 
-N <- 225
+N <- 1024
 n <- 75
 x <- seq(1,sqrt(N),1)
-X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
-X <- as.matrix(cbind(runif(225),runif(225)))
+# X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
+X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- rep(n/N,N)
 # W <- wpik(X,pik,bound = 1,tore = TRUE,shift = TRUE,toreBound = 15 )
-s <- wave(X,pik,tore = T,shift =T,comment = TRUE)
+s <- wave(X,pik,tore = T,shift =T,comment = F)
 s <- wave2(X,pik,tore = T,shift =T,comment = TRUE)
 plot(X)
 points(X[s == 1,],pch = 16)

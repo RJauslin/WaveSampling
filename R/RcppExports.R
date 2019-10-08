@@ -58,10 +58,10 @@ IB <- function(W, s) {
     .Call(`_WaveSampling_IB`, W, s)
 }
 
-#' @title Squared euclidean distances of the unit k.
+#' @title Squared Euclidean distances of the unit k.
 #'
 #' @description
-#' Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
+#' Calculate the squared Euclidean distance from unit \eqn{k} to the other units.
 #' 
 #'
 #' @param X matrix representing the spatial coordinates. 
@@ -277,11 +277,11 @@ sb_vk <- function(pik, X, s) {
 #' A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
 #' Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
 #' 
-#' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is seleced:
+#' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is selected:
 #' \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
 #' 
-#' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} and \eqn{\sigma } the singular vectors assoctiated to the 
-#' smallest singular value of \eqn{\bf A} such that
+#' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors assoctiated to the 
+#' smallest singular value \eqn{\sigma } of \eqn{\bf A} such that
 #' 
 #' \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}
 #' 
@@ -352,7 +352,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #'
 #' @description
 #'
-#' The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
+#' The stratification matrix is calculated from the inclusion probabilities. It takes the distances between units into account. See Details.
 #'  
 #'
 #' @param X matrix representing the spatial coordinates. 

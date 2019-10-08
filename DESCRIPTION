@@ -14,7 +14,7 @@ Description: Spatial data are generally autocorrelated, meaning that if two
   same properties. For this reason, when sampling in the population it is often
   needed that the sample is well spread over space. A new method to draw a sample
   from a population with spatial coordinates is proposed. This method is called
-  wave (weakly associated vectors) sampling. It uses the less correlated vector
+  wave (Weakly Associated VEctors) sampling. It uses the less correlated vector
   to a spatial weights matrix to update the inclusion probabilities vector
   into a sample.
 URL: https://github.com/RJauslin/wave

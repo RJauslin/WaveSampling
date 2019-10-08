@@ -36,11 +36,11 @@ is randomly modified. This modification is carried out in a direction that best 
 A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
 Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
 
-If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is seleced:
+If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is selected:
 \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
 
-If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} and \eqn{\sigma } the singular vectors assoctiated to the 
-smallest singular value of \eqn{\bf A} such that
+If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors assoctiated to the 
+smallest singular value \eqn{\sigma } of \eqn{\bf A} such that
 
 \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}
 

@@ -7,7 +7,7 @@
 //'
 //' @description
 //'
-//' The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
+//' The stratification matrix is calculated from the inclusion probabilities. It takes the distances between units into account. See Details.
 //'  
 //'
 //' @param X matrix representing the spatial coordinates. 

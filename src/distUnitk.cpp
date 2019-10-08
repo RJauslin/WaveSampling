@@ -5,10 +5,10 @@ using namespace arma;
 using namespace std;
 
 // [[Rcpp::depends(RcppArmadillo)]]
-//' @title Squared euclidean distances of the unit k.
+//' @title Squared Euclidean distances of the unit k.
 //'
 //' @description
-//' Calculate the squared euclidean distance from the unit \eqn{k} to the other units.
+//' Calculate the squared Euclidean distance from unit \eqn{k} to the other units.
 //' 
 //'
 //' @param X matrix representing the spatial coordinates. 

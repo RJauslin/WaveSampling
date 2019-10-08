@@ -25,7 +25,7 @@ wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE,
 A sparse matrix representing the spatial weights.
 }
 \description{
-The stratification matrix is calculated from the inclusion probabilities. It takes distance between units into account. See Details.
+The stratification matrix is calculated from the inclusion probabilities. It takes the distances between units into account. See Details.
 }
 \details{
 Entries of the stratification matrix indicates how the units are close from each others. Hence a large value \eqn{w_{kl}} means that the unit \eqn{k} 
