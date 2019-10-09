@@ -208,7 +208,7 @@ NULL
 #' 
 #' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
 #' 
-#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
 #' @param X matrix representing the spatial coordinates.
 #' @param s A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
@@ -216,11 +216,11 @@ NULL
 #' 
 #' The spatial balance measure based on the Voronoï polygons is defined by 
 #' 
-#' \deqn{B(S) = \frac{1}{n}\sum_{k\in U} (v_k -1)^2 .}
+#' \deqn{B(S) = \frac{1}{n}\sum_{k\in S} (v_k -1)^2 .}
 #' 
 #' The function return the \eqn{v_k} values and is mainly based on the function \code{\link[BalancedSampling:sb]{sb}} of the package \code{BalancedSampling} Grafström and Lisic (2019).
 #' 
-#' @return A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the values is equal to 0.
+#' @return A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the value is equal to 0.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
@@ -236,7 +236,7 @@ NULL
 #' \emph{Journal of the American Statistical Association 99, 262-278}
 #' 
 #' @seealso
-#' \code{\link[BalancedSampling:sb]{sb}}
+#' \code{\link[BalancedSampling:sb]{BalancedSampling::sb}}
 #' 
 #' 
 #' @examples
@@ -314,9 +314,9 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' N <- 50
 #' n <- 15
-#' x <- as.matrix(runif(N),runif(N))
+#' X <- as.matrix(runif(N),runif(N))
 #' pik <- sampling::inclusionprobabilities(runif(N),n)
-#' s <- wave(x,pik)
+#' s <- wave(X,pik)
 #' 
 #' #------------
 #' # Example 2D grid 
@@ -330,16 +330,16 @@ sb_vk <- function(pik, X, s) {
 #' s <- wave(X,pik, tore = TRUE,shift = FALSE)
 #' 
 #' #------------
-#' # Example 1D grid
+#' # Example 1D
 #' #------------
 #' 
 #' N <- 100
 #' n <- 10
-#' x <- as.matrix(seq(1,N,1))
+#' X <- as.matrix(seq(1,N,1))
 #' pik <- rep(n/N,N)
-#' s <- wave(x,pik,tore = TRUE,shift =FALSE,comment = TRUE)
-#' plot(x,rep(0,N))
-#' points(x[s == 1,],rep(0,n),pch = 16)
+#' s <- wave(X,pik,tore = TRUE,shift =FALSE,comment = TRUE)
+#' # plot(X,rep(0,N))
+#' # points(X[s == 1,],rep(0,n),pch = 16)
 #' 
 #' 
 #' @export

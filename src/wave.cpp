@@ -68,9 +68,9 @@
 //' 
 //' N <- 50
 //' n <- 15
-//' x <- as.matrix(runif(N),runif(N))
+//' X <- as.matrix(runif(N),runif(N))
 //' pik <- sampling::inclusionprobabilities(runif(N),n)
-//' s <- wave(x,pik)
+//' s <- wave(X,pik)
 //' 
 //' #------------
 //' # Example 2D grid 
@@ -84,16 +84,16 @@
 //' s <- wave(X,pik, tore = TRUE,shift = FALSE)
 //' 
 //' #------------
-//' # Example 1D grid
+//' # Example 1D
 //' #------------
 //' 
 //' N <- 100
 //' n <- 10
-//' x <- as.matrix(seq(1,N,1))
+//' X <- as.matrix(seq(1,N,1))
 //' pik <- rep(n/N,N)
-//' s <- wave(x,pik,tore = TRUE,shift =FALSE,comment = TRUE)
-//' plot(x,rep(0,N))
-//' points(x[s == 1,],rep(0,n),pch = 16)
+//' s <- wave(X,pik,tore = TRUE,shift =FALSE,comment = TRUE)
+//' # plot(X,rep(0,N))
+//' # points(X[s == 1,],rep(0,n),pch = 16)
 //' 
 //' 
 //' @export

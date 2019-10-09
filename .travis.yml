@@ -32,7 +32,7 @@ r_packages:
   - sp
   - sf
   - stats
-  
+  - units
 addons:
   apt:
     packages:
