@@ -284,8 +284,13 @@ x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- rep(n/N,N)
 # W <- wpik(X,pik,bound = 1,tore = TRUE,shift = TRUE,toreBound = 15 )
-s <- wave(X,pik,tore = T,shift =T,comment = F)
-s <- wave2(X,pik,tore = T,shift =T,comment = TRUE)
+system.time(s <- wave(X,pik,tore = T,shift =T,comment = T))
+# WITH R open
+# utilisateur     système      écoulé 
+# 938.26        7.21      309.32 
+# With R 3.6.1
+# utilisateur     système      écoulé 
+# 1073.12        6.43     1085.92
 plot(X)
 points(X[s == 1,],pch = 16)
 
