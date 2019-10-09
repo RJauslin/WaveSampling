@@ -38,3 +38,6 @@ addons:
       - gdal-bin
       - libgdal1-dev
       - libproj-dev
+  homebrew:
+    packages:
+      - udunits
