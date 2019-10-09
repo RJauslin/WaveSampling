@@ -19,47 +19,48 @@ Status](https://travis-ci.org/RJauslin/WaveSampling.svg?branch=master)](https://
 
 ## Installation
 
-You can install the released version of wave from GitHub
+You can install the released version of the package `WaveSampling` with
+the following command
 
 ``` r
+# install.packages("devtools")
 devtools::install_github("Rjauslin/wave")
 ```
 
 ## Simple example
 
-This is a basic example which shows you how to solve a common problem.
-Firtly we need to generate the spatial coordinates. We then create
-randomly uniform coordinates from the function `runif()`,
+This basic example shows you how to solve a common problem. Spatial
+coordinates from the function `runif()` are firstly generated.
 
 ``` r
-library(wave)
+library(WaveSampling)
 #> Loading required package: Matrix
 
 N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]       [,2]
-#>  [1,] 0.21261887 0.31034632
-#>  [2,] 0.42808286 0.46127169
-#>  [3,] 0.22365724 0.51317551
-#>  [4,] 0.07037486 0.65225122
-#>  [5,] 0.49935828 0.78124337
-#>  [6,] 0.68688671 0.98001601
-#>  [7,] 0.06034167 0.02506027
-#>  [8,] 0.43572750 0.26305536
-#>  [9,] 0.29332271 0.40218011
-#> [10,] 0.66901770 0.68717741
+#>            [,1]      [,2]
+#>  [1,] 0.2503145 0.6480821
+#>  [2,] 0.4659563 0.2868607
+#>  [3,] 0.9293915 0.8133867
+#>  [4,] 0.1181740 0.7124470
+#>  [5,] 0.8252425 0.7764997
+#>  [6,] 0.2079689 0.6986690
+#>  [7,] 0.4173001 0.6464371
+#>  [8,] 0.8537126 0.9499629
+#>  [9,] 0.3984643 0.1910058
+#> [10,] 0.3169390 0.9203666
 ```
 
-Now we need the inclusion probabilities `pik`. Hence, we generate a
-vector `pik` that have all the same values with the function `rep()`.
+Inclusion probabilities `pik` is set up all equal with the function
+`rep()`.
 
 ``` r
 pik <- rep(n/N,times = N)
 ```
 
-All that is left, is to use the function `wave()`.
+It only remains to use the function `wave()`,
 
 ``` r
 s <- wave(X,pik)
@@ -78,9 +79,18 @@ ggplot() +
              aes(x,y),
              shape = 16,
              colour = "black")+
-  theme_minimal()+
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+  theme_void()
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+
+## Performance
+
+As explained on the website of Microsoft R open
+<https://mran.microsoft.com/open>, R is designed to use only one thread
+but could be linked with a multi-threaded version of BLAS/LAPACK. The
+package is implemented with the package RcppArmadillo that provide an
+integration of various matrix decompositions with LAPACK library. Intel
+MKL that is used by the Microsoft R open use a multi-threaded version of
+BLAS/LAPACK. Hence the package could gain time from the Microsoft R
+open. (Not tested but linking R with OpenBLAS should also work).

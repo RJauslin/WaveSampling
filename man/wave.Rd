@@ -61,7 +61,7 @@ For more informations on the option \code{shift}, see \code{\link{wpik}}.
 
 N <- 50
 n <- 15
-X <- as.matrix(runif(N),runif(N))
+X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- sampling::inclusionprobabilities(runif(N),n)
 s <- wave(X,pik)
 
