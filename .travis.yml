@@ -31,8 +31,6 @@ r_packages:
   - BalancedSampling
   - sp
   - sf
-  - stats
-  - units
 addons:
   apt:
     packages:
