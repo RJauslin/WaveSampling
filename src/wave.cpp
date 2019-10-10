@@ -277,9 +277,9 @@ plot(X)
 points(X[s == 1,],pch = 16)
 
 
-N <- 1024
-n <- 75
-x <- seq(1,sqrt(N),1)
+N <- 1000
+n <- 100
+# x <- seq(1,sqrt(N),1)
 # X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- rep(n/N,N)

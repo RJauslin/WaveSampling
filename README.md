@@ -40,17 +40,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]      [,2]
-#>  [1,] 0.36571815 0.2789233
-#>  [2,] 0.91116973 0.2800245
-#>  [3,] 0.35570770 0.2709606
-#>  [4,] 0.60083857 0.4139198
-#>  [5,] 0.61681124 0.6259579
-#>  [6,] 0.74399590 0.9525122
-#>  [7,] 0.05590819 0.3737504
-#>  [8,] 0.96106737 0.3973428
-#>  [9,] 0.91264408 0.0902450
-#> [10,] 0.20044946 0.0736486
+#>            [,1]       [,2]
+#>  [1,] 0.3252837 0.85565130
+#>  [2,] 0.2613679 0.98697367
+#>  [3,] 0.1019119 0.95060208
+#>  [4,] 0.7945382 0.21803133
+#>  [5,] 0.7858968 0.55395862
+#>  [6,] 0.6281016 0.05364861
+#>  [7,] 0.1510665 0.11816510
+#>  [8,] 0.7909142 0.95908650
+#>  [9,] 0.8584714 0.95337912
+#> [10,] 0.2988549 0.04686524
 ```
 
 Inclusion probabilities `pik` is set up all equal with the function
@@ -82,7 +82,7 @@ ggplot() +
   theme_void()
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="75%" style="display: block; margin: auto;" />
 
 ## Performance
 
@@ -93,5 +93,21 @@ package is implemented with the package RcppArmadillo
 <http://arma.sourceforge.net/> that provide an integration of various
 matrix decompositions with LAPACK library. Intel MKL that is used by the
 Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the
-package could gain time from the Microsoft R open. (Not tested but
+package could gain time from the Microsoft R open. (Not tested, but
 linking R with OpenBLAS should also work).
+
+    N <- 500
+    n <- 100
+    X <- as.matrix(cbind(runif(N),runif(N)))
+    pik <- rep(n/N,N)
+    system.time(s <- wave(X,pik,tore = T,shift =T,comment = T))
+
+#### R 3.6.1
+
+    user        system    elapsed 
+    114.52      1.90      118.39
+
+#### MRO 3.5.3
+
+    user        system     elapsed 
+    96.03       1.38       25.82

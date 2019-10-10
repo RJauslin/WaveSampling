@@ -55,7 +55,7 @@ s <- wave(X,pik)
 
 We can also generate a plot to see
 
-```{r, fig.show='hold',fig.align='center',fig.height=6,fig.width=6}
+```{r, fig.show='hold',fig.align='center',out.width='75%'}
 library(ggplot2)
 ggplot() +
   geom_point(data = data.frame(x = X[,1],y = X[,2]),
@@ -73,7 +73,27 @@ ggplot() +
 
 ## Performance
 
-As explained on the website of Microsoft R open https://mran.microsoft.com/open, R is designed to use only one thread but could be linked with a multi-threaded version of BLAS/LAPACK. The package is implemented with the package RcppArmadillo http://arma.sourceforge.net/ that provide an integration of various matrix decompositions with LAPACK library. Intel MKL that is used by the Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the package could gain time from the Microsoft R open. (Not tested but linking R with OpenBLAS should also work).
+As explained on the website of Microsoft R open https://mran.microsoft.com/open, R is designed to use only one thread but could be linked with a multi-threaded version of BLAS/LAPACK. The package is implemented with the package RcppArmadillo http://arma.sourceforge.net/ that provide an integration of various matrix decompositions with LAPACK library. Intel MKL that is used by the Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the package could gain time from the Microsoft R open. (Not tested, but linking R with OpenBLAS should also work).
 
 
+```
+N <- 500
+n <- 100
+X <- as.matrix(cbind(runif(N),runif(N)))
+pik <- rep(n/N,N)
+system.time(s <- wave(X,pik,tore = T,shift =T,comment = T))
 
+```
+
+#### R 3.6.1
+```
+user        system    elapsed 
+114.52      1.90      118.39
+```
+
+#### MRO 3.5.3
+
+```
+user        system     elapsed 
+96.03       1.38       25.82
+```
