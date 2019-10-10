@@ -73,7 +73,7 @@ ggplot() +
 
 ## Performance
 
-As explained on the website of Microsoft R open https://mran.microsoft.com/open, R is designed to use only one thread but could be linked with a multi-threaded version of BLAS/LAPACK. The package is implemented with the package RcppArmadillo that provide an integration of various matrix decompositions with LAPACK library. Intel MKL that is used by the Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the package could gain time from the Microsoft R open. (Not tested but linking R with OpenBLAS should also work).
+As explained on the website of Microsoft R open https://mran.microsoft.com/open, R is designed to use only one thread but could be linked with a multi-threaded version of BLAS/LAPACK. The package is implemented with the package RcppArmadillo http://arma.sourceforge.net/ that provide an integration of various matrix decompositions with LAPACK library. Intel MKL that is used by the Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the package could gain time from the Microsoft R open. (Not tested but linking R with OpenBLAS should also work).
 
 
 

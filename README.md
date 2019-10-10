@@ -40,17 +40,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>            [,1]      [,2]
-#>  [1,] 0.2503145 0.6480821
-#>  [2,] 0.4659563 0.2868607
-#>  [3,] 0.9293915 0.8133867
-#>  [4,] 0.1181740 0.7124470
-#>  [5,] 0.8252425 0.7764997
-#>  [6,] 0.2079689 0.6986690
-#>  [7,] 0.4173001 0.6464371
-#>  [8,] 0.8537126 0.9499629
-#>  [9,] 0.3984643 0.1910058
-#> [10,] 0.3169390 0.9203666
+#>             [,1]      [,2]
+#>  [1,] 0.36571815 0.2789233
+#>  [2,] 0.91116973 0.2800245
+#>  [3,] 0.35570770 0.2709606
+#>  [4,] 0.60083857 0.4139198
+#>  [5,] 0.61681124 0.6259579
+#>  [6,] 0.74399590 0.9525122
+#>  [7,] 0.05590819 0.3737504
+#>  [8,] 0.96106737 0.3973428
+#>  [9,] 0.91264408 0.0902450
+#> [10,] 0.20044946 0.0736486
 ```
 
 Inclusion probabilities `pik` is set up all equal with the function
@@ -89,8 +89,9 @@ ggplot() +
 As explained on the website of Microsoft R open
 <https://mran.microsoft.com/open>, R is designed to use only one thread
 but could be linked with a multi-threaded version of BLAS/LAPACK. The
-package is implemented with the package RcppArmadillo that provide an
-integration of various matrix decompositions with LAPACK library. Intel
-MKL that is used by the Microsoft R open use a multi-threaded version of
-BLAS/LAPACK. Hence the package could gain time from the Microsoft R
-open. (Not tested but linking R with OpenBLAS should also work).
+package is implemented with the package RcppArmadillo
+<http://arma.sourceforge.net/> that provide an integration of various
+matrix decompositions with LAPACK library. Intel MKL that is used by the
+Microsoft R open use a multi-threaded version of BLAS/LAPACK. Hence the
+package could gain time from the Microsoft R open. (Not tested but
+linking R with OpenBLAS should also work).
