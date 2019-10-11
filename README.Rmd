@@ -53,7 +53,7 @@ It only remains to use the function `wave()`,
 s <- wave(X,pik)
 ```
 
-We can also generate a plot to see
+We can also generate a plot to observe the result.
 
 ```{r, fig.show='hold',fig.align='center',out.width='75%'}
 library(ggplot2)
@@ -88,12 +88,14 @@ system.time(s <- wave(X,pik,tore = T,shift =T,comment = T))
 #### R 3.6.1
 ```
 user        system    elapsed 
-114.52      1.90      118.39
+42.96       0.67      43.74
 ```
 
 #### MRO 3.5.3
 
 ```
 user        system     elapsed 
-96.03       1.38       25.82
+53.63       0.87       9.34 
 ```
+
+This test was done on PC with a CPU Intel<sup>&reg;</sup> Core&trade; i5-8500 with 6 cores.
