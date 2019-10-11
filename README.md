@@ -20,11 +20,11 @@ Status](https://travis-ci.org/RJauslin/WaveSampling.svg?branch=master)](https://
 ## Installation
 
 You can install the released version of the package `WaveSampling` with
-the following command
+the following command:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Rjauslin/wave")
+devtools::install_github("Rjauslin/WaveSampling")
 ```
 
 ## Simple example
@@ -40,17 +40,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]        [,2]
-#>  [1,] 0.70131725 0.087050943
-#>  [2,] 0.81214571 0.969212321
-#>  [3,] 0.07559881 0.856497308
-#>  [4,] 0.97232616 0.931465135
-#>  [5,] 0.14503161 0.135710635
-#>  [6,] 0.40449258 0.573211743
-#>  [7,] 0.92444684 0.902442286
-#>  [8,] 0.20441280 0.007170839
-#>  [9,] 0.46889946 0.493327853
-#> [10,] 0.09505804 0.236689526
+#>            [,1]      [,2]
+#>  [1,] 0.5508893 0.9773163
+#>  [2,] 0.6903475 0.5518233
+#>  [3,] 0.3765408 0.7340576
+#>  [4,] 0.8215947 0.8599845
+#>  [5,] 0.7953366 0.6932081
+#>  [6,] 0.8121240 0.8541113
+#>  [7,] 0.8785387 0.6924328
+#>  [8,] 0.5151625 0.7278165
+#>  [9,] 0.6716449 0.7760434
+#> [10,] 0.3388980 0.5854107
 ```
 
 Inclusion probabilities `pik` is set up all equal with the function

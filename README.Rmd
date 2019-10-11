@@ -20,11 +20,11 @@ Spatial data are generally autocorrelated, meaning that if two units selected ar
 
 ## Installation
 
-You can install the released version of the package `WaveSampling` with the following command
+You can install the released version of the package `WaveSampling` with the following command:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Rjauslin/wave")
+devtools::install_github("Rjauslin/WaveSampling")
 ```
 
 ## Simple example
