@@ -95,7 +95,6 @@ double IB(const arma::sp_mat& W,const arma::vec& s){
   return I;
 }
 
-
 /*** R
 
 N <- 576

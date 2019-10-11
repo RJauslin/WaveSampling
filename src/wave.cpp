@@ -238,7 +238,6 @@ arma::vec wave(const arma::mat& X,
 }
 
 
-
 /*** R
 
 N <- 50

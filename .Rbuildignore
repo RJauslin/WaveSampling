@@ -7,3 +7,4 @@
 \.so$
 ^data-raw$
 ^/\.gitattributes$
+^cran-comments\.md$

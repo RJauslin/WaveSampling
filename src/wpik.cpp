@@ -245,6 +245,8 @@ arma::sp_mat wpik(arma::mat X,
 
 }
 
+
+
 /*** R
 N <- 5
 x <- seq(1,N,1)

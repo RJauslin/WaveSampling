@@ -162,9 +162,9 @@ arma::sp_mat wpikInv(arma::mat X,
   return W.t();
 }
 
+
+
 /*** R
-
-
 
 X <- cbind(runif(1000),runif(1000))
 pik <- sampling::inclusionprobabilities(runif(1000),100)
@@ -214,8 +214,6 @@ for(i in 1:25){
 
 as(wpik2R(d,pik), "sparseMatrix") == wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0)
 image(wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0))
-
-
 
 
 ### time

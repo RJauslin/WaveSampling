@@ -1,9 +1,5 @@
 #include <RcppArmadillo.h>
 
-using namespace Rcpp;
-using namespace arma;
-using namespace std;
-
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @title Squared Euclidean distances of the unit k.
 //'
@@ -100,13 +96,13 @@ arma::vec distUnitk(arma::mat X,
     // choose the minimal one
     for(unsigned int i = 0;i < N; i++){
       for(unsigned int j = 0;j < p; j++){
-        x(i,j) = min(x1(i,j),x2(i,j));
-        x(i,j) = min(x(i,j),x3(i,j));
+        x(i,j) = std::min(x1(i,j),x2(i,j));
+        x(i,j) = std::min(x(i,j),x3(i,j));
       }
     }
     
     //sum over the possible dimension
-    dist = sum(x,1);
+    dist = arma::sum(x,1);
 
   }else{
   
@@ -116,7 +112,7 @@ arma::vec distUnitk(arma::mat X,
     }
     
     // sum over the possible dimension
-    dist = sum(x1,1);
+    dist = arma::sum(x1,1);
   }
   
   return(dist);
@@ -129,20 +125,20 @@ arma::vec distUnitk(arma::mat X,
 x <- seq(1,2,1)
 y <- seq(1,2,1)
 X <- as.matrix(expand.grid(x,y))
-distUnitk2(X,1,tore = TRUE,toreBound = NA)
+distUnitk(X,1,tore = TRUE,toreBound = NA)
 
 
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
-distUnitk2(X,2,tore = TRUE,toreBound = 5)
+distUnitk(X,2,tore = TRUE,toreBound = 5)
 distUnitk(X,2,tore = TRUE,toreBound = 5)
 
 
 X <- as.matrix(seq(1,10,1))
 X <- as.matrix(runif(10))
 dist(X)
-distUnitk2(X,1,tore = TRUE,toreBound = 10)
+distUnitk(X,1,tore = TRUE,toreBound = 10)
 distUnitk2(X,4,tore = FALSE,toreBound = NA)
 
 

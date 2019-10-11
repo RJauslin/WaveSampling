@@ -1,6 +1,5 @@
 #include <RcppArmadillo.h>
 
-
 // [[Rcpp::depends(RcppArmadillo)]]
 //' @encoding UTF-8
 //' @title Values \eqn{v_k} to compute the Spatial balance
@@ -100,7 +99,6 @@ arma::vec sb_vk(arma::vec pik,arma::mat X,arma::vec s) {
 
 
 /*** R
-
 
 X <- as.matrix(cbind(runif(50),runif(50)))
 pik <- rep(10/50,50)

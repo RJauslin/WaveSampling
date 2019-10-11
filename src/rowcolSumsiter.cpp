@@ -75,8 +75,6 @@ arma::vec rowSumsiter(const arma::sp_mat& x) {
 }
 
 
-
-
 /*** R
 rm(list = ls())
 X <- as.matrix(cbind(runif(30),runif(30)))

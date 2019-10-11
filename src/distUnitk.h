@@ -3,7 +3,6 @@
 
 #include <RcppArmadillo.h>
 
-
 arma::vec distUnitk(arma::mat X,
                     int k,
                     bool tore,

@@ -42,6 +42,7 @@ arma::vec projOp(arma::vec v,arma::vec u) {
   return scalar%u;
 }
 
+
 /*** R
 u = c(0,1)
 v = c(1,1)
