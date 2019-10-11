@@ -29,7 +29,7 @@
 #' 
 #' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}.}
 #' 
-#' To specifiy the spatial weights uses the argument \code{W}.
+#' To specify the spatial weights uses the argument \code{W}.
 #'
 #' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 #' 
@@ -208,7 +208,7 @@ NULL
 #' 
 #' Calculates the \eqn{v_k} values of the spatial balance developped by Stevens and Olsen (2004) and suggested by Grafström et al. (2012).
 #' 
-#' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
+#' @param pik vector of the inclusion probabilities. The length should be equal to \eqn{N}.
 #' @param X matrix representing the spatial coordinates.
 #' @param s A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
@@ -262,7 +262,7 @@ sb_vk <- function(pik, X, s) {
 #' Select a spread sample from inclusion probabilities using the weakly associated vectors sampling method.  
 #'
 #' @param X matrix representing the spatial coordinates. 
-#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param pik vector of the inclusion probabilities. The length should be equal to N.
 #' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
@@ -274,13 +274,13 @@ sb_vk <- function(pik, X, s) {
 #' The main idea is derived from the cube method (Devill and Tillé, 2004). At each step, the inclusion probabilities vector \code{pik}
 #' is randomly modified. This modification is carried out in a direction that best preserves the spreading of the sample.
 #' 
-#' A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
+#' A stratification matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
 #' Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
 #' 
 #' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is selected:
 #' \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
 #' 
-#' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors assoctiated to the 
+#' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors associated to the 
 #' smallest singular value \eqn{\sigma } of \eqn{\bf A} such that
 #' 
 #' \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}
@@ -356,7 +356,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #'  
 #'
 #' @param X matrix representing the spatial coordinates. 
-#' @param pik vector of the inclusion probabilites. The length should be equal to \eqn{N}.
+#' @param pik vector of the inclusion probabilities. The length should be equal to \eqn{N}.
 #' @param bound a scalar representing the bound to reach. Default is 1.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.
@@ -418,9 +418,9 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' implementation of the spatial weights specified in Tillé et al., (2018).
 #'
 #' @param X matrix representing the spatial coordinates. 
-#' @param pik vector of the inclusion probabilites. The length should be equal to N.
+#' @param pik vector of the inclusion probabilities. The length should be equal to N.
 #' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
-#' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
+#' @param shift an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.
 #' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' 
 #' @details

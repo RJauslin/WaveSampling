@@ -10,11 +10,11 @@ wpikInv(X, pik, tore = FALSE, shift = FALSE, toreBound = -1)
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}
 
-\item{pik}{vector of the inclusion probabilites. The length should be equal to N.}
+\item{pik}{vector of the inclusion probabilities. The length should be equal to N.}
 
 \item{tore}{an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.}
 
-\item{shift}{an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.}
+\item{shift}{an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.}
 
 \item{toreBound}{a numeric value that specify the size of the grid. Default is -1.}
 }

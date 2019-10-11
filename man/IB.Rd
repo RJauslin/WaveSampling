@@ -34,7 +34,7 @@ and
 
 \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}.}
 
-To specifiy the spatial weights uses the argument \code{W}.
+To specify the spatial weights uses the argument \code{W}.
 }
 \examples{
   N <- 36

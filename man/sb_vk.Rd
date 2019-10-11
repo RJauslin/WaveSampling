@@ -8,7 +8,7 @@
 sb_vk(pik, X, s)
 }
 \arguments{
-\item{pik}{vector of the inclusion probabilites. The length should be equal to \eqn{N}.}
+\item{pik}{vector of the inclusion probabilities. The length should be equal to \eqn{N}.}
 
 \item{X}{matrix representing the spatial coordinates.}
 

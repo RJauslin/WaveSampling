@@ -1,6 +1,6 @@
 Package: WaveSampling
 Type: Package
-Title: Weakly associated vectors (wave) sampling
+Title: Weakly Associated VEctors (WAVE) Sampling
 Version: 0.1.0
 Authors@R: c(
   person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre"),

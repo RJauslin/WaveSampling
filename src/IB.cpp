@@ -30,7 +30,7 @@
 //' 
 //' \deqn{ \bf B =  W^\top  D^{-1}  W - \frac{ W^\top  1 1^\top  W}{1^\top  W  1}.}
 //' 
-//' To specifiy the spatial weights uses the argument \code{W}.
+//' To specify the spatial weights uses the argument \code{W}.
 //'
 //' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 //' 

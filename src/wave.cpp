@@ -16,7 +16,7 @@
 //' Select a spread sample from inclusion probabilities using the weakly associated vectors sampling method.  
 //'
 //' @param X matrix representing the spatial coordinates. 
-//' @param pik vector of the inclusion probabilites. The length should be equal to N.
+//' @param pik vector of the inclusion probabilities. The length should be equal to N.
 //' @param bound a scalar representing the bound to reach. See Details. Default is 1.
 //' @param tore an optional logical value, if we are considering the distance on a tore. See Details. Default is \code{TRUE}.
 //' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
@@ -28,13 +28,13 @@
 //' The main idea is derived from the cube method (Devill and Tillé, 2004). At each step, the inclusion probabilities vector \code{pik}
 //' is randomly modified. This modification is carried out in a direction that best preserves the spreading of the sample.
 //' 
-//' A stratifcation matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
+//' A stratification matrix \eqn{\bf A} is computed from the spatial weights matrix calculated from the function \code{\link{wpik}}.
 //' Depending if \eqn{\bf A} is full rank or not, the vector giving the direction is not selected in the same way.
 //' 
 //' If matrix \eqn{\bf A} is not full rank, a vector that is contained in the right null space is selected:
 //' \deqn{ Null(\bf A) = \{ \bf x \in R^N | \bf A\bf x = \bf 0  \}. }
 //' 
-//' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors assoctiated to the 
+//' If matrix \eqn{\bf A} is full rank, we find \eqn{\bf v}, \eqn{\bf u} the singular vectors associated to the 
 //' smallest singular value \eqn{\sigma } of \eqn{\bf A} such that
 //' 
 //' \deqn{ \bf A\bf v = \sigma \bf u,~~~~ \bf A^\top \bf u = \sigma \bf v.}

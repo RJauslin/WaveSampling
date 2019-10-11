@@ -84,7 +84,7 @@ p
 ## Spatial balance
 
 ### Voronoï polygons
-One way of measuring the spread of a sample was developped by @stevens:olsen:2004 and then suggested by @grafstrom:lundstrom:2012. It is based on the Voronoï polygons and is given by
+One way of measuring the spread of a sample was developed by @stevens:olsen:2004 and then suggested by @grafstrom:lundstrom:2012. It is based on the Voronoï polygons and is given by
 
 $$ B(\bf s) = \frac{1}{n}\sum_{i \in s} (v_i - 1)^2 $$
 where $v_i$ is equal to the sum of the inclusion probabilities inside the $i$th polygons and $\bf s$ is the vector of size $N$ with elements equal 0 or 1. This quantity is implemented in the package `BalancedSampling` with the function `sb()`. We calculate the values of the $v_k$ with the function `sb_vk`.
@@ -127,7 +127,7 @@ BalancedSampling::sb(pik,as.matrix(meuse[,1:2]),which(s == 1))
 
 ### Moran index
 
-Another way to estimate the spatial spread is developped by @tille:dickson:2018, it uses a corrected version of the traditional Moran's $I$ index. This estimator use spatial weights $w_{ij}$ that indicates how a unit $i$ is close from the unit $j$. Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix $\bf W$ is generally not symmetric. The spatial balance measure is given by
+Another way to estimate the spatial spread is developed by @tille:dickson:2018, it uses a corrected version of the traditional Moran's $I$ index. This estimator use spatial weights $w_{ij}$ that indicates how a unit $i$ is close from the unit $j$. Such matrix is supposed to include inclusion probabilities in its computation, hence, the spatial weights matrix $\bf W$ is generally not symmetric. The spatial balance measure is given by
 
 $$ I_B =\frac{(\bf s-\bf \bar{s}_w)^\top \bf W (\bf s-\bf \bar{s}_w)}{\sqrt{(\bf s-\bf \bar{s}_w)^\top \bf D (\bf s-\bf \bar{s}_w) (\bf s-\bf \bar{s}_w)^\top \bf B (\bf s-\bf \bar{s}_w) }}, $$
 where $\bf D$ is the diagonal matrix containing the $w_i$, 
@@ -135,7 +135,7 @@ $$\bf \bar{s}_w = \bf 1 \frac{\bf s^\top \bf W \bf 1}{\bf 1^\top \bf W \bf 1},$$
 and 
 $$\bf B = \bf W^\top \bf D^{-1} \bf W - \frac{\bf W^\top \bf 1\bf 1^\top \bf W}{\bf1^\top \bf W \bf 1}.$$
 
-The Moran's $I$ index is implemented in the function `IB()`. It is possible to specifiy your own spatial weights with the argument `W`. There is no natural way of defining $\bf W$, here we propose to consider for each unit only the neighbour such that the sum of the inclusion probabilities of the stratum sum up to 1. It is implemented in the function `wpik()`. Another way of estimating the spatial weights is developped by @tille:dickson:2018 and use the inverse of the inclusion probabilities $1/\pi_i$ to estimate the neighbours of the unit $i$. It is implemented in the function `wpikInv()`. As explain by @tille:dickson:2018 $w_{ii}$ is supposed to be equal to 0 for all $i \in U$. By contruction the function `wpik` does not return the diagonal equal to zero. So if we want to calculate the Moran's I index with `wpik`, we need to subtract the diagonal of the returned matrix. 
+The Moran's $I$ index is implemented in the function `IB()`. It is possible to specify your own spatial weights with the argument `W`. There is no natural way of defining $\bf W$, here we propose to consider for each unit only the neighbour such that the sum of the inclusion probabilities of the stratum sum up to 1. It is implemented in the function `wpik()`. Another way of estimating the spatial weights is developed by @tille:dickson:2018 and use the inverse of the inclusion probabilities $1/\pi_i$ to estimate the neighbours of the unit $i$. It is implemented in the function `wpikInv()`. As explain by @tille:dickson:2018 $w_{ii}$ is supposed to be equal to 0 for all $i \in U$. By construction the function `wpik` does not return the diagonal equal to zero. So if we want to calculate the Moran's I index with `wpik`, we need to subtract the diagonal of the returned matrix. 
 
 ```{r}
 

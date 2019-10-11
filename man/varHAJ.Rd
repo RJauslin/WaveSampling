@@ -10,7 +10,7 @@ varHAJ(y, pik, s)
 \arguments{
 \item{y}{vector of size \eqn{n} that represent the variable of interest.}
 
-\item{pik}{vector of the inclusion probabilites. The length should be equal to \eqn{n}.}
+\item{pik}{vector of the inclusion probabilities. The length should be equal to \eqn{n}.}
 
 \item{s}{index vector of size \eqn{n} with elements equal to the selected units.}
 }
@@ -25,7 +25,7 @@ The function computes the following quantity :
 
 \deqn{v_{HAJ}(\widehat{Y}_{HT}) = \frac{n}{n-1} \sum_{k\in S} (1-\pi_k)\left( \frac{y_k}{\pi_k}-\frac{ \sum_{l\in S} (1-\pi_k)/\pi_k }{\sum_{l\in S} (1-\pi_k) } \right)^2 .}
  
-This estimator is well-defined for maximum entropy sampling design and use only inclusion probabilitis of order one.
+This estimator is well-defined for maximum entropy sampling design and use only inclusion probabilities of order one.
 }
 \references{
 Tillé, Y. (2020). Sampling and estimation from finite populations. New York: Wiley

@@ -11,9 +11,9 @@
 //' implementation of the spatial weights specified in Tillé et al., (2018).
 //'
 //' @param X matrix representing the spatial coordinates. 
-//' @param pik vector of the inclusion probabilites. The length should be equal to N.
+//' @param pik vector of the inclusion probabilities. The length should be equal to N.
 //' @param tore an optional logical value, if we are considering the distance on a tore. Default is \code{FALSE}.
-//' @param shift an optional logical value, if you would use a shift perturbation. See Details for more infomrations. Default is \code{FALSE}.
+//' @param shift an optional logical value, if you would use a shift perturbation. See Details for more informations. Default is \code{FALSE}.
 //' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' 
 //' @details

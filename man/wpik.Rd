@@ -11,7 +11,7 @@ wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE,
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}
 
-\item{pik}{vector of the inclusion probabilites. The length should be equal to \eqn{N}.}
+\item{pik}{vector of the inclusion probabilities. The length should be equal to \eqn{N}.}
 
 \item{bound}{a scalar representing the bound to reach. Default is 1.}
 
