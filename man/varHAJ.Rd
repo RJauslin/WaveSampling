@@ -21,7 +21,7 @@ A number, the variance
 Estimator of the variance of the Horvitz-Thompson estimator. It is based on the variance estimator of the conditional Poisson sampling design. See Tillé (2020, Chapter 5) for more informations.
 }
 \details{
-The function compute the following quantity :
+The function computes the following quantity :
 
 \deqn{v_{HAJ}(\widehat{Y}_{HT}) = \frac{n}{n-1} \sum_{k\in S} (1-\pi_k)\left( \frac{y_k}{\pi_k}-\frac{ \sum_{l\in S} (1-\pi_k)/\pi_k }{\sum_{l\in S} (1-\pi_k) } \right)^2 .}
  

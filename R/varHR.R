@@ -10,7 +10,7 @@
 #'
 #' @details
 #' 
-#' The function compute the following quantity :
+#' The function computes the following quantity :
 #' 
 #' \deqn{v_{HAJ}(\widehat{Y}_{HT}) = \frac{n}{n-1} \sum_{k\in S} (1-\pi_k)\left( \frac{y_k}{\pi_k}-\frac{ \sum_{l\in S} (1-\pi_k)/\pi_k }{\sum_{l\in S} (1-\pi_k) } \right)^2 .}
 #'  
