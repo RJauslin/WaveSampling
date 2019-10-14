@@ -21,7 +21,7 @@ library(WaveSampling)
 
 
 ## Introduction
-Geographical data are generally autocorrelated. This is why it is preferable to avoid the measurement of neighboring units. We propose a new method for selecting spread samples from a finite spatial population with equal or unequal inclusion probabilities. The proposed method is called `wave` and stands for Weakly Associated VEctors. It is based on the definition of the contiguity structure by using a very dense stratification. The method satisfies exactly the inclusion probabilities and provides samples that are very well spread. This document propose an introduction to understand how to use the function `wave()`.
+Geographical data are generally auto-correlated. This is why it is preferable to avoid the measurement of neighboring units. We propose a new method for selecting spread samples from a finite spatial population with equal or unequal inclusion probabilities. The proposed method is called `wave` and stands for Weakly Associated Vectors. It is based on the definition of the contiguity structure by using a very dense stratification. The method satisfies exactly the inclusion probabilities and provides samples that are very well spread. This document propose an introduction to understand how to use the function `wave()`.
 
 
 ## Data generation

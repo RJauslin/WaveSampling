@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Weakly Associated VEctors (WAVE) Sampling
+# Weakly Associated Vectors (WAVE) Sampling
 
-Spatial data are generally autocorrelated, meaning that if two units
+Spatial data are generally auto-correlated, meaning that if two units
 selected are close to each other, then it is likely that they share the
 same properties. For this reason, when sampling in the population it is
 often needed that the sample is well spread over space. A new method to
@@ -40,17 +40,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>            [,1]       [,2]
-#>  [1,] 0.7316220 0.70608992
-#>  [2,] 0.9037593 0.89526674
-#>  [3,] 0.8370058 0.02152434
-#>  [4,] 0.1411383 0.91744397
-#>  [5,] 0.4660863 0.19031683
-#>  [6,] 0.7412765 0.67677107
-#>  [7,] 0.0635453 0.94864862
-#>  [8,] 0.7184662 0.20062129
-#>  [9,] 0.6542789 0.72921317
-#> [10,] 0.8674845 0.35149795
+#>             [,1]       [,2]
+#>  [1,] 0.65601358 0.03004647
+#>  [2,] 0.24101651 0.46091256
+#>  [3,] 0.29776035 0.17085750
+#>  [4,] 0.34909458 0.89883402
+#>  [5,] 0.93018147 0.87804812
+#>  [6,] 0.67000492 0.67711535
+#>  [7,] 0.27067015 0.05059434
+#>  [8,] 0.74374266 0.32661502
+#>  [9,] 0.32906968 0.53842066
+#> [10,] 0.06137976 0.73845408
 ```
 
 Inclusion probabilities `pik` is set up all equal with the function

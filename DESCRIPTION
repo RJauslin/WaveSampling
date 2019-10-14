@@ -1,6 +1,6 @@
 Package: WaveSampling
 Type: Package
-Title: Weakly Associated VEctors (WAVE) Sampling
+Title: Weakly Associated Vectors (WAVE) Sampling
 Version: 0.1.0
 Authors@R: c(
   person("Raphaël", "Jauslin", email = "raphael.jauslin@unine.ch",role = c("aut", "cre"),
@@ -9,12 +9,12 @@ Authors@R: c(
   person("Yves", "Tillé",role = c("aut"),
     comment = c(ORCID = "0000-0003-0904-5523"))
   )
-Description: Spatial data are generally autocorrelated, meaning that if two 
+Description: Spatial data are generally auto-correlated, meaning that if two 
   units selected are close to each other, then it is likely that they share the
   same properties. For this reason, when sampling in the population it is often
   needed that the sample is well spread over space. A new method to draw a sample
   from a population with spatial coordinates is proposed. This method is called
-  wave (Weakly Associated VEctors) sampling. It uses the less correlated vector
+  wave (Weakly Associated Vectors) sampling. It uses the less correlated vector
   to a spatial weights matrix to update the inclusion probabilities vector
   into a sample.
 URL: https://github.com/RJauslin/wave
@@ -32,8 +32,6 @@ Suggests:
     rmarkdown,
     ggplot2,
     ggvoronoi,
-    kableExtra,
-    magrittr,
     sampling,
     BalancedSampling,
     sp,

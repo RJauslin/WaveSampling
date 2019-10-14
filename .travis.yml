@@ -4,6 +4,7 @@ dist: trusty
 sudo: required
 
 r:
+  - devel
   - release
 
 before_install:
@@ -25,8 +26,6 @@ r_packages:
   - rmarkdown
   - ggplot2
   - ggvoronoi
-  - kableExtra
-  - magrittr
   - sampling
   - BalancedSampling
   - sp
