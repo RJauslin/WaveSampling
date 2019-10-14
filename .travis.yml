@@ -5,9 +5,18 @@ sudo: required
 
 matrix:
   include:
-  - r: 
-    - release
-    - devel
+  - r: devel
+    before_install:
+      - chmod +x configure
+      - chmod +x cleanup
+    addons:
+      apt:
+        packages:
+        - libudunits2-dev
+        - gdal-bin
+        - libgdal1-dev
+        - libproj-dev
+  - r: release
     before_install:
       - chmod +x configure
       - chmod +x cleanup
