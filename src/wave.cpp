@@ -65,28 +65,29 @@
 //' #------------
 //' # Example 2D
 //' #------------
-//' 
+//' \dontrun{
 //' N <- 50
 //' n <- 15
 //' X <- as.matrix(cbind(runif(N),runif(N)))
 //' pik <- sampling::inclusionprobabilities(runif(N),n)
 //' s <- wave(X,pik)
-//' 
+//' }
+//'  
 //' #------------
 //' # Example 2D grid 
 //' #------------
-//' 
+//' \dontrun{
 //' N <- 36 # 6 x 6 grid
 //' n <- 12 # number of unit selected
 //' x <- seq(1,sqrt(N),1)
 //' X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 //' pik <- rep(n/N,N)
 //' s <- wave(X,pik, tore = TRUE,shift = FALSE)
-//' 
+//' }
 //' #------------
 //' # Example 1D
 //' #------------
-//' 
+//' \dontrun{
 //' N <- 100
 //' n <- 10
 //' X <- as.matrix(seq(1,N,1))
@@ -94,7 +95,7 @@
 //' s <- wave(X,pik,tore = TRUE,shift =FALSE,comment = TRUE)
 //' # plot(X,rep(0,N))
 //' # points(X[s == 1,],rep(0,n),pch = 16)
-//' 
+//' }
 //' 
 //' @export
 // [[Rcpp::export]]

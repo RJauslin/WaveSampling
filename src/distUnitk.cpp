@@ -43,11 +43,13 @@
 //' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
 //'
 //' @examples
-//' N <- 5
-//' x <- seq(1,N,1)
-//' X <- as.matrix(expand.grid(x,x))
-//' distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
-//' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+//' \dontrun{
+//'   N <- 5
+//'   x <- seq(1,N,1)
+//'   X <- as.matrix(expand.grid(x,x))
+//'   distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+//'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+//'   }
 //' @export
 // [[Rcpp::export]]
 arma::vec distUnitk(arma::mat X,
@@ -126,6 +128,7 @@ x <- seq(1,2,1)
 y <- seq(1,2,1)
 X <- as.matrix(expand.grid(x,y))
 distUnitk(X,1,tore = TRUE,toreBound = NA)
+
 
 
 N <- 5

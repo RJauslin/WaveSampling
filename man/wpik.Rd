@@ -55,12 +55,13 @@ weight is update such that the bound is reached.
 The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 }
 \examples{
+\dontrun{
 N <- 25
 n <- 5
 X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- sampling::inclusionprobabilities(runif(N),n)
 W <- wpik(X,pik)
-
+}
 }
 \seealso{
 \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.

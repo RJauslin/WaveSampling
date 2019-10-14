@@ -41,11 +41,13 @@ The option \code{toreBound} specify the length of the tore in the case of \eqn{N
 It is omitted if the \code{tore} option is equal to \code{FALSE}.
 }
 \examples{
-N <- 5
-x <- seq(1,N,1)
-X <- as.matrix(expand.grid(x,x))
-distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
-distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+\dontrun{
+  N <- 5
+  x <- seq(1,N,1)
+  X <- as.matrix(expand.grid(x,x))
+  distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+  distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+  }
 }
 \seealso{
 \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.

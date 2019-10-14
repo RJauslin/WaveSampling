@@ -43,6 +43,7 @@
 #' \code{\link{wpik}}
 #' 
 #' @examples
+#' \dontrun{
 #'   N <- 36
 #'   n <- 12
 #'   x <- seq(1,sqrt(N),1)
@@ -52,6 +53,7 @@
 #'   W <- W - diag(diag(W))
 #'   s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE)
 #'   IB(W,s)
+#' }
 #' 
 #' @export
 IB <- function(W, s) {
@@ -100,11 +102,13 @@ IB <- function(W, s) {
 #' \code{\link{wpik}}, \code{\link{wave}} and \code{\link[stats]{dist}}.
 #'
 #' @examples
-#' N <- 5
-#' x <- seq(1,N,1)
-#' X <- as.matrix(expand.grid(x,x))
-#' distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
-#' distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+#' \dontrun{
+#'   N <- 5
+#'   x <- seq(1,N,1)
+#'   X <- as.matrix(expand.grid(x,x))
+#'   distUnitk(X,k = 2,tore = TRUE,toreBound = 5)
+#'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
+#'   }
 #' @export
 distUnitk <- function(X, k, tore, toreBound) {
     .Call(`_WaveSampling_distUnitk`, X, k, tore, toreBound)
@@ -311,28 +315,29 @@ sb_vk <- function(pik, X, s) {
 #' #------------
 #' # Example 2D
 #' #------------
-#' 
+#' \dontrun{
 #' N <- 50
 #' n <- 15
 #' X <- as.matrix(cbind(runif(N),runif(N)))
 #' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' s <- wave(X,pik)
-#' 
+#' }
+#'  
 #' #------------
 #' # Example 2D grid 
 #' #------------
-#' 
+#' \dontrun{
 #' N <- 36 # 6 x 6 grid
 #' n <- 12 # number of unit selected
 #' x <- seq(1,sqrt(N),1)
 #' X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 #' pik <- rep(n/N,N)
 #' s <- wave(X,pik, tore = TRUE,shift = FALSE)
-#' 
+#' }
 #' #------------
 #' # Example 1D
 #' #------------
-#' 
+#' \dontrun{
 #' N <- 100
 #' n <- 10
 #' X <- as.matrix(seq(1,N,1))
@@ -340,7 +345,7 @@ sb_vk <- function(pik, X, s) {
 #' s <- wave(X,pik,tore = TRUE,shift =FALSE,comment = TRUE)
 #' # plot(X,rep(0,N))
 #' # points(X[s == 1,],rep(0,n),pch = 16)
-#' 
+#' }
 #' 
 #' @export
 wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1, comment = FALSE) {
@@ -398,12 +403,13 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' 
 #' @examples
+#' \dontrun{
 #' N <- 25
 #' n <- 5
 #' X <- as.matrix(cbind(runif(N),runif(N)))
 #' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' W <- wpik(X,pik)
-#' 
+#' }
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1.0) {
     .Call(`_WaveSampling_wpik`, X, pik, bound, tore, shift, toreBound)
@@ -460,12 +466,13 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' @seealso
 #' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 #' @examples
+#' \dontrun{
 #' N <- 25
 #' n <- 5
 #' X <- as.matrix(cbind(runif(N),runif(N)))
 #' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' W <- wpikInv(X,pik)
-#' 
+#' }
 #' @export
 wpikInv <- function(X, pik, tore = FALSE, shift = FALSE, toreBound = -1) {
     .Call(`_WaveSampling_wpikInv`, X, pik, tore, shift, toreBound)

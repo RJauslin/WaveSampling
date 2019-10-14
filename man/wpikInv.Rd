@@ -50,12 +50,13 @@ weight is update such that the bound is reached.
 The shift perturbation is generated at the beginning of the procedure such that each stratum is shifted by the same perturbation.
 }
 \examples{
+\dontrun{
 N <- 25
 n <- 5
 X <- as.matrix(cbind(runif(N),runif(N)))
 pik <- sampling::inclusionprobabilities(runif(N),n)
 W <- wpikInv(X,pik)
-
+}
 }
 \references{
 Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
