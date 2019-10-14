@@ -17,27 +17,29 @@ This is a resubmission. In this version I have:
 * OS X 9.4 (on travis-ci), R-release
 
 ## R CMD check results
-There were no ERRORs, WARNINGs.
+- R-release (R 3.6.1) : There were no ERRORs, WARNINGs or NOTEs.
 
-1 NOTE appears in the R-devel, seems that the output of the examples are non-standard things. 
+- R-devel : There were no ERRORs, WARNINGs,
+
+1 NOTE, seems that the output of the examples are non-standard things. 
 
 checking for non-standard things in the check directory ... NOTE
   Found the following files/directories:
     'WaveSampling-Ex_i386.Rout' 'WaveSampling-Ex_x64.Rout'
     'examples_i386' 'examples_x64'
 
-On r-hub with the two platform :
+On r-hub check with the two platforms :
 
  - Fedora Linux, R-devel, clang, gfortran
-    * checking package dependencies ... NOTE
-      Package suggested but not available for checking: ‘sf’
+  * checking package dependencies ... NOTE
+    Package suggested but not available for checking: ‘sf’
 
  - Ubuntu Linux 16.04 LTS, R-release, GCC
-
-  Package suggested but not available for checking: ‘sf’
-    * checking installed package size ... NOTE
-      installed size is  6.6Mb
-      sub-directories of 1Mb or more:
-      libs   6.3Mb
+  * checking package dependencies ... NOTE
+    Package suggested but not available for checking: ‘sf’
+  * checking installed package size ... NOTE
+    installed size is  6.6Mb
+    sub-directories of 1Mb or more:
+    libs   6.3Mb
 
 This seems to be something to do with r-hub rather than a real problem.
