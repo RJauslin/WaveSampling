@@ -3,23 +3,30 @@ language: r
 dist: trusty
 sudo: required
 
-r:
-  - devel
-  - release
-
-before_install:
-  - chmod +x configure
-  - chmod +x cleanup
-
-os:
-  - linux
-  - osx
-  
-osx_image: xcode9.4
-
-env:
- global:
-   - CRAN: http://cran.rstudio.com
+matrix:
+  include:
+  - r: 
+    - release
+    - devel
+    before_install:
+      - chmod +x configure
+      - chmod +x cleanup
+    addons:
+      apt:
+        packages:
+        - libudunits2-dev
+        - gdal-bin
+        - libgdal1-dev
+        - libproj-dev
+  - r: release
+    os: osx
+    osx_image: xcode9.4
+    before_install:
+      - chmod +x configure
+      - chmod +x cleanup
+    homebrew:
+      packages:
+        - udunits
 
 r_packages:
   - knitr
@@ -30,13 +37,3 @@ r_packages:
   - BalancedSampling
   - sp
   - sf
-addons:
-  apt:
-    packages:
-      - libudunits2-dev
-      - gdal-bin
-      - libgdal1-dev
-      - libproj-dev
-  homebrew:
-    packages:
-      - udunits
