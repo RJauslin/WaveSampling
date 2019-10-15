@@ -26,14 +26,6 @@
 //' @references 
 //' \url{https://en.wikipedia.org/wiki/Projection_(linear_algebra)}s
 //' 
-//' 
-//' @examples
-//' \dontrun{
-//' u = c(0,1)
-//' v = c(1,1)
-//' projOp(v,u)
-//' v - projOp(v,u)
-//' }
 arma::vec projOp(arma::vec v,arma::vec u) {
   double num = arma::as_scalar(u.t()*v);
   double den = arma::as_scalar(u.t()*u);

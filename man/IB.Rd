@@ -37,7 +37,6 @@ and
 To specify the spatial weights uses the argument \code{W}.
 }
 \examples{
-\dontrun{
   N <- 36
   n <- 12
   x <- seq(1,sqrt(N),1)
@@ -47,7 +46,6 @@ To specify the spatial weights uses the argument \code{W}.
   W <- W - diag(diag(W))
   s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE)
   IB(W,s)
-}
 
 }
 \references{

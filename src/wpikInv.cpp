@@ -53,13 +53,13 @@
 //' @seealso
 //' \code{\link{wpik}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 //' @examples
-//' \dontrun{
+//' 
 //' N <- 25
 //' n <- 5
 //' X <- as.matrix(cbind(runif(N),runif(N)))
 //' pik <- sampling::inclusionprobabilities(runif(N),n)
 //' W <- wpikInv(X,pik)
-//' }
+//' 
 //' @export
 // [[Rcpp::export]]
 arma::sp_mat wpikInv(arma::mat X,

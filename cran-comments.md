@@ -1,6 +1,18 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
+> Please replace \dontrun{} by \donttest{} or unwap the examples if they can be executed in less than 5 sec per Rd-file.
+
+* I have remove all the \dontrun{} in the examples.
+
+> if there are references describing the (theoretical background of Weakly Associated Vectors) methods in your package, please add these in the Description field of your DESCRIPTION file in the form authors (year) <doi:...> authors (year) <arXiv:...> authors (year, ISBN:...) with no space after 'doi:', 'arXiv:' and angle brackets for auto-linking."
+
+* The paper is almost finished. I will do the modification of the DESCRIPTION file once the paper is uploaded on arXiv if it is ok for you ? Best,
+
+
+## Resubmission
+This is a resubmission. In this version I have:
+
 * Changes the @OPENMP_CFLAG@ by @OPENMP_FLAG@ in Makevars.in, It should resolved the following note on Debian distribution : 
 
   checking use of SHLIB_OPENMP_*FLAGS in Makefiles ... NOTE

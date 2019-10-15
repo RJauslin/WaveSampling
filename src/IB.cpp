@@ -44,7 +44,6 @@
 //' \code{\link{wpik}}
 //' 
 //' @examples
-//' \dontrun{
 //'   N <- 36
 //'   n <- 12
 //'   x <- seq(1,sqrt(N),1)
@@ -54,7 +53,6 @@
 //'   W <- W - diag(diag(W))
 //'   s <- wave(as.matrix(X),pik,tore = TRUE,shift = TRUE,comment = TRUE)
 //'   IB(W,s)
-//' }
 //' 
 //' @export
 // [[Rcpp::export]]

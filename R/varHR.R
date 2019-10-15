@@ -27,6 +27,7 @@
 #' @useDynLib WaveSampling, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @export
+#' 
 varHAJ <- function(y,pik,s){
   n <- length(s)
   return((n/(n-1))*sum((1-pik)*(y/pik-sum(y*(1-pik)/pik)/sum(1-pik))^2));

@@ -19,13 +19,7 @@
 //' 
 //' @seealso
 //' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
-//' 
-//' @examples
-//' \dontrun{
-//' sp <- rsparsematrix(5000,5000,density = 0.4)
-//' system.time(test1 <- Matrix::colSums(sp))
-//' system.time(test2 <- colSumsiter(sp))
-//' }
+//'
 arma::vec colSumsiter(const arma::sp_mat& x) {
 
   int N = x.n_cols;
@@ -63,19 +57,16 @@ arma::vec colSumsiter(const arma::sp_mat& x) {
 //' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
 //' 
 //' 
-//' @examples
-//' \dontrun{
-//' sp <- rsparsematrix(5000,5000,density = 0.4)
-//' system.time(test1 <- Matrix::colSums(sp))
-//' system.time(test2 <- colSumsiter(sp))
-//' }
-//' 
 arma::vec rowSumsiter(const arma::sp_mat& x) {
   return colSumsiter(x.t());
 }
 
 
 /*** R
+sp <- rsparsematrix(5000,5000,density = 0.4)
+system.time(test1 <- Matrix::colSums(sp))
+system.time(test2 <- colSumsiter(sp))
+
 rm(list = ls())
 X <- as.matrix(cbind(runif(30),runif(30)))
 pik <- rep(1/5,30)
