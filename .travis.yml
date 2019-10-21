@@ -3,6 +3,8 @@ language: r
 dist: trusty
 sudo: required
 
+warnings_are_errors: false
+
 matrix:
   include:
   - r: devel
