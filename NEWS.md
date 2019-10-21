@@ -1,5 +1,10 @@
 # NEWS for Package "WaveSampling"
 
+## WaveSampling 0.1.0.9000
+
+### Developement version
+  * add .9000 to show that is the developement version.
+  
 ## WaveSampling 0.1.0
 
 ### CRAN resubmission
