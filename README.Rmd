@@ -20,7 +20,15 @@ Spatial data are generally auto-correlated, meaning that if two units selected a
 
 ## Installation
 
-You can install the released version of the package `WaveSampling` with the following command:
+### CRAN version
+
+```
+install.packages("WaveSampling")
+```
+
+### Latest version 
+
+You can install the latest version of the package `WaveSampling` with the following command:
 
 ``` r
 # install.packages("devtools")

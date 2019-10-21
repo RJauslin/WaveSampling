@@ -1,5 +1,5 @@
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission. In this version :
 
 > Please replace \dontrun{} by \donttest{} or unwap the examples if they can be executed in less than 5 sec per Rd-file.
 

@@ -19,7 +19,13 @@ Status](https://travis-ci.org/RJauslin/WaveSampling.svg?branch=master)](https://
 
 ## Installation
 
-You can install the released version of the package `WaveSampling` with
+### CRAN version
+
+    install.packages("WaveSampling")
+
+### Latest version
+
+You can install the latest version of the package `WaveSampling` with
 the following command:
 
 ``` r
@@ -40,17 +46,17 @@ N <- 144
 n <- 48
 X <- cbind(runif(N),runif(N))
 head(X,10)
-#>             [,1]       [,2]
-#>  [1,] 0.65601358 0.03004647
-#>  [2,] 0.24101651 0.46091256
-#>  [3,] 0.29776035 0.17085750
-#>  [4,] 0.34909458 0.89883402
-#>  [5,] 0.93018147 0.87804812
-#>  [6,] 0.67000492 0.67711535
-#>  [7,] 0.27067015 0.05059434
-#>  [8,] 0.74374266 0.32661502
-#>  [9,] 0.32906968 0.53842066
-#> [10,] 0.06137976 0.73845408
+#>            [,1]        [,2]
+#>  [1,] 0.7810924 0.576835061
+#>  [2,] 0.8099128 0.663043716
+#>  [3,] 0.5636762 0.345289014
+#>  [4,] 0.4888889 0.521105167
+#>  [5,] 0.3581853 0.513209985
+#>  [6,] 0.4437310 0.326150702
+#>  [7,] 0.4299182 0.188692449
+#>  [8,] 0.5572818 0.003661311
+#>  [9,] 0.9443722 0.550687134
+#> [10,] 0.3996344 0.043430131
 ```
 
 Inclusion probabilities `pik` is set up all equal with the function

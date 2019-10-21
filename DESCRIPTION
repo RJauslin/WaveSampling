@@ -17,8 +17,8 @@ Description: Spatial data are generally auto-correlated, meaning that if two
   wave (Weakly Associated Vectors) sampling. It uses the less correlated vector
   to a spatial weights matrix to update the inclusion probabilities vector
   into a sample.
-URL: https://github.com/RJauslin/wave
-BugReports: https://github.com/RJauslin/wave/issues
+URL: https://github.com/RJauslin/WaveSampling
+BugReports: https://github.com/RJauslin/WaveSampling/issues
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
