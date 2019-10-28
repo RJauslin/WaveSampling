@@ -22,6 +22,7 @@
 //' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
 //' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
+//' @param fixedSize an optional logical value, if you would impose a fixed sample size.
 //'
 //' @details
 //' 
@@ -102,7 +103,8 @@ arma::vec wave(const arma::mat& X,
                bool tore = false,
                bool shift = false,
                double toreBound = -1,
-               bool comment = false) {
+               bool comment = false,
+               bool fixedSize = true) {
   // INITIALIZE CONSTANT
   double la1 = 1e+200;
   double la2 = 1e+200;
@@ -187,7 +189,9 @@ arma::vec wave(const arma::mat& X,
     }else{
         u = V.col(V.n_cols - 1);
     }
-    u = u - projOp(u,one);
+    if(fixedSize == true){
+      u = u - projOp(u,one);  
+    }
     
     la1 = 1e+200;
     la2 = 1e+200;
@@ -223,11 +227,19 @@ arma::vec wave(const arma::mat& X,
     if (i_size % 10 == 0){
       Rcpp::checkUserInterrupt();
     }
-      
+    
+    if(arma::sum(re.elem(i)) < (1-eps) && fixedSize == false){
+      Rcpp::Rcout << "The remaining sum of inclusion probabilites is equal to : " << arma::sum(re.elem(i)) << 
+      "\nThe remaining inclusion probabilities are \n" << re.elem(i) <<
+      "\nThe inclusion probabilities are rounded.\n";
+      break;
+    }
+
     
   }
   
   if(comment  == true){
+    Rcpp::Rcout << re << std::endl;
     Rcpp::Rcout << "--- Sample selection finished ---" << std::endl;
   }
   
@@ -238,11 +250,27 @@ arma::vec wave(const arma::mat& X,
 
 /*** R
 
+
+N <- 225
+n <- 75
+x <- seq(1,sqrt(N),1)
+X <- as.matrix(cbind(runif(N),runif(N)))
+pik <- rep(n/N,N)
+# pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(X,pik,tore = T,shift =T,comment = FALSE,fixedSize = FALSE)
+sum(s)
+plot(X)
+points(X[s == 1,],pch = 16)
+
+
+
 N <- 50
 n <- 15
 x <- as.matrix(runif(N),runif(N))
 pik <- sampling::inclusionprobabilities(runif(N),n)
-s <- wave(x,pik)
+s <- wave(x,pik,comment = TRUE,fixedSize = FALSE)
+sum(s)
+
 
 ############# EXAMPLE 1
 
@@ -257,7 +285,8 @@ plot(X)
 points(X[s == 1,],pch = 16)
 
 X <- as.matrix(cbind(runif(N),runif(N)))
-s <- wave(X,pik,tore = F,shift =F,comment = TRUE)
+s <- wave(X,pik,tore = F,shift =F,comment = TRUE,fixedSize = FALSE)
+sum(s)
 plot(X)
 points(X[s == 1,],pch = 16)
 
@@ -269,7 +298,7 @@ X <- as.matrix(cbind(rep(x,times = sqrt(N)),rep(x,each = sqrt(N))))
 pik <- rep(n/N,N)
 
 # W <- wpik(X,pik,bound = 1,tore = TRUE,shift = TRUE,toreBound = 15 )
-s <- wave(X,pik,tore = T,shift =T,comment = TRUE)
+s <- wave(X,pik,tore = T,shift =T,comment = TRUE,fixedSize = FALSE)
 plot(X)
 points(X[s == 1,],pch = 16)
 

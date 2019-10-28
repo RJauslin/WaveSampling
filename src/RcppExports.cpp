@@ -46,8 +46,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // wave
-arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool shift, double toreBound, bool comment);
-RcppExport SEXP _WaveSampling_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP, SEXP commentSEXP) {
+arma::vec wave(const arma::mat& X, const arma::vec& pik, double bound, bool tore, bool shift, double toreBound, bool comment, bool fixedSize);
+RcppExport SEXP _WaveSampling_wave(SEXP XSEXP, SEXP pikSEXP, SEXP boundSEXP, SEXP toreSEXP, SEXP shiftSEXP, SEXP toreBoundSEXP, SEXP commentSEXP, SEXP fixedSizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -58,7 +58,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type shift(shiftSEXP);
     Rcpp::traits::input_parameter< double >::type toreBound(toreBoundSEXP);
     Rcpp::traits::input_parameter< bool >::type comment(commentSEXP);
-    rcpp_result_gen = Rcpp::wrap(wave(X, pik, bound, tore, shift, toreBound, comment));
+    Rcpp::traits::input_parameter< bool >::type fixedSize(fixedSizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(wave(X, pik, bound, tore, shift, toreBound, comment, fixedSize));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -98,7 +99,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_WaveSampling_IB", (DL_FUNC) &_WaveSampling_IB, 2},
     {"_WaveSampling_distUnitk", (DL_FUNC) &_WaveSampling_distUnitk, 4},
     {"_WaveSampling_sb_vk", (DL_FUNC) &_WaveSampling_sb_vk, 3},
-    {"_WaveSampling_wave", (DL_FUNC) &_WaveSampling_wave, 7},
+    {"_WaveSampling_wave", (DL_FUNC) &_WaveSampling_wave, 8},
     {"_WaveSampling_wpik", (DL_FUNC) &_WaveSampling_wpik, 6},
     {"_WaveSampling_wpikInv", (DL_FUNC) &_WaveSampling_wpikInv, 5},
     {NULL, NULL, 0}

@@ -247,6 +247,7 @@ sb_vk <- function(pik, X, s) {
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
 #' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
+#' @param fixedSize an optional logical value, if you would impose a fixed sample size.
 #'
 #' @details
 #' 
@@ -320,8 +321,8 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' 
 #' @export
-wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1, comment = FALSE) {
-    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, toreBound, comment)
+wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1, comment = FALSE, fixedSize = TRUE) {
+    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, toreBound, comment, fixedSize)
 }
 
 #' @encoding UTF-8

@@ -3,7 +3,10 @@
 ## WaveSampling 0.1.0.9000
 
 ### Developement version
+  
+  * Change `wave` such that we could choose if we would like to impose fixed sample size.
   * add .9000 to show that is the developement version.
+  
   
 ## WaveSampling 0.1.0
 

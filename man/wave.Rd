@@ -6,7 +6,7 @@
 \title{Weakly associated vectors sampling}
 \usage{
 wave(X, pik, bound = 1, tore = FALSE, shift = FALSE,
-  toreBound = -1, comment = FALSE)
+  toreBound = -1, comment = FALSE, fixedSize = TRUE)
 }
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}
@@ -22,6 +22,8 @@ wave(X, pik, bound = 1, tore = FALSE, shift = FALSE,
 \item{toreBound}{a numeric value that specify the size of the grid. Default is -1.}
 
 \item{comment}{an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.}
+
+\item{fixedSize}{an optional logical value, if you would impose a fixed sample size.}
 }
 \value{
 A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
