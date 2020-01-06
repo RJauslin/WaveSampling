@@ -247,7 +247,7 @@ sb_vk <- function(pik, X, s) {
 #' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
 #' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 #' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
-#' @param fixedSize an optional logical value, if you would impose a fixed sample size.
+#' @param fixedSize an optional logical value, if you would impose a fixed sample size. Default is \code{TRUE}
 #'
 #' @details
 #' 
@@ -273,7 +273,9 @@ sb_vk <- function(pik, X, s) {
 #' where \eqn{p} is equal to the number of column of the matrix \code{X}.
 #' 
 #' For more informations on the option \code{shift}, see \code{\link{wpik}}.
-#'
+#' 
+#' If \code{fixedSize} is equal \code{TRUE}, the weakest associated vector is centered at each step of the algorithm. This ensures that the size of the selected sample is equal to the sum of the inclusion probabilities.
+#' 
 #' @return A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
 #' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}

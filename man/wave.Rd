@@ -23,7 +23,7 @@ wave(X, pik, bound = 1, tore = FALSE, shift = FALSE,
 
 \item{comment}{an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.}
 
-\item{fixedSize}{an optional logical value, if you would impose a fixed sample size.}
+\item{fixedSize}{an optional logical value, if you would impose a fixed sample size. Default is \code{TRUE}}
 }
 \value{
 A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
@@ -54,6 +54,8 @@ For more informations on the options \code{tore} and \code{toreBound}, see \code
 where \eqn{p} is equal to the number of column of the matrix \code{X}.
 
 For more informations on the option \code{shift}, see \code{\link{wpik}}.
+
+If \code{fixedSize} is equal \code{TRUE}, the weakest associated vector is centered at each step of the algorithm. This ensures that the size of the selected sample is equal to the sum of the inclusion probabilities.
 }
 \examples{
 

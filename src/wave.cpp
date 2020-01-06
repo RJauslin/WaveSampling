@@ -22,7 +22,7 @@
 //' @param shift an optional logical value, if you would use a shift perturbation. See Details. Default is \code{FALSE}.
 //' @param toreBound a numeric value that specify the size of the grid. Default is -1.
 //' @param comment an optional logical value, indicating some informations during the execution. Default is \code{FALSE}.
-//' @param fixedSize an optional logical value, if you would impose a fixed sample size.
+//' @param fixedSize an optional logical value, if you would impose a fixed sample size. Default is \code{TRUE}
 //'
 //' @details
 //' 
@@ -48,7 +48,9 @@
 //' where \eqn{p} is equal to the number of column of the matrix \code{X}.
 //' 
 //' For more informations on the option \code{shift}, see \code{\link{wpik}}.
-//'
+//' 
+//' If \code{fixedSize} is equal \code{TRUE}, the weakest associated vector is centered at each step of the algorithm. This ensures that the size of the selected sample is equal to the sum of the inclusion probabilities.
+//' 
 //' @return A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 //' 
 //' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
@@ -231,7 +233,11 @@ arma::vec wave(const arma::mat& X,
     if(arma::sum(re.elem(i)) < (1-eps) && fixedSize == false){
       Rcpp::Rcout << "The remaining sum of inclusion probabilites is equal to : " << arma::sum(re.elem(i)) << 
       "\nThe remaining inclusion probabilities are \n" << re.elem(i) <<
-      "\nThe inclusion probabilities are rounded.\n";
+      "\nBernoulli distribution are used to select the units.\n";
+      for(unsigned int tt = 0; tt < i.size(); tt++){
+        re[i[tt]] = R::rbinom(1,re[i[tt]]);
+      }
+      std::cout << re.elem(i) << std::endl;
       break;
     }
 
@@ -252,12 +258,12 @@ arma::vec wave(const arma::mat& X,
 
 
 N <- 225
-n <- 75
+n <- 40
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(runif(N),runif(N)))
-pik <- rep(n/N,N)
-# pik <- sampling::inclusionprobabilities(runif(N),n)
-s <- wave(X,pik,tore = T,shift =T,comment = FALSE,fixedSize = FALSE)
+# pik <- rep(n/N,N)
+pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(X,pik)
 sum(s)
 plot(X)
 points(X[s == 1,],pch = 16)
