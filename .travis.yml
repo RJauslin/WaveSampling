@@ -2,7 +2,10 @@
 language: r
 
 r:
+  - devel
   - release
+  
+r_build_args: --no-build-vignettes
 
 os:
   - linux
@@ -10,6 +13,8 @@ os:
 
 dist: trusty
 osx_image: xcode9.4
+  
+warnings_are_errors: false  
   
 before_install:
   - chmod +x configure
@@ -25,6 +30,11 @@ addons:
 
 brew_packages:
   - udunits
+  
+jobs:
+  exclude:
+    - os: osx
+      r: devel
   
 r_packages:
   - knitr
