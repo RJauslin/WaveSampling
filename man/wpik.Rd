@@ -5,8 +5,7 @@
 \alias{wpik}
 \title{Stratification matrix from inclusion probabilities}
 \usage{
-wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE,
-  toreBound = -1)
+wpik(X, pik, bound = 1, tore = FALSE, shift = FALSE, toreBound = -1)
 }
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}

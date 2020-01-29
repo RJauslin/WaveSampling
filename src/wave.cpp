@@ -231,13 +231,13 @@ arma::vec wave(const arma::mat& X,
     }
     
     if(arma::sum(re.elem(i)) < (1-eps) && fixedSize == false){
-      Rcpp::Rcout << "The remaining sum of inclusion probabilites is equal to : " << arma::sum(re.elem(i)) << 
+      Rcpp::Rcout << "The algorithm end because the remaining sum of inclusion probabilites is equal to : " << arma::sum(re.elem(i)) << 
       "\nThe remaining inclusion probabilities are \n" << re.elem(i) <<
       "\nBernoulli distribution are used to select the units.\n";
       for(unsigned int tt = 0; tt < i.size(); tt++){
         re[i[tt]] = R::rbinom(1,re[i[tt]]);
       }
-      std::cout << re.elem(i) << std::endl;
+      Rcpp::Rcout << re.elem(i) << "\n";
       break;
     }
 
@@ -257,13 +257,14 @@ arma::vec wave(const arma::mat& X,
 /*** R
 
 
-N <- 225
-n <- 40
+N <- 144
+n <- 48
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(runif(N),runif(N)))
-# pik <- rep(n/N,N)
-pik <- sampling::inclusionprobabilities(runif(N),n)
-s <- wave(X,pik)
+X <- as.matrix(expand.grid(x,x))
+pik <- rep(n/N,N)
+# pik <- sampling::inclusionprobabilities(runif(N),n)
+s <- wave(X,pik,tore = TRUE,shift = TRUE,fixedSize = TRUE)
 sum(s)
 plot(X)
 points(X[s == 1,],pch = 16)

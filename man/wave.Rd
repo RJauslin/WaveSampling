@@ -5,8 +5,16 @@
 \alias{wave}
 \title{Weakly associated vectors sampling}
 \usage{
-wave(X, pik, bound = 1, tore = FALSE, shift = FALSE,
-  toreBound = -1, comment = FALSE, fixedSize = TRUE)
+wave(
+  X,
+  pik,
+  bound = 1,
+  tore = FALSE,
+  shift = FALSE,
+  toreBound = -1,
+  comment = FALSE,
+  fixedSize = TRUE
+)
 }
 \arguments{
 \item{X}{matrix representing the spatial coordinates.}
