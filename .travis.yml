@@ -1,13 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 language: r
-dist: trusty
-sudo: required
+root: required
 
 warnings_are_errors: false
 
-matrix:
+jobs:
   include:
-  - r: devel
+  - os: linux
+    dist: trusty
+    r: devel
     before_install:
       - chmod +x configure
       - chmod +x cleanup
@@ -18,7 +19,9 @@ matrix:
         - gdal-bin
         - libgdal1-dev
         - libproj-dev
-  - r: release
+  - os: linux
+    dist: trusty
+    r: release
     before_install:
       - chmod +x configure
       - chmod +x cleanup
@@ -29,14 +32,13 @@ matrix:
         - gdal-bin
         - libgdal1-dev
         - libproj-dev
-  - r: release
-    os: osx
+  - os: osx
     osx_image: xcode9.4
+    r: release
     before_install:
       - chmod +x configure
       - chmod +x cleanup
-    homebrew:
-      packages:
+    brew_packages:
         - udunits
 
 r_packages:
