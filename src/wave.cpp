@@ -165,7 +165,7 @@ arma::vec wave(const arma::mat& X,
     
     arma::mat A(i_size,i_size);
     one = arma::ones<arma::mat>(i_size,1);
-    A = wpik(X.submat(i,ncol),re.elem(i),1.0,tore,shift,tb);
+    A = wpik(X.submat(i,ncol),re.elem(i),bound,tore,shift,tb);
     arma::mat D = diagmat(1/re.elem(i));
     A = A*D;
     
@@ -257,14 +257,14 @@ arma::vec wave(const arma::mat& X,
 /*** R
 
 
-N <- 144
-n <- 48
+N <- 36
+n <- 12
 x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(runif(N),runif(N)))
 X <- as.matrix(expand.grid(x,x))
 pik <- rep(n/N,N)
 # pik <- sampling::inclusionprobabilities(runif(N),n)
-s <- wave(X,pik,tore = TRUE,shift = TRUE,fixedSize = TRUE)
+system.time(s <- wave(X,pik,tore = TRUE,shift = TRUE,fixedSize = TRUE))
 sum(s)
 plot(X)
 points(X[s == 1,],pch = 16)
