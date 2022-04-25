@@ -1,20 +1,9 @@
 ## Test environments
-* Windows 10, R-devel (local), R-release (R 3.6.2) (local),
-* Linux, Ubuntu 16.04 (on travis-ci) R-release, Debian, R-devel
-* OS X 9.4 (on travis-ci), R-release
+* Windows 10, R-release (R 4.1.3) (local),
 
 ## R CMD check results
 
-- R-release (R 3.6.2) : There were no ERRORs, WARNINGs or NOTEs.
-
-- R-devel : There were no ERRORs, WARNINGs,
-
-1 NOTE, seems that the output of the examples are non-standard things. 
-
-checking for non-standard things in the check directory ... NOTE
-  Found the following files/directories:
-    'WaveSampling-Ex_i386.Rout' 'WaveSampling-Ex_x64.Rout'
-    'examples_i386' 'examples_x64'
+- R-release (R 4.1.3) : There were no ERRORs, WARNINGs or NOTEs.
 
 ## rhub
 

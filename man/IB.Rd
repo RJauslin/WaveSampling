@@ -50,7 +50,7 @@ To specify the spatial weights uses the argument \code{W}.
 }
 \references{
 Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
-\emph{Spatial Statistics}, 23, 182-192. \url{https://doi.org/10.1016/j.spasta.2018.02.001}
+\emph{Spatial Statistics}, 23, 182-192.
 }
 \seealso{
 \code{\link{wpik}}

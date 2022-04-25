@@ -1,5 +1,12 @@
 # NEWS for Package "WaveSampling"
 
+## WaveSampling 0.1.2
+
+  * add <doi:10.1007/s13253-020-00407-1>.
+  * remove ggvoronoi in suggested packages.
+  * remove travis
+  * remove 0LazyData: true
+ 
 ## WaveSampling 0.1.1
 
 ### patch  

@@ -87,43 +87,7 @@ p
 One way of measuring the spread of a sample was developed by @stevens:olsen:2004 and then suggested by @grafstrom:lundstrom:2012. It is based on the Voronoï polygons and is given by
 
 $$ B(\bf s) = \frac{1}{n}\sum_{i \in s} (v_i - 1)^2 $$
-where $v_i$ is equal to the sum of the inclusion probabilities inside the $i$th polygons and $\bf s$ is the vector of size $N$ with elements equal 0 or 1. This quantity is implemented in the package `BalancedSampling` with the function `sb()`. We calculate the values of the $v_k$ with the function `sb_vk`.
-
-The closer $B(\bf s)$ is to zero, the better is the spatial balance of the sample. Graphically, we obtain the following plot.
-
-
-```{r,fig.width=7,fig.height=5}
-
-library(sp)
-library(sampling)
-library(ggvoronoi)
-data("meuse")
-data("meuse.area")
-
-v <- sb_vk(pik,as.matrix(meuse[,1:2]),s)
-meuse$v <- v
-
-p <- p + geom_voronoi(data = meuse[which(s == 1),],
-               aes(x = x,y = y,fill = v),
-               outline =as.data.frame(meuse.area),
-               size = 0.1,
-               colour = "black")+
-  geom_point(data = meuse,
-             aes(x = x,y = y,size = copper),
-             shape = 1,
-             stroke = 0.3)+
-  geom_point(data = meuse[which(s == 1),],
-             aes(x = x,y = y,size = copper),
-             shape = 16)+
-  scale_fill_gradient2(midpoint = 1)
-p
-
-BalancedSampling::sb(pik,as.matrix(meuse[,1:2]),which(s == 1))
-
-
-```
-
-
+where $v_i$ is equal to the sum of the inclusion probabilities inside the $i$th polygons and $\bf s$ is the vector of size $N$ with elements equal 0 or 1. This quantity is implemented in the package `BalancedSampling` with the function `sb()`. We can calculate the values of the $v_k$ with the function `sb_vk`. The closer $B(\bf s)$ is to zero, the better is the spatial balance of the sample.
 
 ### Moran index
 
