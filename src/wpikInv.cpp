@@ -57,7 +57,7 @@
 //' N <- 25
 //' n <- 5
 //' X <- as.matrix(cbind(runif(N),runif(N)))
-//' pik <- sampling::inclusionprobabilities(runif(N),n)
+//' pik <- rep(n/N,N)
 //' W <- wpikInv(X,pik)
 //' 
 //' @export
@@ -168,7 +168,7 @@ arma::sp_mat wpikInv(arma::mat X,
 /*** R
 
 X <- cbind(runif(1000),runif(1000))
-pik <- sampling::inclusionprobabilities(runif(1000),100)
+pik <- rep(100/1000,1000)
 d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:1000){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)
@@ -206,7 +206,7 @@ as(wpik2R(d,pik),"sparseMatrix") == wpikInv(X,pik = pik,tore = TRUE,shift = FALS
 
 
 X <- cbind(runif(25),runif(25))
-pik <- sampling::inclusionprobabilities(runif(25),5)
+pik <- rep(5/25,25)
 pik[1] <- 0.015345
 d <- array(rep(0,5*5),c(25,25))
 for(i in 1:25){
@@ -220,7 +220,7 @@ image(wpikInv(X,pik = pik,tore = FALSE,shift = FALSE,toreBound = 0))
 ### time
 
 X <- cbind(runif(1000),runif(1000))
-pik <- sampling::inclusionprobabilities(runif(1000),100)
+pik <- rep(100/1000,1000)
 d <- array(rep(0,1000*1000),c(1000,1000))
 for(i in 1:25){
   d[i,] <- distUnitk(X,k =i,tore = FALSE,toreBound = 0)

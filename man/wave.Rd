@@ -73,8 +73,8 @@ If \code{fixedSize} is equal \code{TRUE}, the weakest associated vector is cente
 
 N <- 50
 n <- 15
+pik <- rep(n/N,N)
 X <- as.matrix(cbind(runif(N),runif(N)))
-pik <- sampling::inclusionprobabilities(runif(N),n)
 s <- wave(X,pik)
 
 #------------

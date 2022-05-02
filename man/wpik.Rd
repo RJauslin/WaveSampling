@@ -58,7 +58,7 @@ The shift perturbation is generated at the beginning of the procedure such that 
 N <- 25
 n <- 5
 X <- as.matrix(cbind(runif(N),runif(N)))
-pik <- sampling::inclusionprobabilities(runif(N),n)
+pik <- rep(n/N,N)
 W <- wpik(X,pik)
 
 }

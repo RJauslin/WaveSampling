@@ -296,8 +296,8 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' N <- 50
 #' n <- 15
+#' pik <- rep(n/N,N)
 #' X <- as.matrix(cbind(runif(N),runif(N)))
-#' pik <- sampling::inclusionprobabilities(runif(N),n)
 #' s <- wave(X,pik)
 #' 
 #' #------------
@@ -382,7 +382,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' N <- 25
 #' n <- 5
 #' X <- as.matrix(cbind(runif(N),runif(N)))
-#' pik <- sampling::inclusionprobabilities(runif(N),n)
+#' pik <- rep(n/N,N)
 #' W <- wpik(X,pik)
 #' 
 #' @export
@@ -445,7 +445,7 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' N <- 25
 #' n <- 5
 #' X <- as.matrix(cbind(runif(N),runif(N)))
-#' pik <- sampling::inclusionprobabilities(runif(N),n)
+#' pik <- rep(n/N,N)
 #' W <- wpikInv(X,pik)
 #' 
 #' @export

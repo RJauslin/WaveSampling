@@ -57,7 +57,7 @@
 //' N <- 25
 //' n <- 5
 //' X <- as.matrix(cbind(runif(N),runif(N)))
-//' pik <- sampling::inclusionprobabilities(runif(N),n)
+//' pik <- rep(n/N,N)
 //' W <- wpik(X,pik)
 //' 
 //' @export
@@ -252,7 +252,7 @@ arma::sp_mat wpik(arma::mat X,
 N <- 5
 x <- seq(1,N,1)
 X <- as.matrix(expand.grid(x,x))
-pik <- sampling::inclusionprobabilities(runif(25),5)
+pik <- rep(5/25,25)
 W <- wpik(X,pik) # tore == FALSE so it works
 W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
 W <- wpik(X,pik, tore = TRUE,toreBound = 5) # works
@@ -269,7 +269,7 @@ rankMatrix(W)
 
 N <- 2048
 X <- as.matrix(cbind(runif(N),runif(N)))
-pik <- sampling::inclusionprobabilities(runif(N),100)
+pik <- rep(100/N,N)
 system.time(W <- wpik(X,pik, tore = FALSE))
 
 
@@ -281,7 +281,7 @@ system.time(W <- wpik(X,pik, tore = FALSE))
 N <- 10
 X <- as.matrix(seq(1,N,1))
 pik <- rep(2/10,10)
-pik <- sampling::inclusionprobabilities(runif(10),2)
+
 W <- wpik(X,pik) # tore == FALSE so it works
 W <- wpik(X,pik, tore = TRUE) # tore == TRUE but no toreBound -> error
 W <- wpik(X,pik, tore = TRUE,toreBound = 10) 

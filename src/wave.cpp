@@ -71,8 +71,8 @@
 //' 
 //' N <- 50
 //' n <- 15
+//' pik <- rep(n/N,N)
 //' X <- as.matrix(cbind(runif(N),runif(N)))
-//' pik <- sampling::inclusionprobabilities(runif(N),n)
 //' s <- wave(X,pik)
 //' 
 //' #------------
@@ -263,7 +263,6 @@ x <- seq(1,sqrt(N),1)
 X <- as.matrix(cbind(runif(N),runif(N)))
 X <- as.matrix(expand.grid(x,x))
 pik <- rep(n/N,N)
-# pik <- sampling::inclusionprobabilities(runif(N),n)
 system.time(s <- wave(X,pik,tore = TRUE,shift = TRUE,fixedSize = TRUE))
 sum(s)
 plot(X)
@@ -274,7 +273,6 @@ points(X[s == 1,],pch = 16)
 N <- 50
 n <- 15
 x <- as.matrix(runif(N),runif(N))
-pik <- sampling::inclusionprobabilities(runif(N),n)
 s <- wave(x,pik,comment = TRUE,fixedSize = FALSE)
 sum(s)
 
@@ -363,7 +361,6 @@ n <- 10
 x <- as.matrix(seq(1,N,1))
 # x <- as.matrix(runif(N))
 pik <- rep(n/N,N)
-# pik <- sampling::inclusionprobabilities(runif(N),n)
 s <- wave(x,pik,tore = T,shift =F,comment = T)
 plot(x,rep(0,N))
 points(x[s == 1,],rep(0,n),pch = 16)

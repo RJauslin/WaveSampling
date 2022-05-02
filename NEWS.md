@@ -1,4 +1,6 @@
 # NEWS for Package "WaveSampling"
+## WaveSampling 0.1.3
+  * change doc so that it does not require sampling package installation.
 
 ## WaveSampling 0.1.2
   * fix Debian installation
