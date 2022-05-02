@@ -1,24 +1,28 @@
 ## Test environments
-* Windows 10, R-release (R 4.1.3) (local),
+* Windows 10, R-release (R 4.2.0) (local),
 
 ## R CMD check results
 
-- R-release (R 4.1.3) : There were no ERRORs, WARNINGs or NOTEs.
+- R-release (R 4.2.0) : There were no ERRORs, WARNINGs or NOTEs.
 
 ## rhub
 
 - Fedora Linux, R-devel, clang, gfortran
-  PREPERROR
+  no ERRORs or WARNINGs : one note:
+  * checking installed package size ... NOTE
+  installed size is  5.1Mb
+  sub-directories of 1Mb or more:
+    libs   4.9Mb
 - Ubuntu Linux 20.04 LTS, R-release, GCC
-  PREPERROR
+  no ERRORs or WARNINGs : one note:
+  * checking installed package size ... NOTE
+  installed size is  5.1Mb
+  sub-directories of 1Mb or more:
+    libs   4.9Mb
 - Debian Linux, R-devel, GCC ASAN/UBSAN
-  PREPERROR
+  OK: There were no ERRORs, WARNINGs or NOTEs.
 - Windows Server 2022, R-devel, 64 bit
-  There were no ERRORs, WARNINGs,
-  One note :
-  * checking for detritus in the temp directory ... NOTE
-    Found the following files/directories:
-    'lastMiKTeXException'
+  OK: There were no ERRORs, WARNINGs or NOTEs.
 
 
 

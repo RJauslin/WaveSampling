@@ -57,6 +57,9 @@ arma::vec sb_vk(arma::vec pik,arma::mat X,arma::vec s) {
   int ncol = X.n_cols;
   
   
+  
+  
+  
   arma::uvec s1 = find(s == 1); // 0 based
   int n = s1.n_elem;
   

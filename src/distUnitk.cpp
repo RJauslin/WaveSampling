@@ -70,6 +70,8 @@ arma::vec distUnitk(arma::mat X,
   for(unsigned int j = 0; j < p; j++){
     coord_unitk.col(j) = tmp.fill(X((k-1),j));
   }
+
+  
   
   
   //out vector

@@ -40,6 +40,8 @@
 //' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
 //' \emph{Spatial Statistics}, 23, 182-192.
 //' 
+//' 
+//' 
 //' @seealso
 //' \code{\link{wpik}}
 //' 

@@ -8,4 +8,7 @@ arma::vec distUnitk(arma::mat X,
                     bool tore,
                     double toreBound);
 
+
+
+
 #endif

@@ -39,6 +39,8 @@
 #' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
 #' \emph{Spatial Statistics}, 23, 182-192.
 #' 
+#' 
+#' 
 #' @seealso
 #' \code{\link{wpik}}
 #' 
@@ -55,7 +57,7 @@
 #' 
 #' @export
 IB <- function(W, s) {
-    .Call(`_WaveSampling_IB`, W, s)
+    .Call('_WaveSampling_IB', PACKAGE = 'WaveSampling', W, s)
 }
 
 #' @title Squared Euclidean distances of the unit k.
@@ -107,7 +109,7 @@ IB <- function(W, s) {
 #'   distUnitk(X,k = 2,tore = FALSE,toreBound = -1)
 #' @export
 distUnitk <- function(X, k, tore, toreBound) {
-    .Call(`_WaveSampling_distUnitk`, X, k, tore, toreBound)
+    .Call('_WaveSampling_distUnitk', PACKAGE = 'WaveSampling', X, k, tore, toreBound)
 }
 
 #' @encoding UTF-8
@@ -230,7 +232,7 @@ NULL
 #' 
 #' @export
 sb_vk <- function(pik, X, s) {
-    .Call(`_WaveSampling_sb_vk`, pik, X, s)
+    .Call('_WaveSampling_sb_vk', PACKAGE = 'WaveSampling', pik, X, s)
 }
 
 #' @encoding UTF-8
@@ -324,7 +326,7 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' @export
 wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1, comment = FALSE, fixedSize = TRUE) {
-    .Call(`_WaveSampling_wave`, X, pik, bound, tore, shift, toreBound, comment, fixedSize)
+    .Call('_WaveSampling_wave', PACKAGE = 'WaveSampling', X, pik, bound, tore, shift, toreBound, comment, fixedSize)
 }
 
 #' @encoding UTF-8
@@ -387,7 +389,7 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' 
 #' @export
 wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -1.0) {
-    .Call(`_WaveSampling_wpik`, X, pik, bound, tore, shift, toreBound)
+    .Call('_WaveSampling_wpik', PACKAGE = 'WaveSampling', X, pik, bound, tore, shift, toreBound)
 }
 
 #' @encoding UTF-8
@@ -450,6 +452,6 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' 
 #' @export
 wpikInv <- function(X, pik, tore = FALSE, shift = FALSE, toreBound = -1) {
-    .Call(`_WaveSampling_wpikInv`, X, pik, tore, shift, toreBound)
+    .Call('_WaveSampling_wpikInv', PACKAGE = 'WaveSampling', X, pik, tore, shift, toreBound)
 }
 

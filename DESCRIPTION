@@ -32,7 +32,4 @@ Suggests:
     ggplot2,
     sampling,
     BalancedSampling,
-    sp,
-    sf,
     stats
-VignetteBuilder: knitr
