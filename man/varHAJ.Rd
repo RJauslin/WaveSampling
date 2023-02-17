@@ -15,7 +15,7 @@ varHAJ(y, pik, s)
 \item{s}{index vector of size \eqn{n} with elements equal to the selected units.}
 }
 \value{
-A number, the variance
+A number, the variance.
 }
 \description{
 Estimator of the variance of the Horvitz-Thompson estimator. It is based on the variance estimator of the conditional Poisson sampling design. See Tillé (2020, Chapter 5) for more informations.

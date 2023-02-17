@@ -16,7 +16,7 @@
 #'  
 #' This estimator is well-defined for maximum entropy sampling design and use only inclusion probabilities of order one.
 #' 
-#' @return A number, the variance
+#' @return A number, the variance.
 #' 
 #' @references 
 #' Tillé, Y. (2020). Sampling and estimation from finite populations. New York: Wiley
