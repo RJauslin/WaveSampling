@@ -106,6 +106,3 @@ Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube meth
 \seealso{
 \code{\link{wpik}}, \code{\link{distUnitk}}.
 }
-\author{
-Raphaël Jauslin \email{raphael.jauslin@unine.ch}
-}

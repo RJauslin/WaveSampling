@@ -49,6 +49,3 @@ Stevens, D. L. Jr. and Olsen, A. R. (2004). Spatially balanced sampling of natur
 \seealso{
 \code{\link[BalancedSampling:sb]{BalancedSampling::sb}}
 }
-\author{
-Raphaël Jauslin \email{raphael.jauslin@unine.ch}
-}

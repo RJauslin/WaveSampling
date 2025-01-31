@@ -65,6 +65,3 @@ W <- wpik(X,pik)
 \seealso{
 \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
 }
-\author{
-Raphaël Jauslin \email{raphael.jauslin@unine.ch}
-}

@@ -55,6 +55,3 @@ Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spat
 \seealso{
 \code{\link{wpik}}
 }
-\author{
-Raphaël Jauslin \email{raphael.jauslin@unine.ch}
-}
