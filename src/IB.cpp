@@ -34,7 +34,6 @@
 //'
 //' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @references
 //' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.

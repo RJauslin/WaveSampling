@@ -44,7 +44,6 @@
 //' 
 //' @return A sparse matrix representing the spatial weights.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @references 
 //' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.

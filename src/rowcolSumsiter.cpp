@@ -15,7 +15,6 @@
 //'
 //' @return column sums of x.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @seealso
 //' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.

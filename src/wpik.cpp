@@ -47,7 +47,6 @@
 //' 
 //' @return A sparse matrix representing the spatial weights.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @seealso
 //' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.

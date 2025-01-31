@@ -21,7 +21,6 @@
 //' 
 //' @return The projection of the vector v onto the line spanned by the vector u.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @references 
 //' \url{https://en.wikipedia.org/wiki/Projection_(linear_algebra)}s

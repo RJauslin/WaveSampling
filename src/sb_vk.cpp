@@ -22,7 +22,6 @@
 //' 
 //' @return A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the value is equal to 0.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @references 
 //' 

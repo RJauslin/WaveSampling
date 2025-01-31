@@ -53,7 +53,6 @@
 //' 
 //' @return A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 //' 
-//' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 //' 
 //' @references 
 //' Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube method. Biometrika, 91(4), 893-912

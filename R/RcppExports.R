@@ -33,7 +33,6 @@
 #'
 #' @return A numeric value that represents the spatial balance. It could be any real value between -1 (spread) and 1 (clustered). 
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references
 #' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
@@ -95,7 +94,6 @@ IB <- function(W, s) {
 #' @return a vector of length \eqn{N} that contains the distances from the unit \eqn{k} to all other units.
 #'
 #'
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' 
 #' @seealso
@@ -132,7 +130,6 @@ distUnitk <- function(X, k, tore, toreBound) {
 #' 
 #' @return The projection of the vector v onto the line spanned by the vector u.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
 #' \url{https://en.wikipedia.org/wiki/Projection_(linear_algebra)}s
@@ -153,7 +150,6 @@ NULL
 #'
 #' @return column sums of x.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @seealso
 #' \code{\link[Matrix]{colSums}}, \code{\link[Matrix]{rowSums}}.
@@ -203,7 +199,6 @@ NULL
 #' 
 #' @return A vector of size \eqn{N} with elements equal to the \eqn{v_k} values. If the unit is not selected then the value is equal to 0.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
 #' 
@@ -278,7 +273,6 @@ sb_vk <- function(pik, X, s) {
 #' 
 #' @return A vector of size \eqn{N} with elements equal 0 or 1. The value 1 indicates that the unit is selected while the value 0 is for non-chosen unit.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
 #' Deville, J. C. and Tillé, Y. (2004). Efficient balanced sampling: the cube method. Biometrika, 91(4), 893-912
@@ -372,7 +366,6 @@ wave <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @seealso
 #' \code{\link{wpikInv}}, \code{\link{distUnitk}}, \code{\link{wave}}.
@@ -432,7 +425,6 @@ wpik <- function(X, pik, bound = 1.0, tore = FALSE, shift = FALSE, toreBound = -
 #' 
 #' @return A sparse matrix representing the spatial weights.
 #' 
-#' @author Raphaël Jauslin \email{raphael.jauslin@@unine.ch}
 #' 
 #' @references 
 #' Tillé, Y., Dickson, M.M., Espa, G., and Guiliani, D. (2018). Measuring the spatial balance of a sample: A new measure based on Moran's I index.
