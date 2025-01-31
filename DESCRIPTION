@@ -32,5 +32,4 @@ Suggests:
     ggplot2,
     sampling,
     BalancedSampling,
-    StratifiedSampling,
     stats
